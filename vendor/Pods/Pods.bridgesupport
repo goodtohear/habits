@@ -1,500 +1,83 @@
 <?xml version='1.0'?>
 <signatures version='1.0'>
-<constant name='KalDataSourceChangedNotification' const='true' declared_type='NSString*' type='@'/>
-<enum name='KalTileTypeAdjacent' value='1'/>
-<enum name='KalTileTypeRegular' value='0'/>
-<enum name='KalTileTypeToday' value='2'/>
-<enum name='OCArrowPositionCentered' value='0'/>
-<enum name='OCArrowPositionLeft' value='-1'/>
-<enum name='OCArrowPositionRight' value='1'/>
-<class name='KalDate'>
-<method selector='NSDate'>
-<retval declared_type='NSDate*' type='@'/>
+<enum name='DDPageControlTypeOnEmptyOffEmpty' value='3'/>
+<enum name='DDPageControlTypeOnEmptyOffFull' value='2'/>
+<enum name='DDPageControlTypeOnFullOffEmpty' value='1'/>
+<enum name='DDPageControlTypeOnFullOffFull' value='0'/>
+<class name='DDPageControl'>
+<method selector='currentPage'>
+<retval type='i' declared_type='NSInteger'/>
 </method>
-<method selector='compare:'>
-<arg name='otherDate' declared_type='KalDate*' type='@' index='0'/>
-<retval declared_type='NSComparisonResult' type='i'/>
+<method selector='defersCurrentPageDisplay'>
+<retval type='B' declared_type='BOOL'/>
 </method>
-<method class_method='true' selector='dateForDay:month:year:'>
-<arg name='day' declared_type='unsigned int' type='I' index='0'/>
-<arg name='month' declared_type='unsigned int' type='I' index='1'/>
-<arg name='year' declared_type='unsigned int' type='I' index='2'/>
-<retval declared_type='KalDate*' type='@'/>
+<method selector='hidesForSinglePage'>
+<retval type='B' declared_type='BOOL'/>
 </method>
-<method class_method='true' selector='dateFromNSDate:'>
-<arg name='date' declared_type='NSDate*' type='@' index='0'/>
-<retval declared_type='KalDate*' type='@'/>
+<method selector='indicatorDiameter'>
+<retval type='f' declared_type='CGFloat'/>
 </method>
-<method selector='day'>
-<retval declared_type='unsigned int' type='I'/>
+<method selector='indicatorSpace'>
+<retval type='f' declared_type='CGFloat'/>
 </method>
-<method selector='initForDay:month:year:'>
-<arg name='day' declared_type='unsigned int' type='I' index='0'/>
-<arg name='month' declared_type='unsigned int' type='I' index='1'/>
-<arg name='year' declared_type='unsigned int' type='I' index='2'/>
-<retval declared_type='id' type='@'/>
+<method selector='initWithType:'>
+<arg name='theType' index='0' type='i' declared_type='DDPageControlType'/>
+<retval type='@' declared_type='id'/>
 </method>
-<method selector='isToday'>
-<retval declared_type='BOOL' type='B'/>
+<method selector='numberOfPages'>
+<retval type='i' declared_type='NSInteger'/>
 </method>
-<method selector='month'>
-<retval declared_type='unsigned int' type='I'/>
+<method selector='offColor'>
+<retval type='@' declared_type='UIColor*'/>
 </method>
-<method selector='year'>
-<retval declared_type='unsigned int' type='I'/>
+<method selector='onColor'>
+<retval type='@' declared_type='UIColor*'/>
 </method>
-</class>
-<class name='KalGridView'>
-<method selector='initWithFrame:logic:delegate:'>
-<arg name='frame' declared_type='CGRect' type='{CGRect={CGPoint=ff}{CGSize=ff}}' index='0'/>
-<arg name='logic' declared_type='KalLogic*' type='@' index='1'/>
-<arg name='delegate' declared_type='id' type='@' index='2'/>
-<retval declared_type='id' type='@'/>
+<method selector='setCurrentPage:'>
+<arg name='currentPage' index='0' type='i' declared_type='NSInteger'/>
+<retval type='v' declared_type='void'/>
 </method>
-<method selector='jumpToSelectedMonth'>
-<retval declared_type='void' type='v'/>
+<method selector='setDefersCurrentPageDisplay:'>
+<arg name='defersCurrentPageDisplay' index='0' type='B' declared_type='BOOL'/>
+<retval type='v' declared_type='void'/>
 </method>
-<method selector='markTilesForDates:'>
-<arg name='dates' declared_type='NSArray*' type='@' index='0'/>
-<retval declared_type='void' type='v'/>
+<method selector='setHidesForSinglePage:'>
+<arg name='hidesForSinglePage' index='0' type='B' declared_type='BOOL'/>
+<retval type='v' declared_type='void'/>
 </method>
-<method selector='selectDate:'>
-<arg name='date' declared_type='KalDate*' type='@' index='0'/>
-<retval declared_type='void' type='v'/>
+<method selector='setIndicatorDiameter:'>
+<arg name='indicatorDiameter' index='0' type='f' declared_type='CGFloat'/>
+<retval type='v' declared_type='void'/>
 </method>
-<method selector='selectedDate'>
-<retval declared_type='KalDate*' type='@'/>
+<method selector='setIndicatorSpace:'>
+<arg name='indicatorSpace' index='0' type='f' declared_type='CGFloat'/>
+<retval type='v' declared_type='void'/>
 </method>
-<method selector='slideDown'>
-<retval declared_type='void' type='v'/>
+<method selector='setNumberOfPages:'>
+<arg name='numberOfPages' index='0' type='i' declared_type='NSInteger'/>
+<retval type='v' declared_type='void'/>
 </method>
-<method selector='slideUp'>
-<retval declared_type='void' type='v'/>
+<method selector='setOffColor:'>
+<arg name='offColor' index='0' type='@' declared_type='UIColor*'/>
+<retval type='v' declared_type='void'/>
 </method>
-<method selector='transitioning'>
-<retval declared_type='BOOL' type='B'/>
-</method>
-</class>
-<class name='KalLogic'>
-<method selector='advanceToFollowingMonth'>
-<retval declared_type='void' type='v'/>
-</method>
-<method selector='baseDate'>
-<retval declared_type='NSDate*' type='@'/>
-</method>
-<method selector='daysInFinalWeekOfPreviousMonth'>
-<retval declared_type='NSArray*' type='@'/>
-</method>
-<method selector='daysInFirstWeekOfFollowingMonth'>
-<retval declared_type='NSArray*' type='@'/>
-</method>
-<method selector='daysInSelectedMonth'>
-<retval declared_type='NSArray*' type='@'/>
-</method>
-<method selector='fromDate'>
-<retval declared_type='NSDate*' type='@'/>
-</method>
-<method selector='initForDate:'>
-<arg name='date' declared_type='NSDate*' type='@' index='0'/>
-<retval declared_type='id' type='@'/>
-</method>
-<method selector='moveToMonthForDate:'>
-<arg name='date' declared_type='NSDate*' type='@' index='0'/>
-<retval declared_type='void' type='v'/>
-</method>
-<method selector='retreatToPreviousMonth'>
-<retval declared_type='void' type='v'/>
-</method>
-<method selector='selectedMonthNameAndYear'>
-<retval declared_type='NSString*' type='@'/>
-</method>
-<method selector='setBaseDate:'>
-<arg name='baseDate' declared_type='NSDate*' type='@' index='0'/>
-<retval declared_type='void' type='v'/>
-</method>
-<method selector='toDate'>
-<retval declared_type='NSDate*' type='@'/>
-</method>
-</class>
-<class name='KalMonthView'>
-<method selector='firstTileOfMonth'>
-<retval declared_type='KalTileView*' type='@'/>
-</method>
-<method selector='initWithFrame:'>
-<arg name='rect' declared_type='CGRect' type='{CGRect={CGPoint=ff}{CGSize=ff}}' index='0'/>
-<retval declared_type='id' type='@'/>
-</method>
-<method selector='markTilesForDates:'>
-<arg name='dates' declared_type='NSArray*' type='@' index='0'/>
-<retval declared_type='void' type='v'/>
-</method>
-<method selector='numWeeks'>
-<retval declared_type='NSUInteger' type='I'/>
-</method>
-<method selector='setNumWeeks:'>
-<arg name='numWeeks' declared_type='NSUInteger' type='I' index='0'/>
-<retval declared_type='void' type='v'/>
-</method>
-<method selector='showDates:leadingAdjacentDates:trailingAdjacentDates:'>
-<arg name='mainDates' declared_type='NSArray*' type='@' index='0'/>
-<arg name='leadingAdjacentDates' declared_type='NSArray*' type='@' index='1'/>
-<arg name='trailingAdjacentDates' declared_type='NSArray*' type='@' index='2'/>
-<retval declared_type='void' type='v'/>
-</method>
-<method selector='tileForDate:'>
-<arg name='date' declared_type='KalDate*' type='@' index='0'/>
-<retval declared_type='KalTileView*' type='@'/>
-</method>
-</class>
-<class name='KalTileView'>
-<method selector='belongsToAdjacentMonth'>
-<retval declared_type='BOOL' type='B'/>
-</method>
-<method selector='date'>
-<retval declared_type='KalDate*' type='@'/>
-</method>
-<method selector='isHighlighted'>
-<retval declared_type='BOOL' type='B'/>
-</method>
-<method selector='isMarked'>
-<retval declared_type='BOOL' type='B'/>
-</method>
-<method selector='isSelected'>
-<retval declared_type='BOOL' type='B'/>
-</method>
-<method selector='isToday'>
-<retval declared_type='BOOL' type='B'/>
-</method>
-<method selector='resetState'>
-<retval declared_type='void' type='v'/>
-</method>
-<method selector='setDate:'>
-<arg name='date' declared_type='KalDate*' type='@' index='0'/>
-<retval declared_type='void' type='v'/>
-</method>
-<method selector='setHighlighted:'>
-<arg name='highlighted' declared_type='BOOL' type='B' index='0'/>
-<retval declared_type='void' type='v'/>
-</method>
-<method selector='setMarked:'>
-<arg name='marked' declared_type='BOOL' type='B' index='0'/>
-<retval declared_type='void' type='v'/>
-</method>
-<method selector='setSelected:'>
-<arg name='selected' declared_type='BOOL' type='B' index='0'/>
-<retval declared_type='void' type='v'/>
+<method selector='setOnColor:'>
+<arg name='onColor' index='0' type='@' declared_type='UIColor*'/>
+<retval type='v' declared_type='void'/>
 </method>
 <method selector='setType:'>
-<arg name='type' declared_type='KalTileType' type='c' index='0'/>
-<retval declared_type='void' type='v'/>
+<arg name='type' index='0' type='i' declared_type='DDPageControlType'/>
+<retval type='v' declared_type='void'/>
+</method>
+<method selector='sizeForNumberOfPages:'>
+<arg name='pageCount' index='0' type='i' declared_type='NSInteger'/>
+<retval type='{CGSize=ff}' declared_type='CGSize'/>
 </method>
 <method selector='type'>
-<retval declared_type='KalTileType' type='c'/>
+<retval type='i' declared_type='DDPageControlType'/>
+</method>
+<method selector='updateCurrentPageDisplay'>
+<retval type='v' declared_type='void'/>
 </method>
 </class>
-<class name='KalView'>
-<method selector='delegate'>
-<retval declared_type='id' type='@'/>
-</method>
-<method selector='initWithFrame:delegate:logic:'>
-<arg name='frame' declared_type='CGRect' type='{CGRect={CGPoint=ff}{CGSize=ff}}' index='0'/>
-<arg name='delegate' declared_type='id' type='@' index='1'/>
-<arg name='logic' declared_type='KalLogic*' type='@' index='2'/>
-<retval declared_type='id' type='@'/>
-</method>
-<method selector='isSliding'>
-<retval declared_type='BOOL' type='B'/>
-</method>
-<method selector='jumpToSelectedMonth'>
-<retval declared_type='void' type='v'/>
-</method>
-<method selector='markTilesForDates:'>
-<arg name='dates' declared_type='NSArray*' type='@' index='0'/>
-<retval declared_type='void' type='v'/>
-</method>
-<method selector='redrawEntireMonth'>
-<retval declared_type='void' type='v'/>
-</method>
-<method selector='selectDate:'>
-<arg name='date' declared_type='KalDate*' type='@' index='0'/>
-<retval declared_type='void' type='v'/>
-</method>
-<method selector='selectedDate'>
-<retval declared_type='KalDate*' type='@'/>
-</method>
-<method selector='setDelegate:'>
-<arg name='delegate' declared_type='id' type='@' index='0'/>
-<retval declared_type='void' type='v'/>
-</method>
-<method selector='slideDown'>
-<retval declared_type='void' type='v'/>
-</method>
-<method selector='slideUp'>
-<retval declared_type='void' type='v'/>
-</method>
-<method selector='tableView'>
-<retval declared_type='UITableView*' type='@'/>
-</method>
-</class>
-<class name='KalViewController'>
-<method selector='dataSource'>
-<retval declared_type='id' type='@'/>
-</method>
-<method selector='delegate'>
-<retval declared_type='id' type='@'/>
-</method>
-<method selector='initWithSelectedDate:'>
-<arg name='selectedDate' declared_type='NSDate*' type='@' index='0'/>
-<retval declared_type='id' type='@'/>
-</method>
-<method selector='reloadData'>
-<retval declared_type='void' type='v'/>
-</method>
-<method selector='selectedDate'>
-<retval declared_type='NSDate*' type='@'/>
-</method>
-<method selector='setDataSource:'>
-<arg name='dataSource' declared_type='id' type='@' index='0'/>
-<retval declared_type='void' type='v'/>
-</method>
-<method selector='setDelegate:'>
-<arg name='delegate' declared_type='id' type='@' index='0'/>
-<retval declared_type='void' type='v'/>
-</method>
-<method selector='showAndSelectDate:'>
-<arg name='date' declared_type='NSDate*' type='@' index='0'/>
-<retval declared_type='void' type='v'/>
-</method>
-</class>
-<class name='NSDate'>
-<method selector='cc_componentsForMonthDayAndYear'>
-<retval declared_type='NSDateComponents*' type='@'/>
-</method>
-<method selector='cc_dateByMovingToBeginningOfDay'>
-<retval declared_type='NSDate*' type='@'/>
-</method>
-<method selector='cc_dateByMovingToEndOfDay'>
-<retval declared_type='NSDate*' type='@'/>
-</method>
-<method selector='cc_dateByMovingToFirstDayOfTheFollowingMonth'>
-<retval declared_type='NSDate*' type='@'/>
-</method>
-<method selector='cc_dateByMovingToFirstDayOfTheMonth'>
-<retval declared_type='NSDate*' type='@'/>
-</method>
-<method selector='cc_dateByMovingToFirstDayOfThePreviousMonth'>
-<retval declared_type='NSDate*' type='@'/>
-</method>
-<method selector='cc_numberOfDaysInMonth'>
-<retval declared_type='NSUInteger' type='I'/>
-</method>
-<method selector='cc_weekday'>
-<retval declared_type='NSUInteger' type='I'/>
-</method>
-</class>
-<class name='NSObject'>
-<method selector='completedWithStartDate:endDate:'>
-<arg name='startDate' declared_type='NSDate*' type='@' index='0'/>
-<arg name='endDate' declared_type='NSDate*' type='@' index='1'/>
-<retval declared_type='void' type='v'/>
-</method>
-<method selector='didSelectDate:'>
-<arg name='date' declared_type='KalDate*' type='@' index='0'/>
-<retval declared_type='void' type='v'/>
-</method>
-<method selector='loadItemsFromDate:toDate:'>
-<arg name='fromDate' declared_type='NSDate*' type='@' index='0'/>
-<arg name='toDate' declared_type='NSDate*' type='@' index='1'/>
-<retval declared_type='void' type='v'/>
-</method>
-<method selector='loadedDataSource:'>
-<arg name='dataSource' declared_type='id' type='@' index='0'/>
-<retval declared_type='void' type='v'/>
-</method>
-<method selector='markedDatesFrom:to:'>
-<arg name='fromDate' declared_type='NSDate*' type='@' index='0'/>
-<arg name='toDate' declared_type='NSDate*' type='@' index='1'/>
-<retval declared_type='NSArray*' type='@'/>
-</method>
-<method selector='presentingDatesFrom:to:delegate:'>
-<arg name='fromDate' declared_type='NSDate*' type='@' index='0'/>
-<arg name='toDate' declared_type='NSDate*' type='@' index='1'/>
-<arg name='delegate' declared_type='id' type='@' index='2'/>
-<retval declared_type='void' type='v'/>
-</method>
-<method selector='removeAllItems'>
-<retval declared_type='void' type='v'/>
-</method>
-<method selector='showFollowingMonth'>
-<retval declared_type='void' type='v'/>
-</method>
-<method selector='showPreviousMonth'>
-<retval declared_type='void' type='v'/>
-</method>
-</class>
-<class name='OCCalendarView'>
-<method selector='getEndDate'>
-<retval declared_type='NSDate*' type='@'/>
-</method>
-<method selector='getStartDate'>
-<retval declared_type='NSDate*' type='@'/>
-</method>
-<method selector='initAtPoint:withFrame:'>
-<arg name='p' declared_type='CGPoint' type='{CGPoint=ff}' index='0'/>
-<arg name='frame' declared_type='CGRect' type='{CGRect={CGPoint=ff}{CGSize=ff}}' index='1'/>
-<retval declared_type='id' type='@'/>
-</method>
-<method selector='initAtPoint:withFrame:arrowPosition:'>
-<arg name='p' declared_type='CGPoint' type='{CGPoint=ff}' index='0'/>
-<arg name='frame' declared_type='CGRect' type='{CGRect={CGPoint=ff}{CGSize=ff}}' index='1'/>
-<arg name='arrowPos' declared_type='OCArrowPosition' type='i' index='2'/>
-<retval declared_type='id' type='@'/>
-</method>
-<method selector='setArrowPosition:'>
-<arg name='pos' declared_type='OCArrowPosition' type='i' index='0'/>
-<retval declared_type='void' type='v'/>
-</method>
-</class>
-<class name='OCCalendarViewController'>
-<method selector='delegate'>
-<retval declared_type='id' type='@'/>
-</method>
-<method selector='initAtPoint:inView:'>
-<arg name='point' declared_type='CGPoint' type='{CGPoint=ff}' index='0'/>
-<arg name='v' declared_type='UIView*' type='@' index='1'/>
-<retval declared_type='id' type='@'/>
-</method>
-<method selector='initAtPoint:inView:arrowPosition:'>
-<arg name='point' declared_type='CGPoint' type='{CGPoint=ff}' index='0'/>
-<arg name='v' declared_type='UIView*' type='@' index='1'/>
-<arg name='ap' declared_type='OCArrowPosition' type='i' index='2'/>
-<retval declared_type='id' type='@'/>
-</method>
-<method selector='setDelegate:'>
-<arg name='delegate' declared_type='id' type='@' index='0'/>
-<retval declared_type='void' type='v'/>
-</method>
-</class>
-<class name='OCDaysView'>
-<method selector='addExtraRow'>
-<retval declared_type='BOOL' type='B'/>
-</method>
-<method selector='resetRows'>
-<retval declared_type='void' type='v'/>
-</method>
-<method selector='setMonth:'>
-<arg name='month' declared_type='int' type='i' index='0'/>
-<retval declared_type='void' type='v'/>
-</method>
-<method selector='setYear:'>
-<arg name='year' declared_type='int' type='i' index='0'/>
-<retval declared_type='void' type='v'/>
-</method>
-</class>
-<class name='OCSelectionView'>
-<method selector='endPoint'>
-<retval declared_type='CGPoint' type='{CGPoint=ff}'/>
-</method>
-<method selector='resetSelection'>
-<retval declared_type='void' type='v'/>
-</method>
-<method selector='startPoint'>
-<retval declared_type='CGPoint' type='{CGPoint=ff}'/>
-</method>
-</class>
-<class name='SimpleKalDataSource'>
-<method class_method='true' selector='dataSource'>
-<retval declared_type='SimpleKalDataSource*' type='@'/>
-</method>
-</class>
-<class name='UIView'>
-<method selector='bottom'>
-<retval declared_type='CGFloat' type='f'/>
-</method>
-<method selector='height'>
-<retval declared_type='CGFloat' type='f'/>
-</method>
-<method selector='left'>
-<retval declared_type='CGFloat' type='f'/>
-</method>
-<method selector='right'>
-<retval declared_type='CGFloat' type='f'/>
-</method>
-<method selector='setBottom:'>
-<arg name='bottom' declared_type='CGFloat' type='f' index='0'/>
-<retval declared_type='void' type='v'/>
-</method>
-<method selector='setHeight:'>
-<arg name='height' declared_type='CGFloat' type='f' index='0'/>
-<retval declared_type='void' type='v'/>
-</method>
-<method selector='setLeft:'>
-<arg name='left' declared_type='CGFloat' type='f' index='0'/>
-<retval declared_type='void' type='v'/>
-</method>
-<method selector='setRight:'>
-<arg name='right' declared_type='CGFloat' type='f' index='0'/>
-<retval declared_type='void' type='v'/>
-</method>
-<method selector='setTop:'>
-<arg name='top' declared_type='CGFloat' type='f' index='0'/>
-<retval declared_type='void' type='v'/>
-</method>
-<method selector='setWidth:'>
-<arg name='width' declared_type='CGFloat' type='f' index='0'/>
-<retval declared_type='void' type='v'/>
-</method>
-<method selector='top'>
-<retval declared_type='CGFloat' type='f'/>
-</method>
-<method selector='width'>
-<retval declared_type='CGFloat' type='f'/>
-</method>
-</class>
-<informal_protocol name='KalDataSource'>
-<method type='v16@0:4@8@12' selector='loadItemsFromDate:toDate:'>
-<arg name='fromDate' declared_type='NSDate*' type='@' index='0'/>
-<arg name='toDate' declared_type='NSDate*' type='@' index='1'/>
-<retval declared_type='void' type='v'/>
-</method>
-<method type='@16@0:4@8@12' selector='markedDatesFrom:to:'>
-<arg name='fromDate' declared_type='NSDate*' type='@' index='0'/>
-<arg name='toDate' declared_type='NSDate*' type='@' index='1'/>
-<retval declared_type='NSArray*' type='@'/>
-</method>
-<method type='v20@0:4@8@12@16' selector='presentingDatesFrom:to:delegate:'>
-<arg name='fromDate' declared_type='NSDate*' type='@' index='0'/>
-<arg name='toDate' declared_type='NSDate*' type='@' index='1'/>
-<arg name='delegate' declared_type='id' type='@' index='2'/>
-<retval declared_type='void' type='v'/>
-</method>
-<method type='v8@0:4' selector='removeAllItems'>
-<retval declared_type='void' type='v'/>
-</method>
-</informal_protocol>
-<informal_protocol name='KalDataSourceCallbacks'>
-<method type='v12@0:4@8' selector='loadedDataSource:'>
-<arg name='dataSource' declared_type='id' type='@' index='0'/>
-<retval declared_type='void' type='v'/>
-</method>
-</informal_protocol>
-<informal_protocol name='KalViewDelegate'>
-<method type='v12@0:4@8' selector='didSelectDate:'>
-<arg name='date' declared_type='KalDate*' type='@' index='0'/>
-<retval declared_type='void' type='v'/>
-</method>
-<method type='v8@0:4' selector='showFollowingMonth'>
-<retval declared_type='void' type='v'/>
-</method>
-<method type='v8@0:4' selector='showPreviousMonth'>
-<retval declared_type='void' type='v'/>
-</method>
-</informal_protocol>
-<informal_protocol name='OCCalendarDelegate'>
-<method type='v16@0:4@8@12' selector='completedWithStartDate:endDate:'>
-<arg name='startDate' declared_type='NSDate*' type='@' index='0'/>
-<arg name='endDate' declared_type='NSDate*' type='@' index='1'/>
-<retval declared_type='void' type='v'/>
-</method>
-</informal_protocol>
 </signatures>

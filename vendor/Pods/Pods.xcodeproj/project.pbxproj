@@ -10,41 +10,74 @@
 	<string>46</string>
 	<key>objects</key>
 	<dict>
-		<key>04A5570E763E43BF8237EFA6</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>C2B64EC19AA14C83BAE4C09C</string>
-				<string>F3CCF0EA241B494FB5AC41B2</string>
-				<string>623A2140C0BB49478F12B15E</string>
-				<string>45B910A831D94716B63066C9</string>
-				<string>E3E00AF4593B4858A77420E4</string>
-				<string>9FBFBE55CB374DE5A2FBDE2C</string>
-				<string>9CCAF414447444DFACF7F5CA</string>
-				<string>67E2337F71A44A79AA0C9EAB</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>name</key>
-			<string>OCCalendar</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>06D139A46C5F43BDA8C1EB51</key>
+		<key>03F478F0689F47ECB0C18F4C</key>
 		<dict>
 			<key>isa</key>
 			<string>PBXFileReference</string>
 			<key>name</key>
-			<string>UIViewAdditions.m</string>
+			<string>DDPageControl.m</string>
 			<key>path</key>
-			<string>Kal/src/UIViewAdditions.m</string>
+			<string>DDPageControl/Classes/DDPageControl.m</string>
 			<key>sourceTree</key>
 			<string>SOURCE_ROOT</string>
 		</dict>
-		<key>078366CA7A684002A1F8C824</key>
+		<key>0D5A10B5D97D4522904F9E99</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>F6E119E32FEC4735B3F8CB12</string>
+				<string>CA250C37561B47FC81ADAA2D</string>
+				<string>97B1A4C85B9D46049BF89ECF</string>
+				<string>B08DE9239D484E5CB66D918E</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>15E420CD0ACE460BA3A48056</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>name</key>
+			<string>Pods-resources.sh</string>
+			<key>path</key>
+			<string>Pods-resources.sh</string>
+			<key>sourceTree</key>
+			<string>SOURCE_ROOT</string>
+		</dict>
+		<key>1EAD7D40277B46AC891A3FA7</key>
+		<dict>
+			<key>buildActionMask</key>
+			<string>2147483647</string>
+			<key>files</key>
+			<array>
+				<string>3DD498ADD7D542DBA6F9DB19</string>
+			</array>
+			<key>isa</key>
+			<string>PBXSourcesBuildPhase</string>
+			<key>runOnlyForDeploymentPostprocessing</key>
+			<string>0</string>
+		</dict>
+		<key>214BC5E35333499F98C9E1FC</key>
+		<dict>
+			<key>explicitFileType</key>
+			<string>archive.ar</string>
+			<key>includeInIndex</key>
+			<string>0</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>name</key>
+			<string>libPods.a</string>
+			<key>path</key>
+			<string>libPods.a</string>
+			<key>sourceTree</key>
+			<string>BUILT_PRODUCTS_DIR</string>
+		</dict>
+		<key>3DD498ADD7D542DBA6F9DB19</key>
 		<dict>
 			<key>fileRef</key>
-			<string>8A6DCB53FBF74C66BFDD41AD</string>
+			<string>03F478F0689F47ECB0C18F4C</string>
 			<key>isa</key>
 			<string>PBXBuildFile</string>
 			<key>settings</key>
@@ -53,88 +86,49 @@
 				<string> </string>
 			</dict>
 		</dict>
-		<key>1DE9EF4F24DC48C0BEEAD78B</key>
+		<key>5578148757FF4AAB90E6D624</key>
 		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>name</key>
-			<string>KalView.m</string>
-			<key>path</key>
-			<string>Kal/src/KalView.m</string>
-			<key>sourceTree</key>
-			<string>SOURCE_ROOT</string>
-		</dict>
-		<key>29A916F151B2457DAC259461</key>
-		<dict>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
+			<key>children</key>
 			<array>
-				<string>48A2199A13A24BE696731C30</string>
-				<string>BD9C4D328F6540489FAA86A5</string>
-				<string>078366CA7A684002A1F8C824</string>
-				<string>DB8335EF97BD41229FDC58B5</string>
-				<string>BB9C9BB807B14582935C89C7</string>
-				<string>63C1637E987042AF9A1EE843</string>
-				<string>BE0CC7E9D57D4B65B9F785A9</string>
-				<string>BD5422B1F19C4F728D0A4982</string>
-				<string>BE409ED3C65A474F94028598</string>
-				<string>436D885235D44EDCB218F349</string>
-				<string>4A2BD644E1C949389FCF9D46</string>
-				<string>B409FCD12DF6452399A37918</string>
-				<string>DDEED8679E4B4671A6FA3604</string>
-				<string>CF1581A4373247CFA12F0983</string>
+				<string>BAB490EA20514C588C0EF6DC</string>
+				<string>03F478F0689F47ECB0C18F4C</string>
 			</array>
 			<key>isa</key>
-			<string>PBXSourcesBuildPhase</string>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-		</dict>
-		<key>2AABE797C1084E7F829A0195</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
+			<string>PBXGroup</string>
 			<key>name</key>
-			<string>NSDateAdditions.m</string>
-			<key>path</key>
-			<string>Kal/src/NSDateAdditions.m</string>
+			<string>DDPageControl</string>
 			<key>sourceTree</key>
-			<string>SOURCE_ROOT</string>
+			<string>&lt;group&gt;</string>
 		</dict>
-		<key>2C8AF2330DC24DBFACE1EEF4</key>
+		<key>58A4A1C6BEB64043AC534810</key>
 		<dict>
+			<key>baseConfigurationReference</key>
+			<string>959CEDEDDA0B43618B40F0B9</string>
+			<key>buildSettings</key>
+			<dict>
+				<key>DSTROOT</key>
+				<string>/tmp/xcodeproj.dst</string>
+				<key>GCC_PRECOMPILE_PREFIX_HEADER</key>
+				<string>YES</string>
+				<key>GCC_PREFIX_HEADER</key>
+				<string>Pods-prefix.pch</string>
+				<key>GCC_VERSION</key>
+				<string>com.apple.compilers.llvm.clang.1_0</string>
+				<key>OTHER_LDFLAGS</key>
+				<string></string>
+				<key>PODS_ROOT</key>
+				<string>$(SRCROOT)</string>
+				<key>PRODUCT_NAME</key>
+				<string>$(TARGET_NAME)</string>
+				<key>SKIP_INSTALL</key>
+				<string>YES</string>
+			</dict>
 			<key>isa</key>
-			<string>PBXFileReference</string>
+			<string>XCBuildConfiguration</string>
 			<key>name</key>
-			<string>KalTileView.h</string>
-			<key>path</key>
-			<string>Kal/src/KalTileView.h</string>
-			<key>sourceTree</key>
-			<string>SOURCE_ROOT</string>
+			<string>Release</string>
 		</dict>
-		<key>31CA09096797403D881C86DC</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>name</key>
-			<string>NSDateAdditions.h</string>
-			<key>path</key>
-			<string>Kal/src/NSDateAdditions.h</string>
-			<key>sourceTree</key>
-			<string>SOURCE_ROOT</string>
-		</dict>
-		<key>3693C42E3A76465EA9F49C38</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>name</key>
-			<string>KalDataSource.h</string>
-			<key>path</key>
-			<string>Kal/src/KalDataSource.h</string>
-			<key>sourceTree</key>
-			<string>SOURCE_ROOT</string>
-		</dict>
-		<key>38DF2A8EEC2B4C30A0525592</key>
+		<key>610B9F766A3B4995874EDBAC</key>
 		<dict>
 			<key>buildSettings</key>
 			<dict>
@@ -189,599 +183,20 @@
 			<key>name</key>
 			<string>Debug</string>
 		</dict>
-		<key>3DAD21F16C724846B900FF27</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>85C88F8B296B4B678320DB2D</string>
-				<string>CEF7C7B6174540FC9C1EDB9A</string>
-				<string>41C69A737A724C5E8B043470</string>
-				<string>ADEB7A79AE8B4E7EA132AFC8</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>3FCFF46DA5D94CFBB3C7C708</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>name</key>
-			<string>Pods-resources.sh</string>
-			<key>path</key>
-			<string>Pods-resources.sh</string>
-			<key>sourceTree</key>
-			<string>SOURCE_ROOT</string>
-		</dict>
-		<key>41845E43F49D4FD286E937AD</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>name</key>
-			<string>KalMonthView.m</string>
-			<key>path</key>
-			<string>Kal/src/KalMonthView.m</string>
-			<key>sourceTree</key>
-			<string>SOURCE_ROOT</string>
-		</dict>
-		<key>41C69A737A724C5E8B043470</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>95EFB5A2224B4F3EB0D1D360</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>name</key>
-			<string>Products</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>434CAFFF7A0E4461936A8F90</key>
-		<dict>
-			<key>baseConfigurationReference</key>
-			<string>EB621D5EDC2046CE9C4D1E74</string>
-			<key>buildSettings</key>
-			<dict>
-				<key>DSTROOT</key>
-				<string>/tmp/xcodeproj.dst</string>
-				<key>GCC_PRECOMPILE_PREFIX_HEADER</key>
-				<string>YES</string>
-				<key>GCC_PREFIX_HEADER</key>
-				<string>Pods-prefix.pch</string>
-				<key>GCC_VERSION</key>
-				<string>com.apple.compilers.llvm.clang.1_0</string>
-				<key>OTHER_LDFLAGS</key>
-				<string></string>
-				<key>PODS_ROOT</key>
-				<string>$(SRCROOT)</string>
-				<key>PRODUCT_NAME</key>
-				<string>$(TARGET_NAME)</string>
-				<key>SKIP_INSTALL</key>
-				<string>YES</string>
-			</dict>
-			<key>isa</key>
-			<string>XCBuildConfiguration</string>
-			<key>name</key>
-			<string>Release</string>
-		</dict>
-		<key>436D885235D44EDCB218F349</key>
-		<dict>
-			<key>fileRef</key>
-			<string>06D139A46C5F43BDA8C1EB51</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-			<key>settings</key>
-			<dict>
-				<key>COMPILER_FLAGS</key>
-				<string> </string>
-			</dict>
-		</dict>
-		<key>43FCDEB0D1B1402F9FD7CAD0</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>name</key>
-			<string>KalPrivate.h</string>
-			<key>path</key>
-			<string>Kal/src/KalPrivate.h</string>
-			<key>sourceTree</key>
-			<string>SOURCE_ROOT</string>
-		</dict>
-		<key>45B910A831D94716B63066C9</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>name</key>
-			<string>OCSelectionView.h</string>
-			<key>path</key>
-			<string>OCCalendar/OCCalendarView/OCSelectionView.h</string>
-			<key>sourceTree</key>
-			<string>SOURCE_ROOT</string>
-		</dict>
-		<key>48A2199A13A24BE696731C30</key>
-		<dict>
-			<key>fileRef</key>
-			<string>D1122E5445B14BB6B1443919</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-			<key>settings</key>
-			<dict>
-				<key>COMPILER_FLAGS</key>
-				<string> </string>
-			</dict>
-		</dict>
-		<key>4A2BD644E1C949389FCF9D46</key>
-		<dict>
-			<key>fileRef</key>
-			<string>E3E00AF4593B4858A77420E4</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-			<key>settings</key>
-			<dict>
-				<key>COMPILER_FLAGS</key>
-				<string> </string>
-			</dict>
-		</dict>
-		<key>4BD7350DF67A47AF982FAE19</key>
-		<dict>
-			<key>attributes</key>
-			<dict>
-				<key>LastUpgradeCheck</key>
-				<string>0420</string>
-			</dict>
-			<key>buildConfigurationList</key>
-			<string>5B5F98D0C4CD46A1B45ADC91</string>
-			<key>compatibilityVersion</key>
-			<string>Xcode 3.2</string>
-			<key>developmentRegion</key>
-			<string>English</string>
-			<key>hasScannedForEncodings</key>
-			<string>0</string>
-			<key>isa</key>
-			<string>PBXProject</string>
-			<key>knownRegions</key>
-			<array>
-				<string>en</string>
-			</array>
-			<key>mainGroup</key>
-			<string>3DAD21F16C724846B900FF27</string>
-			<key>productRefGroup</key>
-			<string>41C69A737A724C5E8B043470</string>
-			<key>projectDirPath</key>
-			<string></string>
-			<key>projectRoot</key>
-			<string></string>
-			<key>targets</key>
-			<array>
-				<string>8239DF13AA0047C1BBEA0C69</string>
-			</array>
-		</dict>
-		<key>5482842F7A334A03B9992629</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>name</key>
-			<string>KalMonthView.h</string>
-			<key>path</key>
-			<string>Kal/src/KalMonthView.h</string>
-			<key>sourceTree</key>
-			<string>SOURCE_ROOT</string>
-		</dict>
-		<key>5B5F98D0C4CD46A1B45ADC91</key>
-		<dict>
-			<key>buildConfigurations</key>
-			<array>
-				<string>38DF2A8EEC2B4C30A0525592</string>
-				<string>DE4E41F457404EBD921D324B</string>
-			</array>
-			<key>defaultConfigurationIsVisible</key>
-			<string>0</string>
-			<key>defaultConfigurationName</key>
-			<string>Release</string>
-			<key>isa</key>
-			<string>XCConfigurationList</string>
-		</dict>
-		<key>5E96334F5FF2480896826E3C</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>name</key>
-			<string>Kal.h</string>
-			<key>path</key>
-			<string>Kal/src/Kal.h</string>
-			<key>sourceTree</key>
-			<string>SOURCE_ROOT</string>
-		</dict>
-		<key>6121DE7B0D98406E87DF5BBA</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>name</key>
-			<string>Pods-prefix.pch</string>
-			<key>path</key>
-			<string>Pods-prefix.pch</string>
-			<key>sourceTree</key>
-			<string>SOURCE_ROOT</string>
-		</dict>
-		<key>623A2140C0BB49478F12B15E</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>name</key>
-			<string>OCDaysView.h</string>
-			<key>path</key>
-			<string>OCCalendar/OCCalendarView/OCDaysView.h</string>
-			<key>sourceTree</key>
-			<string>SOURCE_ROOT</string>
-		</dict>
-		<key>633D6D6EFB8745DC8B5E8CC2</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>name</key>
-			<string>KalViewController.h</string>
-			<key>path</key>
-			<string>Kal/src/KalViewController.h</string>
-			<key>sourceTree</key>
-			<string>SOURCE_ROOT</string>
-		</dict>
-		<key>63C1637E987042AF9A1EE843</key>
-		<dict>
-			<key>fileRef</key>
-			<string>80C6F58302624C84AAB055BD</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-			<key>settings</key>
-			<dict>
-				<key>COMPILER_FLAGS</key>
-				<string> </string>
-			</dict>
-		</dict>
-		<key>67E2337F71A44A79AA0C9EAB</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>name</key>
-			<string>OCSelectionView.m</string>
-			<key>path</key>
-			<string>OCCalendar/OCCalendarView/OCSelectionView.m</string>
-			<key>sourceTree</key>
-			<string>SOURCE_ROOT</string>
-		</dict>
-		<key>762E269BC1E141008D73B010</key>
-		<dict>
-			<key>fileRef</key>
-			<string>FA3CFE6F0F634B7D8B51B476</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>80C6F58302624C84AAB055BD</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>name</key>
-			<string>KalTileView.m</string>
-			<key>path</key>
-			<string>Kal/src/KalTileView.m</string>
-			<key>sourceTree</key>
-			<string>SOURCE_ROOT</string>
-		</dict>
-		<key>8239DF13AA0047C1BBEA0C69</key>
-		<dict>
-			<key>buildConfigurationList</key>
-			<string>E8123BFEEF934509A1368E71</string>
-			<key>buildPhases</key>
-			<array>
-				<string>29A916F151B2457DAC259461</string>
-				<string>A16AF047364B4823B5D4B981</string>
-				<string>C5917B61F8BD45C38CBC88E4</string>
-			</array>
-			<key>buildRules</key>
-			<array/>
-			<key>dependencies</key>
-			<array/>
-			<key>isa</key>
-			<string>PBXNativeTarget</string>
-			<key>name</key>
-			<string>Pods</string>
-			<key>productName</key>
-			<string>Pods</string>
-			<key>productReference</key>
-			<string>95EFB5A2224B4F3EB0D1D360</string>
-			<key>productType</key>
-			<string>com.apple.product-type.library.static</string>
-		</dict>
-		<key>85C88F8B296B4B678320DB2D</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>91521D77C11543789276DA00</string>
-				<string>04A5570E763E43BF8237EFA6</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>name</key>
-			<string>Pods</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>85D03E8DEF78499BB452C9CA</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>name</key>
-			<string>KalLogic.m</string>
-			<key>path</key>
-			<string>Kal/src/KalLogic.m</string>
-			<key>sourceTree</key>
-			<string>SOURCE_ROOT</string>
-		</dict>
-		<key>8A6DCB53FBF74C66BFDD41AD</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>name</key>
-			<string>KalGridView.m</string>
-			<key>path</key>
-			<string>Kal/src/KalGridView.m</string>
-			<key>sourceTree</key>
-			<string>SOURCE_ROOT</string>
-		</dict>
-		<key>91521D77C11543789276DA00</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>5E96334F5FF2480896826E3C</string>
-				<string>3693C42E3A76465EA9F49C38</string>
-				<string>EB7855B569C245AE97001BD8</string>
-				<string>F00055BBE63648B79F9A1638</string>
-				<string>A039639F9A8D4CB79827D4D9</string>
-				<string>5482842F7A334A03B9992629</string>
-				<string>43FCDEB0D1B1402F9FD7CAD0</string>
-				<string>2C8AF2330DC24DBFACE1EEF4</string>
-				<string>A5E2CA7BF8B5478C8C075640</string>
-				<string>633D6D6EFB8745DC8B5E8CC2</string>
-				<string>31CA09096797403D881C86DC</string>
-				<string>D88DBF9B5A1B4B6F9FC104AA</string>
-				<string>D1122E5445B14BB6B1443919</string>
-				<string>B572C4515D9F46FF8EC6EBFE</string>
-				<string>8A6DCB53FBF74C66BFDD41AD</string>
-				<string>85D03E8DEF78499BB452C9CA</string>
-				<string>41845E43F49D4FD286E937AD</string>
-				<string>80C6F58302624C84AAB055BD</string>
-				<string>1DE9EF4F24DC48C0BEEAD78B</string>
-				<string>9EDB76A4BF6741C0828F9A83</string>
-				<string>2AABE797C1084E7F829A0195</string>
-				<string>06D139A46C5F43BDA8C1EB51</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>name</key>
-			<string>Kal</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>95EFB5A2224B4F3EB0D1D360</key>
-		<dict>
-			<key>explicitFileType</key>
-			<string>archive.ar</string>
-			<key>includeInIndex</key>
-			<string>0</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>name</key>
-			<string>libPods.a</string>
-			<key>path</key>
-			<string>libPods.a</string>
-			<key>sourceTree</key>
-			<string>BUILT_PRODUCTS_DIR</string>
-		</dict>
-		<key>9CCAF414447444DFACF7F5CA</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>name</key>
-			<string>OCDaysView.m</string>
-			<key>path</key>
-			<string>OCCalendar/OCCalendarView/OCDaysView.m</string>
-			<key>sourceTree</key>
-			<string>SOURCE_ROOT</string>
-		</dict>
-		<key>9EDB76A4BF6741C0828F9A83</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>name</key>
-			<string>KalViewController.m</string>
-			<key>path</key>
-			<string>Kal/src/KalViewController.m</string>
-			<key>sourceTree</key>
-			<string>SOURCE_ROOT</string>
-		</dict>
-		<key>9FBFBE55CB374DE5A2FBDE2C</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>name</key>
-			<string>OCCalendarViewController.m</string>
-			<key>path</key>
-			<string>OCCalendar/OCCalendarView/OCCalendarViewController.m</string>
-			<key>sourceTree</key>
-			<string>SOURCE_ROOT</string>
-		</dict>
-		<key>A039639F9A8D4CB79827D4D9</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>name</key>
-			<string>KalLogic.h</string>
-			<key>path</key>
-			<string>Kal/src/KalLogic.h</string>
-			<key>sourceTree</key>
-			<string>SOURCE_ROOT</string>
-		</dict>
-		<key>A16AF047364B4823B5D4B981</key>
+		<key>6BB8B75ADDB64871B6C28F2D</key>
 		<dict>
 			<key>buildActionMask</key>
 			<string>2147483647</string>
 			<key>files</key>
 			<array>
-				<string>762E269BC1E141008D73B010</string>
+				<string>EE05B62683AA413998ADF6AC</string>
 			</array>
 			<key>isa</key>
 			<string>PBXFrameworksBuildPhase</string>
 			<key>runOnlyForDeploymentPostprocessing</key>
 			<string>0</string>
 		</dict>
-		<key>A5E2CA7BF8B5478C8C075640</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>name</key>
-			<string>KalView.h</string>
-			<key>path</key>
-			<string>Kal/src/KalView.h</string>
-			<key>sourceTree</key>
-			<string>SOURCE_ROOT</string>
-		</dict>
-		<key>ADEB7A79AE8B4E7EA132AFC8</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>CD5574E6442A418B884EAB69</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>name</key>
-			<string>Targets Support Files</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>B409FCD12DF6452399A37918</key>
-		<dict>
-			<key>fileRef</key>
-			<string>9FBFBE55CB374DE5A2FBDE2C</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-			<key>settings</key>
-			<dict>
-				<key>COMPILER_FLAGS</key>
-				<string> </string>
-			</dict>
-		</dict>
-		<key>B572C4515D9F46FF8EC6EBFE</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>name</key>
-			<string>KalDate.m</string>
-			<key>path</key>
-			<string>Kal/src/KalDate.m</string>
-			<key>sourceTree</key>
-			<string>SOURCE_ROOT</string>
-		</dict>
-		<key>BB9C9BB807B14582935C89C7</key>
-		<dict>
-			<key>fileRef</key>
-			<string>41845E43F49D4FD286E937AD</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-			<key>settings</key>
-			<dict>
-				<key>COMPILER_FLAGS</key>
-				<string> </string>
-			</dict>
-		</dict>
-		<key>BD5422B1F19C4F728D0A4982</key>
-		<dict>
-			<key>fileRef</key>
-			<string>9EDB76A4BF6741C0828F9A83</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-			<key>settings</key>
-			<dict>
-				<key>COMPILER_FLAGS</key>
-				<string> </string>
-			</dict>
-		</dict>
-		<key>BD9C4D328F6540489FAA86A5</key>
-		<dict>
-			<key>fileRef</key>
-			<string>B572C4515D9F46FF8EC6EBFE</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-			<key>settings</key>
-			<dict>
-				<key>COMPILER_FLAGS</key>
-				<string> </string>
-			</dict>
-		</dict>
-		<key>BE0CC7E9D57D4B65B9F785A9</key>
-		<dict>
-			<key>fileRef</key>
-			<string>1DE9EF4F24DC48C0BEEAD78B</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-			<key>settings</key>
-			<dict>
-				<key>COMPILER_FLAGS</key>
-				<string> </string>
-			</dict>
-		</dict>
-		<key>BE409ED3C65A474F94028598</key>
-		<dict>
-			<key>fileRef</key>
-			<string>2AABE797C1084E7F829A0195</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-			<key>settings</key>
-			<dict>
-				<key>COMPILER_FLAGS</key>
-				<string> </string>
-			</dict>
-		</dict>
-		<key>C2B64EC19AA14C83BAE4C09C</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>name</key>
-			<string>OCCalendarView.h</string>
-			<key>path</key>
-			<string>OCCalendar/OCCalendarView/OCCalendarView.h</string>
-			<key>sourceTree</key>
-			<string>SOURCE_ROOT</string>
-		</dict>
-		<key>C4309B50243D40EB909B9EB0</key>
-		<dict>
-			<key>baseConfigurationReference</key>
-			<string>EB621D5EDC2046CE9C4D1E74</string>
-			<key>buildSettings</key>
-			<dict>
-				<key>DSTROOT</key>
-				<string>/tmp/xcodeproj.dst</string>
-				<key>GCC_PRECOMPILE_PREFIX_HEADER</key>
-				<string>YES</string>
-				<key>GCC_PREFIX_HEADER</key>
-				<string>Pods-prefix.pch</string>
-				<key>GCC_VERSION</key>
-				<string>com.apple.compilers.llvm.clang.1_0</string>
-				<key>OTHER_LDFLAGS</key>
-				<string></string>
-				<key>PODS_ROOT</key>
-				<string>$(SRCROOT)</string>
-				<key>PRODUCT_NAME</key>
-				<string>$(TARGET_NAME)</string>
-				<key>SKIP_INSTALL</key>
-				<string>YES</string>
-			</dict>
-			<key>isa</key>
-			<string>XCBuildConfiguration</string>
-			<key>name</key>
-			<string>Debug</string>
-		</dict>
-		<key>C5917B61F8BD45C38CBC88E4</key>
+		<key>757200E30A784BE69518820F</key>
 		<dict>
 			<key>buildActionMask</key>
 			<string>2147483647</string>
@@ -796,93 +211,7 @@
 			<key>runOnlyForDeploymentPostprocessing</key>
 			<string>0</string>
 		</dict>
-		<key>CD5574E6442A418B884EAB69</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>3FCFF46DA5D94CFBB3C7C708</string>
-				<string>6121DE7B0D98406E87DF5BBA</string>
-				<string>EB621D5EDC2046CE9C4D1E74</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>name</key>
-			<string>Pods</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>CEF7C7B6174540FC9C1EDB9A</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>FA3CFE6F0F634B7D8B51B476</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>name</key>
-			<string>Frameworks</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>CF1581A4373247CFA12F0983</key>
-		<dict>
-			<key>fileRef</key>
-			<string>67E2337F71A44A79AA0C9EAB</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-			<key>settings</key>
-			<dict>
-				<key>COMPILER_FLAGS</key>
-				<string> </string>
-			</dict>
-		</dict>
-		<key>D1122E5445B14BB6B1443919</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>name</key>
-			<string>KalDataSource.m</string>
-			<key>path</key>
-			<string>Kal/src/KalDataSource.m</string>
-			<key>sourceTree</key>
-			<string>SOURCE_ROOT</string>
-		</dict>
-		<key>D88DBF9B5A1B4B6F9FC104AA</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>name</key>
-			<string>UIViewAdditions.h</string>
-			<key>path</key>
-			<string>Kal/src/UIViewAdditions.h</string>
-			<key>sourceTree</key>
-			<string>SOURCE_ROOT</string>
-		</dict>
-		<key>DB8335EF97BD41229FDC58B5</key>
-		<dict>
-			<key>fileRef</key>
-			<string>85D03E8DEF78499BB452C9CA</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-			<key>settings</key>
-			<dict>
-				<key>COMPILER_FLAGS</key>
-				<string> </string>
-			</dict>
-		</dict>
-		<key>DDEED8679E4B4671A6FA3604</key>
-		<dict>
-			<key>fileRef</key>
-			<string>9CCAF414447444DFACF7F5CA</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-			<key>settings</key>
-			<dict>
-				<key>COMPILER_FLAGS</key>
-				<string> </string>
-			</dict>
-		</dict>
-		<key>DE4E41F457404EBD921D324B</key>
+		<key>80272AB4EE5F469AB1394837</key>
 		<dict>
 			<key>buildSettings</key>
 			<dict>
@@ -928,28 +257,31 @@
 			<key>name</key>
 			<string>Release</string>
 		</dict>
-		<key>E3E00AF4593B4858A77420E4</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>name</key>
-			<string>OCCalendarView.m</string>
-			<key>path</key>
-			<string>OCCalendar/OCCalendarView/OCCalendarView.m</string>
-			<key>sourceTree</key>
-			<string>SOURCE_ROOT</string>
-		</dict>
-		<key>E8123BFEEF934509A1368E71</key>
+		<key>8C211F12C3EE4DA3B86510FE</key>
 		<dict>
 			<key>buildConfigurations</key>
 			<array>
-				<string>C4309B50243D40EB909B9EB0</string>
-				<string>434CAFFF7A0E4461936A8F90</string>
+				<string>BFEF0A29973C4C92B3780BD2</string>
+				<string>58A4A1C6BEB64043AC534810</string>
 			</array>
 			<key>isa</key>
 			<string>XCConfigurationList</string>
 		</dict>
-		<key>EB621D5EDC2046CE9C4D1E74</key>
+		<key>8E709F19E2484A008A1C67D7</key>
+		<dict>
+			<key>buildConfigurations</key>
+			<array>
+				<string>610B9F766A3B4995874EDBAC</string>
+				<string>80272AB4EE5F469AB1394837</string>
+			</array>
+			<key>defaultConfigurationIsVisible</key>
+			<string>0</string>
+			<key>defaultConfigurationName</key>
+			<string>Release</string>
+			<key>isa</key>
+			<string>XCConfigurationList</string>
+		</dict>
+		<key>959CEDEDDA0B43618B40F0B9</key>
 		<dict>
 			<key>isa</key>
 			<string>PBXFileReference</string>
@@ -962,40 +294,136 @@
 			<key>sourceTree</key>
 			<string>SOURCE_ROOT</string>
 		</dict>
-		<key>EB7855B569C245AE97001BD8</key>
+		<key>97B1A4C85B9D46049BF89ECF</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>214BC5E35333499F98C9E1FC</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>name</key>
+			<string>Products</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>993271BA8CAF4FE1AB7D3B39</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>15E420CD0ACE460BA3A48056</string>
+				<string>C348F74719EF4A838FEDD0B2</string>
+				<string>959CEDEDDA0B43618B40F0B9</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>name</key>
+			<string>Pods</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>B08DE9239D484E5CB66D918E</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>993271BA8CAF4FE1AB7D3B39</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>name</key>
+			<string>Targets Support Files</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>BAB490EA20514C588C0EF6DC</key>
 		<dict>
 			<key>isa</key>
 			<string>PBXFileReference</string>
 			<key>name</key>
-			<string>KalDate.h</string>
+			<string>DDPageControl.h</string>
 			<key>path</key>
-			<string>Kal/src/KalDate.h</string>
+			<string>DDPageControl/Classes/DDPageControl.h</string>
 			<key>sourceTree</key>
 			<string>SOURCE_ROOT</string>
 		</dict>
-		<key>F00055BBE63648B79F9A1638</key>
+		<key>BFEF0A29973C4C92B3780BD2</key>
+		<dict>
+			<key>baseConfigurationReference</key>
+			<string>959CEDEDDA0B43618B40F0B9</string>
+			<key>buildSettings</key>
+			<dict>
+				<key>DSTROOT</key>
+				<string>/tmp/xcodeproj.dst</string>
+				<key>GCC_PRECOMPILE_PREFIX_HEADER</key>
+				<string>YES</string>
+				<key>GCC_PREFIX_HEADER</key>
+				<string>Pods-prefix.pch</string>
+				<key>GCC_VERSION</key>
+				<string>com.apple.compilers.llvm.clang.1_0</string>
+				<key>OTHER_LDFLAGS</key>
+				<string></string>
+				<key>PODS_ROOT</key>
+				<string>$(SRCROOT)</string>
+				<key>PRODUCT_NAME</key>
+				<string>$(TARGET_NAME)</string>
+				<key>SKIP_INSTALL</key>
+				<string>YES</string>
+			</dict>
+			<key>isa</key>
+			<string>XCBuildConfiguration</string>
+			<key>name</key>
+			<string>Debug</string>
+		</dict>
+		<key>C348F74719EF4A838FEDD0B2</key>
 		<dict>
 			<key>isa</key>
 			<string>PBXFileReference</string>
 			<key>name</key>
-			<string>KalGridView.h</string>
+			<string>Pods-prefix.pch</string>
 			<key>path</key>
-			<string>Kal/src/KalGridView.h</string>
+			<string>Pods-prefix.pch</string>
 			<key>sourceTree</key>
 			<string>SOURCE_ROOT</string>
 		</dict>
-		<key>F3CCF0EA241B494FB5AC41B2</key>
+		<key>CA250C37561B47FC81ADAA2D</key>
 		<dict>
+			<key>children</key>
+			<array>
+				<string>DCCAD20ED040451CA0065CA8</string>
+			</array>
 			<key>isa</key>
-			<string>PBXFileReference</string>
+			<string>PBXGroup</string>
 			<key>name</key>
-			<string>OCCalendarViewController.h</string>
-			<key>path</key>
-			<string>OCCalendar/OCCalendarView/OCCalendarViewController.h</string>
+			<string>Frameworks</string>
 			<key>sourceTree</key>
-			<string>SOURCE_ROOT</string>
+			<string>&lt;group&gt;</string>
 		</dict>
-		<key>FA3CFE6F0F634B7D8B51B476</key>
+		<key>CA2AE876F942460DBAD217B5</key>
+		<dict>
+			<key>buildConfigurationList</key>
+			<string>8C211F12C3EE4DA3B86510FE</string>
+			<key>buildPhases</key>
+			<array>
+				<string>1EAD7D40277B46AC891A3FA7</string>
+				<string>6BB8B75ADDB64871B6C28F2D</string>
+				<string>757200E30A784BE69518820F</string>
+			</array>
+			<key>buildRules</key>
+			<array/>
+			<key>dependencies</key>
+			<array/>
+			<key>isa</key>
+			<string>PBXNativeTarget</string>
+			<key>name</key>
+			<string>Pods</string>
+			<key>productName</key>
+			<string>Pods</string>
+			<key>productReference</key>
+			<string>214BC5E35333499F98C9E1FC</string>
+			<key>productType</key>
+			<string>com.apple.product-type.library.static</string>
+		</dict>
+		<key>DCCAD20ED040451CA0065CA8</key>
 		<dict>
 			<key>isa</key>
 			<string>PBXFileReference</string>
@@ -1008,8 +436,62 @@
 			<key>sourceTree</key>
 			<string>SDKROOT</string>
 		</dict>
+		<key>EE05B62683AA413998ADF6AC</key>
+		<dict>
+			<key>fileRef</key>
+			<string>DCCAD20ED040451CA0065CA8</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>F66C294EE62148F792121FC6</key>
+		<dict>
+			<key>attributes</key>
+			<dict>
+				<key>LastUpgradeCheck</key>
+				<string>0420</string>
+			</dict>
+			<key>buildConfigurationList</key>
+			<string>8E709F19E2484A008A1C67D7</string>
+			<key>compatibilityVersion</key>
+			<string>Xcode 3.2</string>
+			<key>developmentRegion</key>
+			<string>English</string>
+			<key>hasScannedForEncodings</key>
+			<string>0</string>
+			<key>isa</key>
+			<string>PBXProject</string>
+			<key>knownRegions</key>
+			<array>
+				<string>en</string>
+			</array>
+			<key>mainGroup</key>
+			<string>0D5A10B5D97D4522904F9E99</string>
+			<key>productRefGroup</key>
+			<string>97B1A4C85B9D46049BF89ECF</string>
+			<key>projectDirPath</key>
+			<string></string>
+			<key>projectRoot</key>
+			<string></string>
+			<key>targets</key>
+			<array>
+				<string>CA2AE876F942460DBAD217B5</string>
+			</array>
+		</dict>
+		<key>F6E119E32FEC4735B3F8CB12</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>5578148757FF4AAB90E6D624</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>name</key>
+			<string>Pods</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
 	</dict>
 	<key>rootObject</key>
-	<string>4BD7350DF67A47AF982FAE19</string>
+	<string>F66C294EE62148F792121FC6</string>
 </dict>
 </plist>

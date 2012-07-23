@@ -28,7 +28,7 @@ class CalendarTopView < UIView
     
     %w[Sun Mon Tue Wed Thu Fri Sat].each_with_index do |dayName, index|
       NSLog "Day: #{dayName}, index: #{index}"
-      label = UILabel.alloc.initWithFrame [[13 + index * 45,40],[18,11]]
+      label = UILabel.alloc.initWithFrame [[15 + index * 45,40],[18,11]]
       label.text = dayName
       label.backgroundColor = UIColor.clearColor
       label.font = UIFont.fontWithName "Helvetica-Bold", size: 8
