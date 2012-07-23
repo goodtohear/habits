@@ -1,3 +1,7 @@
 PODS:
+  - Kal (1.0.0)
+  - OCCalendar (0.0.3)
 
 DEPENDENCIES:
+  - Kal (from `/Users/michaelforrest/workspaces/motion/habits/Kal.podspec')
+  - OCCalendar

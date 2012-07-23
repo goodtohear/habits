@@ -4,19 +4,27 @@ class CalendarViewController < UIViewController
     self.view = UIView.alloc.init
   end
   def viewDidLoad
-    self.view.backgroundColor = UIColor.whiteColor
+    self.title = "Keep it up"
+    self.view.backgroundColor = UIColor.whiteColor # UIColor.colorWithPatternImage UIImage.imageNamed 'fabric_1'
     
-    @button = UIButton.buttonWithType UIButtonTypeRoundedRect
+    @scroller = UIScrollView.alloc.initWithFrame [[0,88], [320,320]]
+    self.view.addSubview @scroller
     
-    @button.frame =  [[20,20],[100,30]]
+    @this_month = MonthGridViewController.alloc.init
+    @scroller.addSubview @this_month.view
+    self.view.addSubview UIImageView.alloc.initWithImage( UIImage.imageNamed 'calendar_top')
+
+    @label = HeaderLabel.alloc.initWithFrame [[0,16],[320,14]]
+    self.view.addSubview @label
+
+    @label.text = "JANUARY 2012"
     
-    self.view.addSubview @button
-    @button.setTitle "HELLO", forState: UIControlStateNormal
+    @prev_button = NavButton.alloc.initWithFrame [[0,0], [44,44]]
+    self.view.addSubview @prev_button
     
-    @button.when UIControlEventTouchUpInside do
-      @next = UIViewController.alloc.init
-      @next.title = "I am the next title"
-      self.navigationController.pushViewController @next, animated: true
-    end    
+    @next_button = NavButton.alloc.initWithFrame [[320-44,0],[44,44]]
+    @next_button.point :right
+    self.view.addSubview @next_button
+    
   end
 end
