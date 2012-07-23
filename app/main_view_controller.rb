@@ -5,6 +5,7 @@ class MainViewController < UIViewController
    
   def init
     if super
+      createSummaryViews
       build
       listen
     end
@@ -15,6 +16,7 @@ class MainViewController < UIViewController
     self.view.autoresizesSubviews = false
     @calendar = CalendarViewController.alloc.init
     @calendar.view.frame = [[0,0], [320,276]]
+    @calendar.dataSource = self
     view.addSubview @calendar.view
     
     @selector = SwipeSelectionViewController.alloc.init
@@ -52,6 +54,9 @@ class MainViewController < UIViewController
       # view.frame = [[0,20],[320,460]]
       view.setContentOffset [0,0], animated: true
     end
+    App.notification_center.observe :deleted_habit do |notification|
+      @selector.reloadData
+    end
   end
   
   #swiper delegate
@@ -60,17 +65,34 @@ class MainViewController < UIViewController
   end
   #swiper datasource
   def swipeSelector selector, viewForIndex: index
-    NSLog "in main view ocntroller"
     habit = Habit.all[index]
-    result = HabitSummaryView.alloc.init
-    result.habit = habit
-    NSLog "made selector view #{result}"
+    result = @summaries[index]
+    result.alpha = 1
+    result.habit = habit 
     result
   end
   def swipeSelectorItemCount selector
     Habit.all.count
   end
   
+  def swipeSelector selector, addItemAtIndex: index
+    Habit.all.unshift Habit.new 
+    new_view = HabitSummaryView.alloc.init
+    new_view.alpha = 0
+    @summaries.unshift new_view
+    selector.reloadData
+    UIView.animateWithDuration 0.4, animations: -> do
+      new_view.alpha = 1
+    end
+  end
+  
+  
+  def createSummaryViews
+    @summaries = []
+    for habit in Habit.all
+      @summaries << HabitSummaryView.alloc.init
+    end
+  end
   
   # calendar delegate
   def calendar calendar, configureView: view, forDay: day

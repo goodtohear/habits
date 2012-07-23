@@ -1,4 +1,5 @@
 class CalendarTopView < UIView
+  attr_reader :label, :prev_button, :next_button
   def initWithFrame frame
     if super
       build
@@ -7,8 +8,7 @@ class CalendarTopView < UIView
   end
   def build
     self.backgroundColor = '#8A95A1'.to_color
-    NSLog "background: #{backgroundColor}"
-    @label = HeaderLabel.alloc.initWithFrame [[0,14],[320,18]]
+    @label = HeaderLabel.alloc.initWithFrame [[0,14],[320,24]]
     @label.font = UIFont.fontWithName "Helvetica-Bold", size: 20
     addSubview @label
 
@@ -27,7 +27,6 @@ class CalendarTopView < UIView
     
     
     %w[Sun Mon Tue Wed Thu Fri Sat].each_with_index do |dayName, index|
-      NSLog "Day: #{dayName}, index: #{index}"
       label = UILabel.alloc.initWithFrame [[15 + index * 45,40],[18,11]]
       label.text = dayName
       label.backgroundColor = UIColor.clearColor
