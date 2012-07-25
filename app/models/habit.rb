@@ -1,14 +1,18 @@
 class Habit < NSObject
+  # :first_in_chain, :last_in_chain, :mid_chain, :missed, :future, :before_start
   attr_accessor :title
   def initialize(options={title: "New Habit", days_checked: []})
     @title = options[:title]
     @days_checked = options[:days_checked]
+    @created_at = options[:created_at] or Time.now
   end
   
   def self.all
     @all ||= (0..2).map do |item|
       Habit.new :title => "New Habit",
-                :days_checked => days_ago(0..8) + days_ago(10..14)
+                :days_checked => days_ago(0..7) + days_ago(12..14),
+                :created_at => Time.now - 14.days
+      
     end
   end
   
@@ -18,7 +22,7 @@ class Habit < NSObject
   end
   
   def self.days_ago(days)
-    days.map{ |days_ago| Time.now - days_ago  }
+    days.map{ |days_ago| Time.now - days_ago.days  }
   end
   
   def currentChainLength
@@ -39,5 +43,16 @@ class Habit < NSObject
   end
   def blank?
     @days_checked.count == 0
+  end
+  def cellStateForDate date
+    return :future if date > Time.now
+    return :before_start if date <= @created_at
+    # return :first_in_chain 
+    # return :last_in_chain
+    day = Time.local(date.year,date.month,date.day)
+    for checked_day in @days_checked
+      return :mid_chain if checked_day >= day and (day + 1.day) > checked_day
+    end
+    return :missed
   end
 end

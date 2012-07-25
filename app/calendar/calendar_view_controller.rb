@@ -15,14 +15,13 @@ class CalendarViewController < UIViewController
       showMonthIncludingTime @dayInNextMonth if @dayInNextMonth
     end
     
-    @scroller = UIScrollView.alloc.initWithFrame [[0,54], [320,220]]
+    @scroller = UIScrollView.alloc.initWithFrame [[0,56], [320,220]]
     self.view.addSubview @scroller
     showMonthIncludingTime Time.now
     
   end
   
   def showMonthIncludingTime time
-    NSLog "Calling showMonthIncludingTime(#{time})"
     return if @grid and @grid.month == time.month
     @grid.view.removeFromSuperview if @grid and @grid.view.superview
     
@@ -42,9 +41,13 @@ class CalendarViewController < UIViewController
     @grid.firstDay = firstDay
     @grid.month = time.month
     @scroller.addSubview @grid.view
-    
-    
+    @grid.showChainsForHabit(@habit) if @habit
   
+  end
+  
+  def showChainsForHabit habit
+    @habit = habit
+    @grid.showChainsForHabit habit
   end
   
 end

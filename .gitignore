@@ -5,3 +5,4 @@ resources/*.momd
 resources/*.storyboardc
 .DS_Store
 .dat*
+vendor/Pods

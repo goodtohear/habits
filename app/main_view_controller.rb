@@ -61,7 +61,9 @@ class MainViewController < UIViewController
   
   #swiper delegate
   def swipeSelector selector, viewWasFocusedAtIndex: index
-    NSLog "updated calendar to show #{Habit.all[index]} (habit #{index})"
+    habit = Habit.all[index]
+    @calendar.showChainsForHabit habit
+    
   end
   #swiper datasource
   def swipeSelector selector, viewForIndex: index

@@ -81,7 +81,7 @@ class HabitSummaryView < UIView
       @deleteButton.enabled = true
       @bigNumberLabel.alpha = 0
       @deleteButton.alpha = 1
-      @titleTextField.frame = [[44,19],[320 - 44 * 2,30]]
+      @titleTextField.frame = [[0,19],@titleTextField.frame.size]
     end
     
   end
@@ -96,7 +96,7 @@ class HabitSummaryView < UIView
       @deleteButton.alpha = 0
       @deleteButton.enabled = false
       @bigNumberLabel.alpha = 1
-      @titleTextField.frame = [[0,8], [320,30]]
+      @titleTextField.frame = [[0,8],@titleTextField.frame.size ]
     end
     App.notification_center.post :ended_editing_habit
     true
