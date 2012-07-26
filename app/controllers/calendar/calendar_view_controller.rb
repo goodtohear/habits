@@ -4,6 +4,11 @@ class CalendarViewController < UIViewController
   
   def viewDidLoad
     view.autoresizesSubviews = false
+    view.backgroundColor = UIColor.whiteColor
+    view.layer.shadowColor = UIColor.blackColor.CGColor
+    view.layer.shadowOpacity = 0.3
+    view.layer.shadowRadius = 4
+    view.layer.shadowOffset = [0,2]
     
     @top = CalendarTopView.alloc.initWithFrame [[0,0],[320,54]]
     view.addSubview @top
@@ -25,7 +30,7 @@ class CalendarViewController < UIViewController
     return if @grid and @grid.month == time.month
     @grid.view.removeFromSuperview if @grid and @grid.view.superview
     
-    @top.label.text = time.strftime '%B'
+    @top.label.text = time.strftime '%B %Y'
     
     firstDay = time
     firstDay = Time.local time.year, time.month

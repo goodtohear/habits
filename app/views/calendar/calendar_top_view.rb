@@ -7,13 +7,13 @@ class CalendarTopView < UIView
     self
   end
   def build
-    self.backgroundColor = '#8A95A1'.to_color
     @label = HeaderLabel.alloc.initWithFrame [[0,14],[320,24]]
     @label.font = UIFont.fontWithName "Helvetica-Bold", size: 20
+    
     addSubview @label
 
     @label.text = "JANUARY 2012"
-    
+    @label.textColor = '#8A95A1'.to_color
     
     @prev_button =  UIButton.buttonWithType UIButtonTypeCustom
     @prev_button.frame = [[0,0], [44,45]]
@@ -31,7 +31,7 @@ class CalendarTopView < UIView
       label.text = dayName
       label.backgroundColor = UIColor.clearColor
       label.font = UIFont.fontWithName "Helvetica-Bold", size: 8
-      label.textColor = UIColor.whiteColor
+      label.textColor = '#8A95A1'.to_color
       addSubview label
     end
     

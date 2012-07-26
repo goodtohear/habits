@@ -14,35 +14,24 @@ class MainViewController < UIViewController
   
   def build
     self.view.autoresizesSubviews = false
-    @calendar = CalendarViewController.alloc.init
-    @calendar.view.frame = [[0,0], [320,276]]
-    @calendar.dataSource = self
-    view.addSubview @calendar.view
+    
+    @header = HeaderView.alloc.initWithFrame [[0,0],[320,44]]
+    view.addSubview @header
     
     @selector = SwipeSelectionViewController.alloc.init
-    @selector.view.frame = [[0,276], [320, 460-276]]
+    @selector.view.frame = [[0,320], [320, 460-320]]
     @selector.dataSource = self
     @selector.delegate = self
     view.addSubview @selector.view
     
+    
+    @calendar = CalendarViewController.alloc.init
+    @calendar.view.frame = [[0,44], [320,276]]
+    @calendar.dataSource = self
+    view.addSubview @calendar.view
+
+    
     @selector.reloadData
-    
-    @divider = UIView.alloc.initWithFrame [[0,275], [320,1]]
-    @divider.backgroundColor = '#8A95A1'.to_color
-    view.addSubview @divider
-    
-    @info = UIButton.buttonWithType UIButtonTypeCustom
-    @info.frame = [[4,412], [44,45]]
-    @info.setImage UIImage.imageNamed("info_off"), forState: UIControlStateNormal
-    @info.setImage UIImage.imageNamed("info_on"), forState: UIControlStateHighlighted
-    view.addSubview @info
-    
-    @settings = UIButton.buttonWithType UIButtonTypeCustom
-    @settings.frame = [[270,412], [44,45]]
-    @settings.setImage UIImage.imageNamed("settings_off"), forState: UIControlStateNormal
-    @settings.setImage UIImage.imageNamed("settings_on"), forState: UIControlStateHighlighted
-    view.addSubview @settings
-    
   end
 
   def listen
