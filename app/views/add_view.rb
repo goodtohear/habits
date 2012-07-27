@@ -13,7 +13,6 @@ class AddView < UIView
     
     @instruction = UILabel.alloc.initWithFrame [[10,4], [200,30]]
     @instruction.font = UIFont.fontWithName "Helvetica-Bold", size: 20
-    @instruction.text = "Release to add"
     @instruction.textColor = '#8A95A1'.to_color
     addSubview @instruction
     
@@ -28,7 +27,7 @@ class AddView < UIView
     @cocked = value
     UIView.animateWithDuration 0.2, animations: -> do
       @plus_sign.transform = @cocked ? CGAffineTransformIdentity : CGAffineTransformMakeRotation(-Math::PI / 4)
-      @instruction.alpha = @cocked ? 1.0 : 0.0
+      @instruction.text = @cocked ? "Release to add" : "Pull to add new"
     end
   end
   
