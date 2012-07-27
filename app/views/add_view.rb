@@ -16,7 +16,7 @@ class AddView < UIView
     @instruction.textColor = '#8A95A1'.to_color
     addSubview @instruction
     
-    cocked = false
+    self.cocked = false
     @plus_sign.transform = CGAffineTransformMakeRotation(-Math::PI / 4)
   end
   
@@ -25,9 +25,10 @@ class AddView < UIView
   end
   def cocked= value
     @cocked = value
+    @instruction.text = @cocked ? "Release to add" : "Pull to add new"
     UIView.animateWithDuration 0.2, animations: -> do
       @plus_sign.transform = @cocked ? CGAffineTransformIdentity : CGAffineTransformMakeRotation(-Math::PI / 4)
-      @instruction.text = @cocked ? "Release to add" : "Pull to add new"
+      @instruction.alpha = @plus_sign.alpha = @cocked ? 1.0 : 0.5
     end
   end
   
