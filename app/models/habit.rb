@@ -21,7 +21,7 @@ class Habit < NSObject
   def initialize(options={title: "New Habit", days_checked: []})
     @title = options[:title]
     @color_index =  options[:color_index] || Habit.next_unused_color_index
-    @days_checked = options[:days_checked] || []
+    @days_checked = Array.new(options[:days_checked] || [])
     @created_at = options[:created_at] || Time.now
   end
   
@@ -79,6 +79,7 @@ class Habit < NSObject
       day = Time.local day.year, day.month, day.day
       @days_checked << day unless @days_checked.include? day
     end
+    @days_checked.sort!
   end
   
   def uncheck_days days
@@ -86,9 +87,10 @@ class Habit < NSObject
       found = @days_checked.find{|d| d == Time.local(day.year, day.month, day.day) }
       @days_checked.delete found
     end
+    @days_checked.sort!
   end
   def earliest_date
-    @days_checked.sort.first
+    @days_checked.first
   end
   
   def totalDays

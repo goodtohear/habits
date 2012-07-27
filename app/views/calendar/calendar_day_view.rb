@@ -27,11 +27,12 @@ class CalendarDayView < UIView
   
   # :first_in_chain, :last_in_chain, :mid_chain, :missed, :future, :before_start
   def setSelectionState state, color: color
-    if [:first_in_chain,:last_in_chain,:mid_chain].include? state
+    if [:first_in_chain,:last_in_chain,:mid_chain,:alone].include? state
       @label.textColor = ON_COLOR
       self.backgroundColor = color
     end
     @block.hidden = true
+    @block.backgroundColor = color
     layer.cornerRadius = state == :mid_chain ? 0 : 22
     
     @block.hidden = !([:last_in_chain, :first_in_chain].include? state)

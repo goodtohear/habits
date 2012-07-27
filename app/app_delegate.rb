@@ -1,5 +1,6 @@
 class AppDelegate
   def application(application, didFinishLaunchingWithOptions:launchOptions)
+    NSLog "#{Array.methods}"
     @window = UIWindow.alloc.initWithFrame UIScreen.mainScreen.bounds
     @main = MainViewController.alloc.init
     @window.rootViewController =  @main

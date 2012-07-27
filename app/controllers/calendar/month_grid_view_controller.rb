@@ -40,11 +40,20 @@ class MonthGridViewController < UIViewController
   def cellStateForHabit habit, date: date
     return :before_start unless date
     return :future if (Time.now < date) 
-    # return :first_in_chain 
-    # return :last_in_chain
     day = Time.local(date.year,date.month,date.day)
-    return :mid_chain if habit habit, includesDate: day
-    return :before_start if date <= habit.earliest_date
+    if habit habit, includesDate: day
+      if habit.days_checked.methods.include? :'item_before:' # class extensions don't seem to be applied immediately.
+        item_before =  habit.days_checked.item_before(day)
+        item_after = habit.days_checked.item_after(day)
+        first_in_chain = !item_before || item_before && item_before < day - 1.day
+        last_in_chain = !item_after || item_after && item_after > day + 1.day
+        return :alone if first_in_chain && last_in_chain
+        return :first_in_chain if first_in_chain
+        return :last_in_chain if last_in_chain
+      end
+      return :mid_chain 
+    end
+    return :before_start if habit.earliest_date && date <= habit.earliest_date
     return :missed
   end
   def habit habit, includesDate: day
