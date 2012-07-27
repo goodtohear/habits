@@ -42,6 +42,7 @@ class MainViewController < UIViewController
     App.notification_center.observe :ended_editing_habit do |notification|
       view.setContentOffset [0,0], animated: true
       @selector.frame = LIST_FRAME_FULL
+      Habit.save!
     end
     App.notification_center.observe :deleted_habit do |notification|
       @selector.reloadData

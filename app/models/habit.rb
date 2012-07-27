@@ -10,11 +10,18 @@ class Habit < NSObject
     ]
   # :first_in_chain, :last_in_chain, :mid_chain, :missed, :future, :before_start
   attr_accessor :title, :color_index, :created_at, :days_checked
-  
+  def serialize
+    {
+      title: @title,
+      color_index: @color_index,
+      created_at: @created_at,
+      days_checked: @days_checked.map(&:to_s)
+    }
+  end  
   def initialize(options={title: "New Habit", days_checked: []})
     @title = options[:title]
     @color_index =  options[:color_index] || Habit.next_unused_color_index
-    @days_checked = options[:days_checked]
+    @days_checked = options[:days_checked] || []
     @created_at = options[:created_at] || Time.now
   end
   
@@ -22,15 +29,23 @@ class Habit < NSObject
     COLORS[@color_index].to_color
   end
   
-  def self.all
-    color_index = -1
-    @all ||= (0..2).map do |item, index|
-      color_index += 1
-      Habit.new :title => "New Habit",
-                :days_checked => days_ago(0..7) + days_ago(12..14),
-                :created_at => Time.now - 14.days,
-                :color_index => color_index
+  def self.save!
+    App::Persistence['habits'] = all.map(&:serialize)
+  end
+  
+  def self.load
+    data = App::Persistence['habits']
+    NSLog "data from persistence #{data}"
+    return nil unless data
+    data.map do |item|
+      item[:days_checked] = item[:days_checked].map{|d| Time.local d}
+      NSLog "item after modifying #{item}"
+      Habit.new item
     end
+  end
+  
+  def self.all
+    @all ||= load || [Habit.new(title: "Double-tap here...")]
   end
   
   def self.next_unused_color_index
