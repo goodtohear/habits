@@ -8,6 +8,9 @@ class HabitCell < UITableViewCell
   end
   
   def build
+    @backgroundColorView = UIView.alloc.init
+    setSelectedBackgroundView @backgroundColorView
+    
     @input = UITextField.alloc.initWithFrame [[10,8],[250,30]]
     @input.font = UIFont.fontWithName 'HelveticaNeue-Bold', size: 20
     @input.textColor = '#8A95A1'.to_color
@@ -29,6 +32,7 @@ class HabitCell < UITableViewCell
   def habit= value
     @habit = value
     @input.text = @habit.title
+    @backgroundColorView.backgroundColor = @habit.color
   end
   # textField delegate
   def textFieldDidBeginEditing textField
