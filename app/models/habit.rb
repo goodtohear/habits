@@ -9,13 +9,13 @@ class Habit < NSObject
       '#7A5D35' #BROWN
     ]
   # :first_in_chain, :last_in_chain, :mid_chain, :missed, :future, :before_start
-  attr_accessor :title, :color_index
+  attr_accessor :title, :color_index, :created_at, :days_checked
   
   def initialize(options={title: "New Habit", days_checked: []})
     @title = options[:title]
     @color_index =  options[:color_index] || Habit.next_unused_color_index
     @days_checked = options[:days_checked]
-    @created_at = options[:created_at] or Time.now
+    @created_at = options[:created_at] || Time.now
   end
   
   def color
@@ -68,16 +68,5 @@ class Habit < NSObject
   def blank?
     @days_checked.count == 0
   end
-  def cellStateForDate date
-   return :before_start unless date
-    return :future if (date > Time.now) 
-    return :before_start if date <= @created_at
-    # return :first_in_chain 
-    # return :last_in_chain
-    day = Time.local(date.year,date.month,date.day)
-    for checked_day in @days_checked
-      return :mid_chain if checked_day >= day and (day + 1.day) > checked_day
-    end
-    return :missed
-  end
+
 end

@@ -31,10 +31,23 @@ class MonthGridViewController < UIViewController
   def showChainsForHabit habit
     for grid_index in CELL_INDICES
       cell = @cells[grid_index]
-      cell.setSelectionState habit.cellStateForDate(cell.day), color: habit.color
+      comparison = Time.now > cell.day
+      state = cellStateForHabit habit, date: cell.day
+      cell.setSelectionState state, color: habit.color
     end
   end
-  
+  def cellStateForHabit habit, date: date
+    return :before_start unless date
+    return :future if (Time.now < date) 
+    return :before_start if date <= habit.created_at
+    # return :first_in_chain 
+    # return :last_in_chain
+    day = Time.local(date.year,date.month,date.day)
+    for checked_day in habit.days_checked
+      return :mid_chain if checked_day >= day and (day + 1.day) > checked_day
+    end
+    return :missed
+  end
   # selection
   def touchesBegan touches, withEvent: event
     touch = touches.anyObject
