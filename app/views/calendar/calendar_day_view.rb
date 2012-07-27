@@ -20,16 +20,16 @@ class CalendarDayView < UIView
       @label.textAlignment = UITextAlignmentCenter
       @label.text = "11"
       self.addSubview @label
-      setSelectionState :future
+      setSelectionState :future, color: nil
     end
     self
   end
   
   # :first_in_chain, :last_in_chain, :mid_chain, :missed, :future, :before_start
-  def setSelectionState state
+  def setSelectionState state, color: color
     if [:first_in_chain,:last_in_chain,:mid_chain].include? state
       @label.textColor = ON_COLOR
-      self.backgroundColor = ON_BACKGROUND_COLOR
+      self.backgroundColor = color
     end
     @block.hidden = true
     layer.cornerRadius = state == :mid_chain ? 0 : 22
