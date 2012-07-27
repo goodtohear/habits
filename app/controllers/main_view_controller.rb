@@ -66,14 +66,25 @@ class MainViewController < UIViewController
     cell
   end
   
-  
+  def tableView tableView, canEditRowAtIndexPath:indexPath 
+    true
+  end
+  def tableView tableView, commitEditingStyle: edit, forRowAtIndexPath: indexPath
+    if edit == UITableViewCellEditingStyleDelete
+      tableView.beginUpdates
+      Habit.delete Habit.all[indexPath.row]
+      tableView.deleteRowsAtIndexPaths [indexPath], withRowAnimation: UITableViewRowAnimationAutomatic
+      tableView.endUpdates
+    end
+  end
+    
   # swiper table delgate
   def tableView tableView, didSelectRowAtIndexPath:indexPath
     habit = Habit.all[indexPath.row]
     @calendar.showChainsForHabit habit
     
   end
-  
+
   def tableViewInsertNewRow tableView
     tableView.beginUpdates
     Habit.all.unshift Habit.new

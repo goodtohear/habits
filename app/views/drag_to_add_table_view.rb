@@ -34,7 +34,7 @@ class DragToAddTableView < UITableView
     end
     
   end
-  
+
   def tableView tableView, didSelectRowAtIndexPath:indexPath
     tableViewDelegate.tableView tableView, didSelectRowAtIndexPath: indexPath
   end
