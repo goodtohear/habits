@@ -58,6 +58,7 @@ class Habit < NSObject
     @days_checked.count == 0
   end
   def cellStateForDate date
+    NSLog "cell state for date #{date}, habit: #{self}"
     return :before_start unless date
     return :future if date > Time.now
     return :before_start if date <= @created_at
