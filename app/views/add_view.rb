@@ -8,13 +8,13 @@ class AddView < UIView
   
   def build
     @plus_sign = UIImageView.alloc.initWithImage UIImage.imageNamed "add"
-    @plus_sign.frame = [[260,64-20],@plus_sign.frame.size]
+    @plus_sign.frame = [[280,8],@plus_sign.frame.size]
     addSubview @plus_sign
-    @instruction = UILabel.alloc.initWithFrame [[260,104-20], [35,40]]
-    @instruction.font = UIFont.fontWithName "Helvetica-Bold", size: 10
-    @instruction.numberOfLines = 2
-    @instruction.textAlignment = UITextAlignmentCenter
-    @instruction.text = "release to add"
+    
+    @instruction = UILabel.alloc.initWithFrame [[10,4], [200,30]]
+    @instruction.font = UIFont.fontWithName "Helvetica-Bold", size: 20
+    @instruction.text = "Release to add"
+    @instruction.textColor = '#8A95A1'.to_color
     addSubview @instruction
     
     cocked = false
