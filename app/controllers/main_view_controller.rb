@@ -71,6 +71,7 @@ class MainViewController < UIViewController
   def tableView tableView, didSelectRowAtIndexPath:indexPath
     habit = Habit.all[indexPath.row]
     @calendar.showChainsForHabit habit
+    
   end
   
   def tableViewInsertNewRow tableView

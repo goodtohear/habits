@@ -1,12 +1,4 @@
 class Habit < NSObject
-  # :first_in_chain, :last_in_chain, :mid_chain, :missed, :future, :before_start
-  attr_accessor :title
-  def initialize(options={title: "New Habit", days_checked: []})
-    @title = options[:title]
-    @days_checked = options[:days_checked]
-    @created_at = options[:created_at] or Time.now
-  end
-  
   COLORS = [
       '#77A247', #GREEN
       '#488FB4', #BLUE
@@ -16,13 +8,24 @@ class Habit < NSObject
       '#875495', #PURPLE
       '#7A5D35' #BROWN
     ]
+  # :first_in_chain, :last_in_chain, :mid_chain, :missed, :future, :before_start
+  attr_accessor :title, :color
+  
+  def initialize(options={title: "New Habit", days_checked: []})
+    @title = options[:title]
+    @color = COLORS[0].to_color
+    @days_checked = options[:days_checked]
+    @created_at = options[:created_at] or Time.now
+  end
+  
   
   def self.all
     @all ||= (0..2).map do |item, index|
       Habit.new :title => "New Habit",
                 :days_checked => days_ago(0..7) + days_ago(12..14),
-                :created_at => Time.now - 14.days,
-                :color => COLORS[index].to_color
+                :created_at => Time.now - 14.days 
+                # ,
+                #                 :color => COLORS[index].to_color
     end
   end
   

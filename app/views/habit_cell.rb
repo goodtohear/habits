@@ -13,7 +13,6 @@ class HabitCell < UITableViewCell
     
     @input = UITextField.alloc.initWithFrame [[10,8],[250,30]]
     @input.font = UIFont.fontWithName 'HelveticaNeue-Bold', size: 20
-    @input.textColor = '#8A95A1'.to_color
     @input.userInteractionEnabled = false
     @input.delegate = self
     addSubview @input
@@ -27,6 +26,11 @@ class HabitCell < UITableViewCell
   def doubleTapped
     @input.userInteractionEnabled = true
     @input.becomeFirstResponder
+  end
+
+  def setSelected selected, animated: animated
+    super
+    @input.textColor = selected ? UIColor.whiteColor : '#8A95A1'.to_color 
   end
 
   def habit= value
