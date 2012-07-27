@@ -8,5 +8,7 @@ class AppDelegate
     @window.makeKeyAndVisible
     true
   end
+  
+  
 
 end

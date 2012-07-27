@@ -44,7 +44,7 @@ class MonthGridViewController < UIViewController
     # return :last_in_chain
     day = Time.local(date.year,date.month,date.day)
     return :mid_chain if habit habit, includesDate: day
-    return :before_start if date <= habit.created_at
+    return :before_start if date <= habit.earliest_date
     return :missed
   end
   def habit habit, includesDate: day

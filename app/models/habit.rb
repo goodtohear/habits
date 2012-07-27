@@ -87,6 +87,9 @@ class Habit < NSObject
       @days_checked.delete found
     end
   end
+  def earliest_date
+    @days_checked.sort.first
+  end
   
   def totalDays
     @days_checked.count
