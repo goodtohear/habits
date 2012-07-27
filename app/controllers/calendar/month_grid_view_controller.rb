@@ -29,6 +29,7 @@ class MonthGridViewController < UIViewController
   end
   #
   def showChainsForHabit habit
+    @habit = habit
     for grid_index in CELL_INDICES
       cell = @cells[grid_index]
       comparison = Time.now > cell.day
@@ -39,28 +40,47 @@ class MonthGridViewController < UIViewController
   def cellStateForHabit habit, date: date
     return :before_start unless date
     return :future if (Time.now < date) 
-    return :before_start if date <= habit.created_at
     # return :first_in_chain 
     # return :last_in_chain
     day = Time.local(date.year,date.month,date.day)
-    for checked_day in habit.days_checked
-      return :mid_chain if checked_day >= day and (day + 1.day) > checked_day
-    end
+    return :mid_chain if habit habit, includesDate: day
+    return :before_start if date <= habit.created_at
     return :missed
   end
+  def habit habit, includesDate: day
+    for checked_day in habit.days_checked
+      return true if checked_day >= day and (day + 1.day) > checked_day
+    end
+    false
+  end
+  
   # selection
   def touchesBegan touches, withEvent: event
+    return unless @habit
     touch = touches.anyObject
+    return unless touch.view.class == CalendarDayView
+    @togglingOn = !habit( @habit, includesDate: touch.view.day)
     @daysTouched = [touch.view.day]
   end
   def touchesMoved touches, withEvent: event
+    return unless @habit
     touch = touches.anyObject
-    NSLog "Touches moved #{touch.view.day}"
-    @daysTouched << touch.view.day unless @daysTouched.include? touch.view.day
+    subview = view.hitTest touch.locationInView(view), withEvent: nil
+    return unless subview.class == CalendarDayView
+    day = subview.day
+    subview.setSelectionState @togglingOn ? :mid_chain : :before_start, color: @habit.color
+    @daysTouched << day unless @daysTouched.include? day
   end
   def touchesEnded touches, withEvent: event
+    return unless @habit
     touch = touches.anyObject
-    NSLog "days: #{@daysTouched}"
+    if @togglingOn
+      @habit.check_days @daysTouched
+    else
+      @habit.uncheck_days @daysTouched
+    end
+    Habit.save!
+    showChainsForHabit @habit
   end
 
 end

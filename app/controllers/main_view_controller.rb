@@ -31,6 +31,11 @@ class MainViewController < UIViewController
     view.addSubview @calendar.view
     
     @selector.reloadData
+    if tableView( @selector, numberOfRowsInSection: 0) > 0
+      first = (NSIndexPath.indexPathForRow 0, inSection: 0)
+      @selector.selectRowAtIndexPath(first, animated: false, scrollPosition: UITableViewScrollPositionNone) 
+      tableView @selector, didSelectRowAtIndexPath: first
+    end
   end
 
   def listen

@@ -15,7 +15,7 @@ class Habit < NSObject
       title: @title,
       color_index: @color_index,
       created_at: @created_at,
-      days_checked: @days_checked.map(&:to_s)
+      days_checked: @days_checked
     }
   end  
   def initialize(options={title: "New Habit", days_checked: []})
@@ -30,16 +30,15 @@ class Habit < NSObject
   end
   
   def self.save!
-    App::Persistence['habits'] = all.map(&:serialize)
+    data = all.map(&:serialize)
+    NSLog "saving data #{data}"
+    App::Persistence['habits'] = data
   end
   
   def self.load
     data = App::Persistence['habits']
-    NSLog "data from persistence #{data}"
     return nil unless data
-    data.map do |item|
-      item[:days_checked] = item[:days_checked].map{|d| Time.local d}
-      NSLog "item after modifying #{item}"
+    result = data.map do |item|
       Habit.new item
     end
   end
@@ -57,6 +56,7 @@ class Habit < NSObject
   
   def self.delete habit
     all.delete habit
+    save!
     App.notification_center.post :deleted_habit
   end
   
@@ -72,6 +72,20 @@ class Habit < NSObject
       count += 1
     end
     0
+  end
+  
+  def check_days days
+    for day in days
+      day = Time.local day.year, day.month, day.day
+      @days_checked << day unless @days_checked.include? day
+    end
+  end
+  
+  def uncheck_days days
+    for day in days
+      found = @days_checked.find{|d| d == Time.local(day.year, day.month, day.day) }
+      @days_checked.delete found
+    end
   end
   
   def totalDays

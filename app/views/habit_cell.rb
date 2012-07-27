@@ -43,6 +43,7 @@ class HabitCell < UITableViewCell
   end
   # textField delegate
   def textFieldDidBeginEditing textField
+    textField.selectAll self
     App.notification_center.post :began_editing_habit, self
   end
   def textFieldShouldReturn textField

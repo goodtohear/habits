@@ -3,14 +3,14 @@ class CalendarDayView < UIView
   FUTURE_COLOR = '#8A95A1'.to_color
   MISSED_COLOR = '#C1272D'.to_color
   ON_COLOR = UIColor.whiteColor
-  ON_BACKGROUND_COLOR = '#3A4450'.to_color
+  BEFORE_START_COLOR = '#3A4450'.to_color
+  
   
   attr_reader :label
   attr_accessor :day
   def initWithFrame(rect)
     if super
       @block = UIView.alloc.initWithFrame [[0,0], frame.size]
-      @block.backgroundColor = ON_BACKGROUND_COLOR
       addSubview @block
       @block.userInteractionEnabled = false
       
@@ -41,6 +41,9 @@ class CalendarDayView < UIView
     if [:missed, :future, :before_start].include? state
       self.backgroundColor = UIColor.whiteColor
       @label.textColor = FUTURE_COLOR
+    end
+    if state == :before_start
+      @label.textColor = BEFORE_START_COLOR
     end
     if state == :missed
       @label.textColor = MISSED_COLOR
