@@ -88,8 +88,11 @@ class MainViewController < UIViewController
   def tableViewInsertNewRow tableView
     tableView.beginUpdates
     Habit.all.unshift Habit.new
-    tableView.insertRowsAtIndexPaths [NSIndexPath.indexPathForRow(0, inSection: 0)], withRowAnimation: UITableViewRowAnimationAutomatic
+    indexPath = NSIndexPath.indexPathForRow(0, inSection: 0)
+    tableView.insertRowsAtIndexPaths [indexPath], withRowAnimation: UITableViewRowAnimationAutomatic
     tableView.endUpdates
+    tableView.selectRowAtIndexPath indexPath, animated: false, scrollPosition: UITableViewScrollPositionNone
+    (tableView.cellForRowAtIndexPath indexPath).edit
   end
   
   

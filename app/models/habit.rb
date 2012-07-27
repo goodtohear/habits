@@ -9,24 +9,35 @@ class Habit < NSObject
       '#7A5D35' #BROWN
     ]
   # :first_in_chain, :last_in_chain, :mid_chain, :missed, :future, :before_start
-  attr_accessor :title, :color
+  attr_accessor :title, :color_index
   
   def initialize(options={title: "New Habit", days_checked: []})
     @title = options[:title]
-    @color = COLORS[0].to_color
+    @color_index =  options[:color_index] || Habit.next_unused_color_index
     @days_checked = options[:days_checked]
     @created_at = options[:created_at] or Time.now
   end
   
+  def color
+    COLORS[@color_index].to_color
+  end
   
   def self.all
+    color_index = -1
     @all ||= (0..2).map do |item, index|
+      color_index += 1
       Habit.new :title => "New Habit",
                 :days_checked => days_ago(0..7) + days_ago(12..14),
-                :created_at => Time.now - 14.days 
-                # ,
-                #                 :color => COLORS[index].to_color
+                :created_at => Time.now - 14.days,
+                :color_index => color_index
     end
+  end
+  
+  def self.next_unused_color_index
+    return 0 unless @all
+    result = @all.count + 1
+    result = 0 if result >= COLORS.count
+    result
   end
   
   def self.delete habit
@@ -58,9 +69,8 @@ class Habit < NSObject
     @days_checked.count == 0
   end
   def cellStateForDate date
-    NSLog "cell state for date #{date}, habit: #{self}"
-    return :before_start unless date
-    return :future if date > Time.now
+   return :before_start unless date
+    return :future if (date > Time.now) 
     return :before_start if date <= @created_at
     # return :first_in_chain 
     # return :last_in_chain

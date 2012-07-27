@@ -31,7 +31,7 @@ class MonthGridViewController < UIViewController
   def showChainsForHabit habit
     for grid_index in CELL_INDICES
       cell = @cells[grid_index]
-      cell.setSelectionState habit.cellStateForDate(cell.day), color: habit.color
+      # cell.setSelectionState habit.cellStateForDate(cell.day), color: habit.color
     end
   end
   

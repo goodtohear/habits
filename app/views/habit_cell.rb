@@ -24,6 +24,9 @@ class HabitCell < UITableViewCell
   end
   
   def doubleTapped
+    edit
+  end
+  def edit
     @input.userInteractionEnabled = true
     @input.becomeFirstResponder
   end
