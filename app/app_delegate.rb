@@ -1,6 +1,5 @@
 class AppDelegate
   def application(application, didFinishLaunchingWithOptions:launchOptions)
-    NSLog "#{Array.methods}"
     @window = UIWindow.alloc.initWithFrame UIScreen.mainScreen.bounds
     @main = MainViewController.alloc.init
     @window.rootViewController =  @main
@@ -10,6 +9,9 @@ class AppDelegate
     true
   end
   
-  
+  def applicationDidBecomeActive application
+
+    Habit.reschedule_all_notifications
+  end
 
 end

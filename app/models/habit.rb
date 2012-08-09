@@ -33,6 +33,7 @@ class Habit < NSObject
     data = all.map(&:serialize)
     NSLog "saving data #{data}"
     App::Persistence['habits'] = data
+    reschedule_all_notifications
   end
   
   def self.load
@@ -101,6 +102,26 @@ class Habit < NSObject
   end
   def blank?
     @days_checked.count == 0
+  end
+  
+  def self.reschedule_all_notifications
+    UIApplication.sharedApplication.cancelAllLocalNotifications
+    all.each(&:reschedule_notification)
+  end
+  
+  def reschedule_notification
+    notification = UILocalNotification.alloc.init
+    notification.alertBody = title
+    tomorrow = Time.now + 1.day
+    notification.fireDate = Time.local tomorrow.year, tomorrow.month, tomorrow.day, reminder_hour, reminder_minute
+    UIApplication.sharedApplication.scheduleLocalNotification notification
+  end
+  
+  def reminder_hour
+    19
+  end
+  def reminder_minute
+    00
   end
 
 end
