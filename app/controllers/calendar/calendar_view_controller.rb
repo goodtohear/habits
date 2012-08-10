@@ -5,10 +5,10 @@ class CalendarViewController < UIViewController
   def viewDidLoad
     view.autoresizesSubviews = false
     view.backgroundColor = UIColor.whiteColor
-    view.layer.shadowColor = UIColor.blackColor.CGColor
-    view.layer.shadowOpacity = 0.3
-    view.layer.shadowRadius = 4
-    view.layer.shadowOffset = [0,2]
+    # view.layer.shadowColor = UIColor.blackColor.CGColor
+    # view.layer.shadowOpacity = 0.3
+    # view.layer.shadowRadius = 4
+    # view.layer.shadowOffset = [0,2]
     
     @top = CalendarTopView.alloc.initWithFrame [[0,0],[320,54]]
     view.addSubview @top

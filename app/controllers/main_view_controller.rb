@@ -1,62 +1,76 @@
-class MainViewController < UIViewController
-  def loadView
-     self.view = UIScrollView.alloc.init
-   end
-   
+class MainViewController < UITableViewController 
   def init
     if super
       build
-      listen
     end
     self
   end
-  
-  LIST_FRAME_FULL = [[0,320], [320, 480-320]]
-  LIST_FRAME_EDITING = [[0,320], [320, 44]]
-  
+ 
   def build
-    self.view.autoresizesSubviews = false
+    @sections = [
+      { header: DayNavigationView.alloc.init, has_no_sections: true },
+      
+      { color: "C1272D", 
+        predicate: :overdue?, 
+        title: "TO DO, TODAY (OVERDUE)"  },
+        
+      { color: "F15A24", 
+        predicate: :to_do_later?, 
+        title: "TO DO"},
+        
+      { color: "77A247", 
+        predicate: :done?, 
+        title: "DONE" }
+    ]
     
-    @header = HeaderView.alloc.initWithFrame [[0,0],[320,44]]
-    view.addSubview @header
+    @now = Time.now
     
-    @selector = DragToAddTableView.alloc.initWithFrame LIST_FRAME_FULL
-    @selector.dataSource = self
-    @selector.tableViewDelegate = self
-    view.addSubview @selector
-
-    @calendar = CalendarViewController.alloc.init
-    @calendar.view.frame = [[0,44], [320,276]]
-    @calendar.dataSource = self
-    view.addSubview @calendar.view
+    self.view.dataSource = self
+    self.view.reloadData
+    self.navigationItem.title = "Good Habits"
     
-    @selector.reloadData
-    if tableView( @selector, numberOfRowsInSection: 0) > 0
-      first = (NSIndexPath.indexPathForRow 0, inSection: 0)
-      @selector.selectRowAtIndexPath(first, animated: false, scrollPosition: UITableViewScrollPositionNone) 
-      tableView @selector, didSelectRowAtIndexPath: first
-    end
+    @add_button = UIBarButtonItem.alloc.initWithTitle "+", style: UIBarButtonItemStyleDone,  target:self, action: 'addItem'
+    self.navigationItem.rightBarButtonItem = @add_button
+    
+    
   end
 
-  def listen
-    App.notification_center.observe :began_editing_habit do |notification|
-      view.setContentOffset [0,100], animated: true
-      @selector.frame = LIST_FRAME_EDITING
-      @selector.scrollToRowAtIndexPath @selector.indexPathForSelectedRow, atScrollPosition: UITableViewScrollPositionTop, animated: true
-    end
-    App.notification_center.observe :ended_editing_habit do |notification|
-      view.setContentOffset [0,0], animated: true
-      @selector.frame = LIST_FRAME_FULL
-      Habit.save!
-    end
-    App.notification_center.observe :deleted_habit do |notification|
-      @selector.reloadData
-    end
+  def addItem
+    view.beginUpdates
+    new_habit = Habit.new
+    Habit.all.push new_habit
+    indexPath = NSIndexPath.indexPathForRow(0, inSection: 2)
+    tableView.insertRowsAtIndexPaths [indexPath], withRowAnimation: UITableViewRowAnimationAutomatic
+    view.endUpdates
+  end
+
+  #swiper table dataSource
+  def tableView tableView, numberOfRowsInSection: section_index
+    section = @sections[section_index]
+    return 0 if section[:has_no_sections]
+    return habitsForSection(section_index).count
   end
   
-  #swiper table dataSource
-  def tableView tableView, numberOfRowsInSection: section
-    Habit.all.count
+  def numberOfSectionsInTableView tableView
+    @sections.count
+  end
+
+  def habitsForSection(section)
+    Habit.all.select{|habit| habit.send @sections[section][:predicate], Time.now  }
+  end
+  
+  def habitAtIndexPath(indexPath)
+    habitsForSection(indexPath.section)[indexPath.row]
+  end
+
+  def tableView tableView, viewForHeaderInSection: section_index
+    section = @sections[section_index]
+    return section[:header] unless section[:header].nil?
+    super
+  end
+  
+  def tableView tableView, titleForHeaderInSection: section
+    return @sections[section][:title]
   end
   
 
@@ -64,53 +78,24 @@ class MainViewController < UIViewController
   def tableView tableView, cellForRowAtIndexPath: indexPath
     cell = tableView.dequeueReusableCellWithIdentifier(CELLID) || begin
       cell = HabitCell.alloc.initWithStyle(UITableViewCellStyleDefault, reuseIdentifier:CELLID)
-      # cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton
+      cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator
       cell
     end
-    habit = Habit.all[indexPath.row]
+    cell.now = @now
+    habit = self.habitAtIndexPath(indexPath)
     cell.habit = habit
+    cell.set_color habit.color
     cell
   end
   
-  def tableView tableView, canEditRowAtIndexPath:indexPath 
-    true
-  end
-  def tableView tableView, commitEditingStyle: edit, forRowAtIndexPath: indexPath
-    if edit == UITableViewCellEditingStyleDelete
-      tableView.beginUpdates
-      Habit.delete Habit.all[indexPath.row]
-      tableView.deleteRowsAtIndexPaths [indexPath], withRowAnimation: UITableViewRowAnimationAutomatic
-      tableView.endUpdates
-    end
-  end
+
     
   # swiper table delgate
   def tableView tableView, didSelectRowAtIndexPath:indexPath
-    habit = Habit.all[indexPath.row]
-    @calendar.showChainsForHabit habit
-    
+    habit = self.habitAtIndexPath(indexPath)
+    detail = HabitDetailViewController.alloc.initWithHabit habit
+    self.navigationController.pushViewController detail, animated: true
   end
 
-  def tableViewInsertNewRow tableView
-    tableView.beginUpdates
-    new_habit = Habit.new
-    Habit.all.unshift new_habit
-    indexPath = NSIndexPath.indexPathForRow(0, inSection: 0)
-    tableView.insertRowsAtIndexPaths [indexPath], withRowAnimation: UITableViewRowAnimationAutomatic
-    tableView.endUpdates
-    tableView.selectRowAtIndexPath indexPath, animated: false, scrollPosition: UITableViewScrollPositionNone
-    (tableView.cellForRowAtIndexPath indexPath).edit
-    @calendar.showChainsForHabit new_habit
-  end
-  
-  
-  # calendar delegate
-  def calendar calendar, configureView: view, forDay: day
-    
-  end
-  def calendar calendar, didChangeSelectionRange: range
-    
-  end
-  
-  
+
 end

@@ -1,0 +1,3 @@
+class DayNavigationView < UIView
+  
+end

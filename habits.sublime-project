@@ -1,0 +1,10 @@
+{
+	"folders":
+	[
+		{
+			"path": "/Users/michaelforrest/workspaces/motion/habits",
+			"file_exclude_patterns": [".*","build"],
+			"folder_exclude_patterns": ["build","vendor","designs"]
+		}
+	]
+}

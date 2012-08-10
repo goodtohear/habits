@@ -9,7 +9,7 @@ class Habit < NSObject
       '#7A5D35' #BROWN
     ]
   # :first_in_chain, :last_in_chain, :mid_chain, :missed, :future, :before_start
-  attr_accessor :title, :color_index, :created_at, :days_checked
+  attr_accessor :title, :color_index, :created_at, :days_checked, :time_to_do, :deadline
   def serialize
     {
       title: @title,
@@ -122,6 +122,30 @@ class Habit < NSObject
   end
   def reminder_minute
     00
+  end
+
+  def toggle(time)
+    day = day(time)
+    if @days_checked.include?(day)
+      @days_checked.delete day
+    else
+      @days_checked << day
+    end
+  end
+
+  def day(time)
+     Time.local time.year, time.month, time.day
+  end
+
+  def done?(time)
+    @days_checked.include? day(time)
+  end
+  def to_do_later?(time)
+    !done?(time)
+    
+  end
+  def overdue?(time)
+    false
   end
 
 end
