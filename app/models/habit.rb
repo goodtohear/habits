@@ -112,24 +112,42 @@ class Habit < NSObject
   
   def self.reschedule_all_notifications
     UIApplication.sharedApplication.cancelAllLocalNotifications
-    all.each(&:reschedule_notification)
-  end
-  
-  def reschedule_notification
-    notification = UILocalNotification.alloc.init
-    notification.alertBody = title
-    tomorrow = Time.now + 1.day
-    notification.fireDate = Time.local tomorrow.year, tomorrow.month, tomorrow.day, reminder_hour, reminder_minute
-    UIApplication.sharedApplication.scheduleLocalNotification notification
-  end
-  
-  def reminder_hour
-    19
-  end
-  def reminder_minute
-    00
+    all.each(&:reschedule_notifications)
   end
 
+  def timeWithHour hour, daysTime: dayOffset
+    day = Time.now + dayOffset.days
+    Time.local day.year, day.month, day.day, hour
+  end
+
+  TOMORROW = 1
+  TODAY = 0
+
+  def alarm dayOffset, atHour: hour, text: text
+    notification = UILocalNotification.alloc.init
+    notification.alertBody = text
+    notification.fireDate = timeWithHour hour, daysTime: dayOffset
+    UIApplication.sharedApplication.scheduleLocalNotification notification
+  end
+
+  def reschedule_notifications
+    return if no_reminders?
+
+    dayOffset = 0
+    now = Time.now
+
+    # always schedule tomorrow's reminders
+    alarm TOMORROW, atHour: time_to_do, text: title
+    alarm TOMORROW, atHour: deadline, text: "Last chance: #{title}"
+    # if to_do_later then schedule both
+    # so schedule deadline:
+    alarm TODAY, atHour: deadline, text: "Last chance: #{title}"
+    # if overdue don't schedule first reminder - it's in the past
+    return if overdue? now
+    alarm TODAY, atHour: time_to_do, text: title
+
+  end
+ 
   def toggle(time)
     day = day(time)
     if @days_checked.include?(day)
