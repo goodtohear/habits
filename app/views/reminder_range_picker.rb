@@ -50,8 +50,10 @@ class ReminderRangePicker < UIView
   end
   def setHabit habit
   	@habit = habit
-  	@picker.selectRow rowIndexOfHour(@habit.time_to_do), inComponent:TIME_TO_DO_COMPONENT_INDEX, animated:false
-	@picker.selectRow rowIndexOfHour(@habit.deadline), inComponent:DEADLINE_COMPONENT_INDEX, animated:false
+  	unless @habit.no_reminders?
+	  	@picker.selectRow rowIndexOfHour(@habit.time_to_do), inComponent:TIME_TO_DO_COMPONENT_INDEX, animated:false
+		@picker.selectRow rowIndexOfHour(@habit.deadline), inComponent:DEADLINE_COMPONENT_INDEX, animated:false
+	end
   end
 
   def cancel

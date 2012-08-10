@@ -15,7 +15,9 @@ class Habit < NSObject
       title: @title,
       color_index: @color_index,
       created_at: @created_at,
-      days_checked: @days_checked
+      days_checked: @days_checked,
+      time_to_do: @time_to_do || "",
+      deadline: @deadline || ""
     }
   end  
   def initialize(options={title: "New Habit", days_checked: []})
@@ -23,12 +25,16 @@ class Habit < NSObject
     @color_index =  options[:color_index] || Habit.next_unused_color_index
     @days_checked = Array.new(options[:days_checked] || [])
     @created_at = options[:created_at] || Time.now
+    @time_to_do = options[:time_to_do]
+    @deadline = options[:deadline]
   end
   
   def color
     COLORS[@color_index].to_color
   end
-  
+  def no_reminders?
+    deadline.nil? or deadline == "" or time_to_do.nil? or time_to_do == ""
+  end
   def self.save!
     data = all.map(&:serialize)
     NSLog "saving data #{data}"

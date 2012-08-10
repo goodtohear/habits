@@ -22,6 +22,10 @@ class HabitDetailViewController < UIViewController
   end
   
   def build
+    self.navigationItem.title = "Habit"
+    back =  UIBarButtonItem.alloc.init
+    back.title = "Back"
+    self.navigationItem.backBarButtonItem = back # not doing anything
     view.autoresizesSubviews = false
 
     @calendar = CalendarViewController.alloc.init
@@ -30,14 +34,21 @@ class HabitDetailViewController < UIViewController
     view.addSubview @calendar.view
     @calendar.showChainsForHabit @habit
     
-    addIcon 'clock', [13,14]
-    addTitle 'Reminders', 15
-    addIcon 'notes', [13,88]
-    addTitle 'Notes', 88
+    @titleTextField = UITextField.alloc.initWithFrame([[0,24],[320,20]])
+    @titleTextField.delegate = self
+    @titleTextField.font = UIFont.fontWithName("HelveticaNeue-Bold", size:16)
+    @titleTextField.textAlignment = UITextAlignmentCenter 
+    @titleTextField.text = @habit.title
+    view.addSubview(@titleTextField)
+
+    addIcon 'clock', [13,88 - 16]
+    addTitle 'Reminders', 89 - 16
+    # addIcon 'notes', [13,88]
+    # addTitle 'Notes', 88
     
     
     @reminders_button = UIButton.buttonWithType UIButtonTypeRoundedRect
-    @reminders_button.frame = [[10,35], [300,44]]
+    @reminders_button.frame = [[10,106-16], [300,44]]
     updateRemindersButtonTitle
     view.addSubview @reminders_button
     
@@ -54,7 +65,7 @@ class HabitDetailViewController < UIViewController
     
   end
   def remindersButtonTitle
-    unless (@habit.time_to_do.nil? or @habit.deadline.nil?) 
+    unless (@habit.no_reminders?) 
       return "Do at about #{TimeHelper.hours[@habit.time_to_do]}. Last chance #{TimeHelper.hours[@habit.deadline]}"
     end
     "Set reminders..."
@@ -78,4 +89,14 @@ class HabitDetailViewController < UIViewController
     }
   end
 
+  # title text field
+  def textFieldShouldReturn textField
+    textField.resignFirstResponder
+    true
+  end
+  def textFieldDidEndEditing textField
+    @habit.title = textField.text
+    Habit.save!
+    true
+  end
 end
