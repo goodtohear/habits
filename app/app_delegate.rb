@@ -1,5 +1,6 @@
 class AppDelegate
   def application(application, didFinishLaunchingWithOptions:launchOptions)
+    Appearance.init()
     @window = UIWindow.alloc.initWithFrame UIScreen.mainScreen.bounds
     
     @main = MainViewController.alloc.init
@@ -12,8 +13,10 @@ class AppDelegate
   end
   
   def applicationDidBecomeActive application
-
     Habit.reschedule_all_notifications
+    @main.refresh
   end
-
+  def applicationDidBecomeActive application
+    @main.tableView.reloadData
+  end
 end

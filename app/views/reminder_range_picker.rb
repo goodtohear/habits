@@ -82,11 +82,11 @@ class ReminderRangePicker < UIView
     end
   end
   def pickerView pickerView, didSelectRow: row, inComponent: component
-    if component == TIME_TO_DO_COMPONENT_INDEX
-      if row >= pickerView.selectedRowInComponent(DEADLINE_COMPONENT_INDEX)
-        pickerView.selectRow [row + 1, @options.count - 1].min, inComponent:DEADLINE_COMPONENT_INDEX, animated:true
-      end
-    end
+  	deadline_is_before_time_to_do = pickerView.selectedRowInComponent(TIME_TO_DO_COMPONENT_INDEX) >= pickerView.selectedRowInComponent(DEADLINE_COMPONENT_INDEX)
+	  if deadline_is_before_time_to_do
+	    pickerView.selectRow [pickerView.selectedRowInComponent(TIME_TO_DO_COMPONENT_INDEX) + 1, @options.count - 1].min, inComponent:DEADLINE_COMPONENT_INDEX, animated:true
+	  end
+    
   end
 
   def pickerView pickerView, viewForRow: row, forComponent: component, reusingView: view

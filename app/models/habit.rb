@@ -9,7 +9,7 @@ class Habit < NSObject
       '#7A5D35' #BROWN
     ]
   # :first_in_chain, :last_in_chain, :mid_chain, :missed, :future, :before_start
-  attr_accessor :title, :color_index, :created_at, :days_checked, :time_to_do, :deadline
+  attr_accessor :title, :color_index, :created_at, :days_checked, :time_to_do, :deadline, :active
   def serialize
     {
       title: @title,
@@ -17,16 +17,23 @@ class Habit < NSObject
       created_at: @created_at,
       days_checked: @days_checked,
       time_to_do: @time_to_do || "",
-      deadline: @deadline || ""
+      deadline: @deadline || "",
+      active: @active
     }
   end  
-  def initialize(options={title: "New Habit", days_checked: []})
+  def initialize(options={title: "New Habit", active:true, days_checked: []})
     @title = options[:title]
+    @active = options[:active]
     @color_index =  options[:color_index] || Habit.next_unused_color_index
     @days_checked = Array.new(options[:days_checked] || [])
     @created_at = options[:created_at] || Time.now
     @time_to_do = options[:time_to_do]
     @deadline = options[:deadline]
+    @interval = 1.day
+  end
+  
+  def is_new?
+    @title == "New Habit"
   end
   
   def color
@@ -36,10 +43,13 @@ class Habit < NSObject
     deadline.nil? or deadline == "" or time_to_do.nil? or time_to_do == ""
   end
   def self.save!
-    data = all.map(&:serialize)
-    NSLog "saving data #{data}"
-    App::Persistence['habits'] = data
-    reschedule_all_notifications
+    queue = Dispatch::Queue.concurrent('goodtohear.habits.save')
+    queue.async do
+      data = all.map(&:serialize)
+      # NSLog "saving data #{data}"
+      App::Persistence['habits'] = data
+      reschedule_all_notifications
+    end
   end
   
   def self.load
@@ -74,11 +84,14 @@ class Habit < NSObject
   def currentChainLength
     count = 0
     last_day = Time.now
-    for checked_day in @days_checked
-      return count if last_day - checked_day > 1 
+    last_day = Time.local last_day.year, last_day.month, last_day.day
+    for checked_day in @days_checked.reverse
+      compare = last_day - checked_day
+      return count if compare > @interval
       count += 1
+      last_day = checked_day
     end
-    0
+    count
   end
   
   def check_days days
@@ -155,6 +168,8 @@ class Habit < NSObject
     else
       @days_checked << day
     end
+    @days_checked.sort!
+    Habit.save!
   end
 
   def day(time)

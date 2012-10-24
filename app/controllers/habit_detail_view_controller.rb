@@ -34,10 +34,11 @@ class HabitDetailViewController < UIViewController
     view.addSubview @calendar.view
     @calendar.showChainsForHabit @habit
     
-    @titleTextField = UITextField.alloc.initWithFrame([[0,24],[320,20]])
+    @titleTextField = UITextField.alloc.initWithFrame( [[0,0],[320,80]])
     @titleTextField.delegate = self
-    @titleTextField.font = UIFont.fontWithName("HelveticaNeue-Bold", size:16)
+    @titleTextField.font = UIFont.fontWithName("HelveticaNeue-Bold", size:24)
     @titleTextField.textAlignment = UITextAlignmentCenter 
+    @titleTextField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter
     @titleTextField.text = @habit.title
     view.addSubview(@titleTextField)
 
@@ -54,6 +55,7 @@ class HabitDetailViewController < UIViewController
     
 
     @reminders_button.when UIControlEventTouchUpInside do
+      @titleTextField.resignFirstResponder
       showRemindersPickerAnimated true
     end
 
@@ -63,7 +65,34 @@ class HabitDetailViewController < UIViewController
     view.addSubview @remindersPicker
     dismissRangePickerAnimated false
     
+    
+    # navigationItem.leftBarButtonItem.titleLabel.textColor = UIColor.blackColor
+    @active = UIBarButtonItem.alloc.initWithImage UIImage.imageNamed("trash"), style: UIBarButtonItemStyleDone,  target:self, action: 'toggleActive'
+    navigationItem.rightBarButtonItem = @active
+    
+    
+    @inactive_overlay = InactiveOverlayView.alloc.initWithFrame [[0,0],view.frame.size]
+    view.addSubview @inactive_overlay
+    @inactive_overlay.toggleActive @habit.active, false
+    @inactive_overlay.delete.when(UIControlEventTouchUpInside) do
+      Habit.delete @habit
+      self.navigationController.popViewControllerAnimated true
+      Habit.save!
+    end
+    @inactive_overlay.activate.when(UIControlEventTouchUpInside) do
+      @habit.active = true
+      @inactive_overlay.toggleActive @habit.active, true
+    end
+    
+    
   end
+  
+  def toggleActive
+    @habit.active = @habit.active ? false : true # inverting, also handling nil
+    @inactive_overlay.toggleActive @habit.active, true
+    Habit.save!
+  end
+  
   def remindersButtonTitle
     unless (@habit.no_reminders?) 
       return "Do at about #{TimeHelper.hours[@habit.time_to_do]}. Last chance #{TimeHelper.hours[@habit.deadline]}"
@@ -88,7 +117,14 @@ class HabitDetailViewController < UIViewController
       @remindersPicker.frame = [[0,480], @remindersPicker.frame.size]
     }
   end
-
+  
+  def viewDidAppear animated
+    if @habit.is_new?
+      @titleTextField.becomeFirstResponder
+      @titleTextField.selectAll self
+    end
+  end
+  
   # title text field
   def textFieldShouldReturn textField
     textField.resignFirstResponder

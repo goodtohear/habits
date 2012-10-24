@@ -63,13 +63,19 @@ class MonthGridViewController < UIViewController
     false
   end
   
+  def isFutureDate(day)
+    NSLog "#{day}, #{Time.now}, future? #{day - 1.day > Time.now}"
+    day > Time.now
+  end
+  
   # selection
   def touchesBegan touches, withEvent: event
     return unless @habit
     touch = touches.anyObject
     return unless touch.view.class == CalendarDayView
     @togglingOn = !habit( @habit, includesDate: touch.view.day)
-    @daysTouched = [touch.view.day]
+    @daysTouched = []
+    @daysTouched << touch.view.day unless isFutureDate(touch.view.day)
   end
   def touchesMoved touches, withEvent: event
     return unless @habit
@@ -78,7 +84,7 @@ class MonthGridViewController < UIViewController
     return unless subview.class == CalendarDayView
     day = subview.day
     subview.setSelectionState @togglingOn ? :mid_chain : :before_start, color: @habit.color
-    @daysTouched << day unless @daysTouched.include? day
+    @daysTouched << day unless @daysTouched.include?(day) or isFutureDate(day)
   end
   def touchesEnded touches, withEvent: event
     return unless @habit

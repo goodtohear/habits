@@ -1,5 +1,11 @@
+
 PODS:
-  - DDPageControl (0.1.0)
+- DDPageControl (0.1.0)
 
 DEPENDENCIES:
-  - DDPageControl
+- DDPageControl
+
+SPEC CHECKSUMS:
+  DDPageControl: c49a068d0f84fe7f98b1de37929cecdd1270ca8a
+
+COCOAPODS: 0.15.2

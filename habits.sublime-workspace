@@ -3,10 +3,59 @@
 	{
 		"selected_items":
 		[
+			[
+				"grayCo",
+				"UIColor.grayColor"
+			],
+			[
+				"initWithTitle",
+				"initWithTitle:style:target:action:"
+			],
+			[
+				"UIBarButtonItemStyle",
+				"UIBarButtonItemStylePlain (0)"
+			],
+			[
+				"UIControlTouch",
+				"UIControlEventTouchUpInside (64)"
+			],
+			[
+				"title",
+				"titleLabel"
+			],
+			[
+				"addSub",
+				"addSubview:"
+			]
 		]
 	},
 	"buffers":
 	[
+		{
+			"file": "app/controllers/main_view_controller.rb",
+			"settings":
+			{
+				"buffer_size": 1784,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "app/views/reminder_range_picker.rb",
+			"settings":
+			{
+				"buffer_size": 3298,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "app/helpers/time_helper.rb",
+			"settings":
+			{
+				"buffer_size": 124,
+				"line_ending": "Unix",
+				"name": "class TimeHelper"
+			}
+		},
 		{
 			"file": "app/app_delegate.rb",
 			"settings":
@@ -14,14 +63,66 @@
 				"buffer_size": 517,
 				"line_ending": "Unix"
 			}
+		},
+		{
+			"file": "Rakefile",
+			"settings":
+			{
+				"buffer_size": 1068,
+				"line_ending": "Unix"
+			}
 		}
 	],
-	"build_system": "Packages/User/rake.sublime-build",
+	"build_system": "Packages/RubyMotionBuilder/RubyMotion.sublime-build",
 	"command_palette":
 	{
-		"height": 167.0,
+		"height": 392.0,
 		"selected_items":
 		[
+			[
+				"git st",
+				"Git: Status"
+			],
+			[
+				"git dif",
+				"Git: Diff All"
+			],
+			[
+				"git",
+				"Git: Toggle Annotations"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"ruby",
+				"Set Syntax: Ruby"
+			],
+			[
+				"instal",
+				"Package Control: Install Package"
+			],
+			[
+				"synruby",
+				"Set Syntax: Ruby"
+			],
+			[
+				"syntax:rub",
+				"Set Syntax: Ruby"
+			],
+			[
+				"inst",
+				"Package Control: Install Package"
+			],
+			[
+				"package",
+				"Preferences: Browse Packages"
+			],
+			[
+				"packa",
+				"Package Control: Install Package"
+			],
 			[
 				"motion",
 				"Set Syntax: RubyMotion"
@@ -29,10 +130,6 @@
 			[
 				"user",
 				"Preferences: Settings - User"
-			],
-			[
-				"install",
-				"Package Control: Install Package"
 			],
 			[
 				"packagein",
@@ -47,7 +144,7 @@
 				"Set Syntax: CSS"
 			]
 		],
-		"width": 436.0
+		"width": 530.0
 	},
 	"console":
 	{
@@ -65,7 +162,12 @@
 	"file_history":
 	[
 		"/Users/michaelforrest/Library/Application Support/Sublime Text 2/Packages/User/Preferences.sublime-settings",
+		"/Users/michaelforrest/workspaces/motion/habits/app/app_delegate.rb",
+		"/Users/michaelforrest/workspaces/motion/habits/app/views/picker_row_view.rb",
+		"/Users/michaelforrest/workspaces/motion/habits/app/controllers/habit_detail_view_controller.rb",
+		"/Users/michaelforrest/workspaces/motion/habits/app/models/habit.rb",
 		"/Users/michaelforrest/workspaces/motion/habits/habits.sublime-project",
+		"/Users/michaelforrest/workspaces/motion/habits/app/views/reminder_range_picker.rb",
 		"/Users/michaelforrest/Library/Application Support/Sublime Text 2/Packages/User/rake.sublime-build",
 		"/Users/michaelforrest/workspaces/rails/things-michael-made/app/models/soundcloud.rb",
 		"/Users/michaelforrest/workspaces/rails/things-michael-made/app/views/application/about.html.haml",
@@ -81,9 +183,10 @@
 	},
 	"find_in_files":
 	{
-		"height": 0.0,
+		"height": 93.0,
 		"where_history":
 		[
+			""
 		]
 	},
 	"find_state":
@@ -91,6 +194,17 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"reminder_hour",
+			"rowIndexOfHour",
+			"picker",
+			"@pickerView",
+			"dismissRangePickerAnimated",
+			"dismissRangePicker",
+			"method_name",
+			"dismissRangePickerShouldSave",
+			"time_to_do_picker",
+			".when",
+			"when_touched",
 			"ignore"
 		],
 		"highlight": true,
@@ -109,10 +223,93 @@
 	"groups":
 	[
 		{
+			"selected": 0,
 			"sheets":
 			[
 				{
 					"buffer": 0,
+					"file": "app/controllers/main_view_controller.rb",
+					"settings":
+					{
+						"buffer_size": 1784,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								600,
+								600
+							]
+						],
+						"settings":
+						{
+							"live_git_annotations": false,
+							"syntax": "Packages/Ruby/Ruby.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "app/views/reminder_range_picker.rb",
+					"settings":
+					{
+						"buffer_size": 3298,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2926,
+								2926
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Ruby/Ruby.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 355.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "app/helpers/time_helper.rb",
+					"settings":
+					{
+						"buffer_size": 124,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								37,
+								37
+							]
+						],
+						"settings":
+						{
+							"auto_name": "class TimeHelper",
+							"syntax": "Packages/Ruby/Ruby.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 3,
 					"file": "app/app_delegate.rb",
 					"settings":
 					{
@@ -123,8 +320,65 @@
 						"selection":
 						[
 							[
-								372,
-								372
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "/Users/michaelforrest/Library/Application Support/Sublime Text 2/Packages/RubyMotionBuilder/RubyMotion.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 0,
+					"file": "app/controllers/main_view_controller.rb",
+					"settings":
+					{
+						"buffer_size": 1784,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"live_git_annotations": false,
+							"syntax": "Packages/Ruby/Ruby.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "Rakefile",
+					"settings":
+					{
+						"buffer_size": 1068,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
 							]
 						],
 						"settings":
@@ -139,11 +393,6 @@
 					},
 					"type": "text"
 				}
-			]
-		},
-		{
-			"sheets":
-			[
 			]
 		}
 	],
@@ -164,18 +413,11 @@
 				0,
 				1,
 				1
-			],
-			[
-				1,
-				0,
-				2,
-				1
 			]
 		],
 		"cols":
 		[
 			0.0,
-			0.5,
 			1.0
 		],
 		"rows":
@@ -199,6 +441,42 @@
 		"height": 0.0,
 		"selected_items":
 		[
+			[
+				"rake",
+				"Rakefile"
+			],
+			[
+				"mainvi",
+				"app/controllers/main_view_controller.rb"
+			],
+			[
+				"maine",
+				"app/controllers/main_view_controller.rb"
+			],
+			[
+				"delegate",
+				"app/app_delegate.rb"
+			],
+			[
+				"habit",
+				"app/models/habit.rb"
+			],
+			[
+				"det",
+				"app/controllers/habit_detail_view_controller.rb"
+			],
+			[
+				"detail",
+				"app/controllers/habit_detail_view_controller.rb"
+			],
+			[
+				"range",
+				"app/views/reminder_range_picker.rb"
+			],
+			[
+				"picker",
+				"app/views/reminder_range_picker.rb"
+			],
 			[
 				"dele",
 				"app/app_delegate.rb"
@@ -246,6 +524,6 @@
 	"show_open_files": false,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 150.0,
+	"side_bar_width": 235.0,
 	"status_bar_visible": true
 }
