@@ -64,6 +64,13 @@ class Habit < NSObject
     @all ||= load || [Habit.new(title: "Double-tap here...")]
   end
   
+  def self.active
+    all.select { |h| h.active }
+  end
+  def self.inactive
+    all.select { |h| !h.active } 
+  end
+  
   def self.next_unused_color_index
     return 0 unless @all
     result = @all.count + 1
@@ -184,7 +191,10 @@ class Habit < NSObject
     
   end
   def overdue?(time)
-    false
+    return false unless @active
+    return false if time_to_do.nil? or time_to_do == ''
+    time.hour >= time_to_do 
+    
   end
 
 end

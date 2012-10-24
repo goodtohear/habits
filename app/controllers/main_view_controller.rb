@@ -1,4 +1,6 @@
 class MainViewController < UITableViewController 
+  SECTIONS = [:active, :inactive]
+  
   def init
     if super
       build
@@ -6,7 +8,13 @@ class MainViewController < UITableViewController
     self
   end
 
+  def loadGroups
+    @groups = [Habit.active,Habit.inactive]
+  end
+  
   def build
+    loadGroups
+    
     @now = Time.now
     
     self.view.dataSource = self
@@ -16,7 +24,11 @@ class MainViewController < UITableViewController
     self.navigationItem.rightBarButtonItem = @add_button
   end
   def refresh
-    self.view.reloadData    
+    loadGroups
+    self.view.reloadData
+    @now = Time.now
+    @day_navigation.date = @now unless @day_navigation.nil?
+    
   end
   def viewWillAppear animated
     refresh()
@@ -27,10 +39,12 @@ class MainViewController < UITableViewController
   end
 
   def addItem
-    view.beginUpdates
     new_habit = Habit.new
     Habit.all.push new_habit
-    indexPath = NSIndexPath.indexPathForRow(Habit.all.count - 1, inSection: 0)
+    loadGroups
+    section = SECTIONS.index(new_habit.active ? :active : :inactive)
+    view.beginUpdates
+    indexPath = NSIndexPath.indexPathForRow(@groups[section].count - 1, inSection: section)
     tableView.insertRowsAtIndexPaths [indexPath], withRowAnimation: UITableViewRowAnimationAutomatic
     view.endUpdates
     tableView tableView, didSelectRowAtIndexPath: indexPath
@@ -38,15 +52,16 @@ class MainViewController < UITableViewController
 
   #swiper table dataSource
   def tableView tableView, numberOfRowsInSection: section_index
-    return Habit.all.count
+    return 0 if  @groups.nil? or @groups[section_index].nil?
+    @groups[section_index].count
   end
   
   def numberOfSectionsInTableView tableView
-    1
+    SECTIONS.count
   end
 
   def habitAtIndexPath(indexPath)
-    Habit.all[indexPath.row]
+    @groups[section][indexPath.row]
   end
 
   CELLID = 'HabitRow'
@@ -57,25 +72,35 @@ class MainViewController < UITableViewController
       cell
     end
     cell.now = @now
-    habit = Habit.all[indexPath.row]
+    habit = @groups[indexPath.section][indexPath.row]
     cell.habit = habit
     cell.set_color habit.color
     cell
   end
   
   def tableView tableView, heightForHeaderInSection: section
-    44
+    if SECTIONS.index(:active) == section
+      return 44
+    end
+    if SECTIONS.index(:inactive) == section
+      return @groups[section].count > 0 ? 44 : 0
+    end
   end
   
   def tableView tableView, viewForHeaderInSection: section
-    @day_navigation ||= DayNavigation.alloc.init
-    @day_navigation.date = @now
-    @day_navigation
+    if section == SECTIONS.index(:active)
+      @day_navigation ||= DayNavigation.alloc.init
+      @day_navigation.date = @now
+      return @day_navigation
+    end
+    if section == SECTIONS.index(:inactive)
+      return @inactive_title ||= InactiveHabitsHeader.alloc.init
+    end
   end
 
   # swiper table delgate
   def tableView tableView, didSelectRowAtIndexPath:indexPath
-    habit = Habit.all[indexPath.row]
+    habit = @groups[indexPath.section][indexPath.row]
     detail = HabitDetailViewController.alloc.initWithHabit habit
     self.navigationController.pushViewController detail, animated: true
   end

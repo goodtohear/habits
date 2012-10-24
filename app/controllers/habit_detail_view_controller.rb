@@ -83,11 +83,15 @@ class HabitDetailViewController < UIViewController
       @habit.active = true
       @inactive_overlay.toggleActive @habit.active, true
     end
+    @inactive_overlay.done.when(UIControlEventTouchUpInside) do
+      self.navigationController.popViewControllerAnimated true
+    end
     
     
   end
   
   def toggleActive
+    @titleTextField.resignFirstResponder
     @habit.active = @habit.active ? false : true # inverting, also handling nil
     @inactive_overlay.toggleActive @habit.active, true
     Habit.save!

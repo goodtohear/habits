@@ -21,10 +21,6 @@ class HabitCell < UITableViewCell
     @count.text = "THIS IS TEXT"
     addSubview @count
 
-    @doubleTap = UITapGestureRecognizer.alloc.initWithTarget self, action: 'doubleTapped'
-    @doubleTap.numberOfTapsRequired = 2
-    addGestureRecognizer @doubleTap
-    
     @checkbox = CheckBox.alloc.initWithFrame [[0,0], [44,44]]
     addSubview @checkbox
     @checkbox.when_tapped do
@@ -36,43 +32,19 @@ class HabitCell < UITableViewCell
   def set_color color
     @checkbox.set_color color
     # @backgroundColorView.backgroundColor = color
-  end
-  
-  def doubleTapped
-    edit
-  end
-
-  def edit
-    @input.userInteractionEnabled = true
-    @input.becomeFirstResponder
-  end
+  end  
 
   def habit= value
     @habit = value
+    @input.alpha = @habit.active ? 1.0 : 0.5
     @checkbox.set_checked @habit.done? @now
     @input.text = @habit.title
+    @input.textColor = @habit.overdue?(Time.now) ? '#C1272D'.to_color : UIColor.blackColor
+    
     count = @habit.currentChainLength
     @count.text = count.to_s
     @backgroundColorView.backgroundColor = @habit.color
   end
 
-  # textField delegate
-  def textFieldDidBeginEditing textField
-    textField.selectAll self
-    App.notification_center.post :began_editing_habit, self
-  end
-
-  def textFieldShouldReturn textField
-    textField.resignFirstResponder
-    true
-  end
-
-  def textFieldDidEndEditing textField
-    @habit.title = textField.text
-    App.notification_center.post :ended_editing_habit, self
-    @input.userInteractionEnabled = false
-    Habit.save!
-    true
-  end
 
 end

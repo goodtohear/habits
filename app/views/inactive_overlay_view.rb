@@ -1,5 +1,5 @@
 class InactiveOverlayView < UIView
-  attr_reader :delete, :activate
+  attr_reader :delete, :activate, :done
   def initWithFrame frame
     if super
       build()
@@ -23,8 +23,14 @@ class InactiveOverlayView < UIView
     @title.textColor = UIColor.whiteColor
     addSubview @title
 
-
     next_y += 50
+    @done = UIButton.buttonWithType UIButtonTypeRoundedRect
+    @done.setTitle "Ok", forState: UIControlStateNormal
+    @done.frame = [[10,next_y], [300,44]]
+    addSubview @done
+
+
+    next_y += 70
     @activate = UIButton.buttonWithType UIButtonTypeRoundedRect
     @activate.setTitle "Activate", forState: UIControlStateNormal
     @activate.frame = [[10,next_y], [300,44]]
