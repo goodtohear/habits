@@ -8,16 +8,15 @@ class InactiveHabitsHeader < UIView
   end
   
   def build
-    self.backgroundColor = '#5D5D5D'.to_color
+    self.backgroundColor = Colors::COBALT
     @textLabel = UILabel.alloc.initWithFrame [[10,0],[300,44]]
     @textLabel.backgroundColor = UIColor.clearColor
     @textLabel.textColor = UIColor.whiteColor
     @textLabel.textAlignment = UITextAlignmentCenter
     @textLabel.font = UIFont.fontWithName "HelveticaNeue-Bold", size: 20
-    self.backgroundColor = '#999'.to_color
     addSubview @textLabel
     
-    @textLabel.text = "Inactive habits"
+    @textLabel.text = "Paused habits"
   end
   
 end

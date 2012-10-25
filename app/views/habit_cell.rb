@@ -8,16 +8,19 @@ class HabitCell < UITableViewCell
   end
   
   def build
-    @backgroundColorView = UIView.alloc.init
-    # setSelectedBackgroundView @backgroundColorView
+    @backgroundColorView = UIView.alloc.initWithFrame [[0,0],self.frame.size]
+    @backgroundColorView.backgroundColor = '#d6cdbf'.to_color
+    @backgroundColorView.hidden = true
+    addSubview @backgroundColorView
     self.selectionStyle = UITableViewCellSelectionStyleNone
-    @input = UITextField.alloc.initWithFrame [[50,8],[210,30]]
+    
+    @input = UITextField.alloc.initWithFrame [[42,8],[200,30]]
     @input.font = UIFont.fontWithName 'HelveticaNeue-Bold', size: 20
     @input.userInteractionEnabled = false
     @input.delegate = self
     addSubview @input
-    
-    @count = CountView.alloc.initWithFrame [[260,12],[30, 20]]
+                                            # y = 10 because the check box starts at 10. yes. not idea.
+    @count = CountView.alloc.initWithFrame [[240,8],[70, 28]]
     @count.text = "THIS IS TEXT"
     addSubview @count
 
@@ -31,19 +34,38 @@ class HabitCell < UITableViewCell
 
   def set_color color
     @checkbox.set_color color
-    # @backgroundColorView.backgroundColor = color
+    @count.total_color = color
+    @backgroundColorView.backgroundColor = color
   end  
 
+  def setHighlighted selected, animated: animated
+    super
+    @backgroundColorView.hidden = !selected
+    @input.textColor = selected ? UIColor.whiteColor : textColor
+  end
+  
+  # def touchesBegan touches, withEvent: event
+  #   @input.textColor = UIColor.whiteColor
+  # end
+  # def touchesEnded touches, withEvent: event
+  #   @input.textColor = UIColor.blackColor
+  # end
+  def textColor
+    @habit.overdue?(Time.now) ? '#C1272D'.to_color : UIColor.blackColor
+  end
   def habit= value
     @habit = value
     @input.alpha = @habit.active ? 1.0 : 0.5
     @checkbox.set_checked @habit.done? @now
     @input.text = @habit.title
-    @input.textColor = @habit.overdue?(Time.now) ? '#C1272D'.to_color : UIColor.blackColor
+    @input.textColor = textColor
     
     count = @habit.currentChainLength
-    @count.text = count.to_s
-    @backgroundColorView.backgroundColor = @habit.color
+    
+    @count.text = [count.to_s, 1000]
+    
+    
+    # @backgroundColorView.backgroundColor = @habit.color
   end
 
 

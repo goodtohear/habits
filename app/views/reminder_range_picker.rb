@@ -25,7 +25,7 @@ class ReminderRangePicker < UIView
 
     @toolbar = UIToolbar.alloc.initWithFrame [[0,0],[320,44]]
     @toolbar.items = [
-      UIBarButtonItem.alloc.initWithBarButtonSystemItem(UIBarButtonSystemItemCancel, target:self, action:'cancel'),
+      UIBarButtonItem.alloc.initWithTitle("Clear", style: UIBarButtonItemStylePlain, target:self, action:'clear'),
       UIBarButtonItem.alloc.initWithBarButtonSystemItem(UIBarButtonSystemItemFlexibleSpace, target:nil, action:nil),
       UIBarButtonItem.alloc.initWithTitle("Reminders", style: UIBarButtonItemStylePlain, target: nil, action:nil),
       UIBarButtonItem.alloc.initWithBarButtonSystemItem(UIBarButtonSystemItemFlexibleSpace, target:nil, action:nil),
@@ -56,7 +56,10 @@ class ReminderRangePicker < UIView
 	end
   end
 
-  def cancel
+  def clear
+    @habit.time_to_do = ''
+    @habit.deadline = ''
+    Habit.save!
     delegate.dismissRangePickerAnimated true
   end
 

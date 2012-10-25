@@ -21,6 +21,8 @@ class MainViewController < UITableViewController
     self.view.reloadData
     
     @add_button = UIBarButtonItem.alloc.initWithImage UIImage.imageNamed("add"), style: UIBarButtonItemStyleDone,  target:self, action: 'addItem'
+
+    
     self.navigationItem.rightBarButtonItem = @add_button
   end
   def refresh
@@ -68,7 +70,7 @@ class MainViewController < UITableViewController
   def tableView tableView, cellForRowAtIndexPath: indexPath
     cell = tableView.dequeueReusableCellWithIdentifier(CELLID) || begin
       cell = HabitCell.alloc.initWithStyle(UITableViewCellStyleDefault, reuseIdentifier:CELLID)
-      cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator
+      # cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator
       cell
     end
     cell.now = @now

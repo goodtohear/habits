@@ -3,7 +3,7 @@ class MonthGridViewController < UIViewController
   CELL_INDICES = (0..7*5)
   attr_accessor :month, :firstDay
   
-  SELECTION_STATES = :first_in_chain, :last_in_chain, :mid_chain, :missed, :future
+  SELECTION_STATES = :first_in_chain, :last_in_chain, :mid_chain, :missed, :future, :alone
   
   def loadView
     self.view = UIView.alloc.initWithFrame [[2,0], [315,45 * 5]]
@@ -64,7 +64,6 @@ class MonthGridViewController < UIViewController
   end
   
   def isFutureDate(day)
-    NSLog "#{day}, #{Time.now}, future? #{day - 1.day > Time.now}"
     day > Time.now
   end
   
@@ -83,7 +82,7 @@ class MonthGridViewController < UIViewController
     subview = view.hitTest touch.locationInView(view), withEvent: nil
     return unless subview.class == CalendarDayView
     day = subview.day
-    subview.setSelectionState @togglingOn ? :mid_chain : :before_start, color: @habit.color
+    subview.setSelectionState @togglingOn ? :alone : :before_start, color: @habit.color
     @daysTouched << day unless @daysTouched.include?(day) or isFutureDate(day)
   end
   def touchesEnded touches, withEvent: event

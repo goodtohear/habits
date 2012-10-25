@@ -13,7 +13,7 @@ class DayNavigation < UIView
     @textLabel.textColor = UIColor.whiteColor
     @textLabel.textAlignment = UITextAlignmentCenter
     @textLabel.font = UIFont.fontWithName "HelveticaNeue-Bold", size: 20
-    self.backgroundColor = '#8A95A1'.to_color
+    self.backgroundColor = Colors::COBALT
     addSubview @textLabel
   end
   

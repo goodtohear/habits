@@ -1,11 +1,11 @@
 class Habit < NSObject
   COLORS = [
       '#77A247', #GREEN
-      '#488FB4', #BLUE
+      '#875495', #PURPLE
       '#E2804F', #ORANGE
       '#E7BE2B', #YELLOW
-      '#E2804F', #PEACH
-      '#875495', #PURPLE
+      # '#E2804F', #PEACH
+      '#488FB4', #BLUE
       '#7A5D35' #BROWN
     ]
   # :first_in_chain, :last_in_chain, :mid_chain, :missed, :future, :before_start
@@ -18,7 +18,7 @@ class Habit < NSObject
       days_checked: @days_checked,
       time_to_do: @time_to_do || "",
       deadline: @deadline || "",
-      active: @active
+      active: @active || false
     }
   end  
   def initialize(options={title: "New Habit", active:true, days_checked: []})
@@ -73,9 +73,10 @@ class Habit < NSObject
   
   def self.next_unused_color_index
     return 0 unless @all
-    result = @all.count + 1
-    result = 0 if result >= COLORS.count
-    result
+    occurences = @all.map(&:color_index) + (0..COLORS.count-1).to_a
+    counts = occurences.group_by {|n| n }.map{|key,items| {key => items.count}}
+    low_count = counts.map{|c| c.values.first}.min
+    counts.find{|c| c.values.first == low_count }.keys.first.to_i
   end
   
   def self.delete habit
@@ -132,7 +133,7 @@ class Habit < NSObject
   
   def self.reschedule_all_notifications
     UIApplication.sharedApplication.cancelAllLocalNotifications
-    all.each(&:reschedule_notifications)
+    active.each(&:reschedule_notifications)
   end
 
   def timeWithHour hour, daysTime: dayOffset
@@ -157,10 +158,13 @@ class Habit < NSObject
     now = Time.now
 
     # always schedule tomorrow's reminders
-    alarm TOMORROW, atHour: time_to_do, text: title
-    alarm TOMORROW, atHour: deadline, text: "Last chance: #{title}"
+    (TOMORROW..TOMORROW+7).each do |dayOffset|
+      alarm dayOffset, atHour: time_to_do, text: title
+      alarm dayOffset, atHour: deadline, text: "Last chance: #{title}"
+    end
     # if to_do_later then schedule both
     # so schedule deadline:
+    return unless to_do_later?(now)
     alarm TODAY, atHour: deadline, text: "Last chance: #{title}"
     # if overdue don't schedule first reminder - it's in the past
     return if overdue? now
@@ -193,7 +197,7 @@ class Habit < NSObject
   def overdue?(time)
     return false unless @active
     return false if time_to_do.nil? or time_to_do == ''
-    time.hour >= time_to_do 
+    !done?(time) and time.hour >= time_to_do 
     
   end
 
