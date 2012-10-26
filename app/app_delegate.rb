@@ -12,7 +12,7 @@ class AppDelegate
     true
   end
   
-  def applicationDidBecomeActive application
+  def applicationWillEnterForeground application
     Habit.reschedule_all_notifications
     @main.refresh
   end

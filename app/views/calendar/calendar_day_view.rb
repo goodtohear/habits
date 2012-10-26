@@ -1,6 +1,6 @@
 class CalendarDayView < UIView
   
-  FUTURE_COLOR = '#8A95A1'.to_color
+  FUTURE_COLOR = '#A6B4C3'.to_color
   MISSED_COLOR = '#C1272D'.to_color
   ON_COLOR = UIColor.whiteColor
   BEFORE_START_COLOR = '#3A4450'.to_color

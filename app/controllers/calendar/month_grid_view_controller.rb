@@ -10,6 +10,7 @@ class MonthGridViewController < UIViewController
   end
   
   def viewDidLoad
+    @queue = Dispatch::Queue.concurrent('goodtohear.habits.calendar')
     next_x = 0
     next_y = 0
     @cells = []
@@ -29,12 +30,17 @@ class MonthGridViewController < UIViewController
   end
   #
   def showChainsForHabit habit
+    
     @habit = habit
     for grid_index in CELL_INDICES
       cell = @cells[grid_index]
       comparison = Time.now > cell.day
-      state = cellStateForHabit habit, date: cell.day
-      cell.setSelectionState state, color: habit.color
+      Dispatch::Queue.concurrent.async do
+        state = cellStateForHabit habit, date: cell.day
+        Dispatch::Queue.main.sync do
+          cell.setSelectionState state, color: habit.color
+        end
+      end
     end
   end
   def cellStateForHabit habit, date: date

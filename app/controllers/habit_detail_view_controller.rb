@@ -22,10 +22,8 @@ class HabitDetailViewController < UIViewController
   end
   
   def build
-    self.navigationItem.title = "Habit"
-    back =  UIBarButtonItem.alloc.init
-    back.title = "Back"
-    self.navigationItem.backBarButtonItem = back # not doing anything
+    self.navigationItem.title = "EDIT"
+
     view.autoresizesSubviews = false
 
     @calendar = CalendarViewController.alloc.init
@@ -66,8 +64,11 @@ class HabitDetailViewController < UIViewController
     
     
     # navigationItem.leftBarButtonItem.titleLabel.textColor = UIColor.blackColor
-    @active = UIBarButtonItem.alloc.initWithImage UIImage.imageNamed("pause"), style: UIBarButtonItemStyleDone,  target:self, action: 'toggleActive'
-    navigationItem.rightBarButtonItem = @active
+    @active = BarImageButton.alloc.initWithImageNamed('pause')
+    @active.when(UIControlEventTouchUpInside) do
+      self.toggleActive
+    end
+    navigationItem.rightBarButtonItem = UIBarButtonItem.alloc.initWithCustomView @active
     
     
     @inactive_overlay = InactiveOverlayView.alloc.initWithFrame [[0,0],view.frame.size]

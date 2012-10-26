@@ -31,16 +31,37 @@ class CountView < UIView
     @background.backgroundColor = Colors::COBALT
     @background.layer.cornerRadius = RADIUS
     
+    halfway = frame.size.width * 0.5
     # add two layers: [] + O to make the right hand segment
     @square, @circle = CALayer.layer, CALayer.layer
-    @square.frame = [[RADIUS, 0], [frame.size.width * 0.5 - RADIUS, frame.size.height]]
-    @circle.frame = [[0, 0], [frame.size.width * 0.5, frame.size.height]]
+    @square.frame = [[RADIUS, 0], [halfway - RADIUS, frame.size.height]]
+    @circle.frame = [[0, 0], [halfway, frame.size.height]]
     @circle.cornerRadius = RADIUS
     
-    [@square,@circle].each {|l| @background.layer.addSublayer l }
+    @gap = CALayer.layer
+    @gap.backgroundColor = UIColor.whiteColor.CGColor
+    @gap.frame = [[halfway - 1, 0], [2,frame.size.height] ]
+    
+    [@square,@circle,@gap].each {|l| @background.layer.addSublayer l }
 
   end
+  
+  def highlighted= highlighted
+    return if @color.nil?
+    CATransaction.begin
+    CATransaction.setDisableActions true
+    color = highlighted ? UIColor.whiteColor : @color
+    [@square,@circle].each {|l| l.backgroundColor = color.CGColor }
+    @background.backgroundColor = highlighted ? UIColor.whiteColor : Colors::COBALT  # dup
+    [@current_chain_label, @longest_chain_label].each do |label|
+      label.textColor = highlighted ? @color : UIColor.whiteColor # dup
+    end
+    @gap.backgroundColor = highlighted ? @color.CGColor : UIColor.whiteColor.CGColor # dup
+    CATransaction.commit
+  end
+  
   def total_color= value
+    @color = value
     [@square,@circle].each {|l| l.backgroundColor = value.CGColor }
   end
   def text= value

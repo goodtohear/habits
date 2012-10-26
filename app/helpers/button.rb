@@ -17,7 +17,7 @@ class Button < UIControl
     
     @label = UILabel.alloc.initWithFrame [[10,0], [self.frame.size.width - 20,self.frame.size.height]]
     @label.textAlignment = UITextAlignmentCenter
-    @label.font = UIFont.fontWithName "HelveticaNeue-Bold", size: 24
+    @label.font = UIFont.fontWithName "HelveticaNeue-Bold", size: 20
     @label.textColor = UIColor.whiteColor
     @label.adjustsFontSizeToFitWidth = true
     @label.backgroundColor = UIColor.clearColor
@@ -32,6 +32,9 @@ class Button < UIControl
   
   def title= text
     @label.text = text.to_s.upcase
+    return if text.nil? or text == ''
+    textHeight = text.sizeWithFont(@label.font).height
+    @label.frame = [[@label.frame.origin.x,(self.frame.size.height - textHeight) * 0.5 ],[@label.frame.size.width,textHeight]]
   end
   def color= color
     @color = color

@@ -33,6 +33,7 @@ class HabitCell < UITableViewCell
   end
 
   def set_color color
+    @color = color
     @checkbox.set_color color
     @count.total_color = color
     @backgroundColorView.backgroundColor = color
@@ -42,6 +43,7 @@ class HabitCell < UITableViewCell
     super
     @backgroundColorView.hidden = !selected
     @input.textColor = selected ? UIColor.whiteColor : textColor
+    @count.highlighted = selected
   end
   
   # def touchesBegan touches, withEvent: event

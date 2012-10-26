@@ -20,29 +20,41 @@ class MainViewController < UITableViewController
     self.view.dataSource = self
     self.view.reloadData
 
-    @info_button = UIBarButtonItem.alloc.initWithImage UIImage.imageNamed("info"), style: UIBarButtonItemStyleDone,  target:self, action: 'showInfo'
-    navigationItem.leftBarButtonItem = @info_button
+    @info_button = BarImageButton.alloc.initWithImageNamed('info')
+    @info_button.when(UIControlEventTouchUpInside) do
+      self.showInfo
+    end
+    navigationItem.leftBarButtonItem = UIBarButtonItem.alloc.initWithCustomView @info_button
     
-    @add_button = UIBarButtonItem.alloc.initWithImage UIImage.imageNamed("add"), style: UIBarButtonItemStyleDone,  target:self, action: 'addItem'
-    navigationItem.rightBarButtonItem = @add_button
+    @add_button = BarImageButton.alloc.initWithImageNamed('add')
+    @add_button.when(UIControlEventTouchUpInside) do
+      self.addItem
+    end
+    navigationItem.rightBarButtonItem = UIBarButtonItem.alloc.initWithCustomView @add_button
+     
+    back =  UIBarButtonItem.alloc.init
+    back.title = "Back"
+    self.navigationItem.backBarButtonItem = back
+     
   end
+  
   def refresh
-    loadGroups
-    self.view.reloadData
     @now = Time.now
     @day_navigation.date = @now unless @day_navigation.nil?
+    loadGroups
+    self.view.reloadData
     
   end
   def viewWillAppear animated
     refresh()
-    self.navigationItem.title = "Good Habits"
+    self.navigationItem.title = "GOOD HABITS"
   end
   def viewWillDisappear animated
-    self.navigationItem.title = "All"
+    # self.navigationItem.title = "ALL"
   end
   def showInfo
     info = InformationScreen.alloc.init
-    navigationController.pushViewController info, animated: true
+    presentViewController info, animated: true, completion: ->(){}
   end
   def addItem
     new_habit = Habit.new
