@@ -25,11 +25,11 @@ class ReminderRangePicker < UIView
 
     @toolbar = UIToolbar.alloc.initWithFrame [[0,0],[320,44]]
     @toolbar.items = [
-      UIBarButtonItem.alloc.initWithTitle("Clear", style: UIBarButtonItemStylePlain, target:self, action:'clear'),
-      UIBarButtonItem.alloc.initWithBarButtonSystemItem(UIBarButtonSystemItemFlexibleSpace, target:nil, action:nil),
-      UIBarButtonItem.alloc.initWithTitle("Reminders", style: UIBarButtonItemStylePlain, target: nil, action:nil),
-      UIBarButtonItem.alloc.initWithBarButtonSystemItem(UIBarButtonSystemItemFlexibleSpace, target:nil, action:nil),
-      UIBarButtonItem.alloc.initWithBarButtonSystemItem(UIBarButtonSystemItemSave, target:self, action:'save')
+      BarButton.button("Clear", style: UIBarButtonItemStyleBordered, target: self, action:'clear'),
+      BarButton.spacer,
+      BarButton.button("Reminders", style: UIBarButtonItemStylePlain, target: nil, action:nil),
+      BarButton.spacer,
+      BarButton.button("Set", style: UIBarButtonItemStyleDone, target: self, action:'save')
     ]
     addSubview(@toolbar)
 

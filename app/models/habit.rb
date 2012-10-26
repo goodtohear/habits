@@ -4,7 +4,7 @@ class Habit < NSObject
       '#875495', #PURPLE
       '#E2804F', #ORANGE
       '#E7BE2B', #YELLOW
-      # '#E2804F', #PEACH
+      '#D28895', #PINK
       '#488FB4', #BLUE
       '#7A5D35' #BROWN
     ]
@@ -125,7 +125,22 @@ class Habit < NSObject
     @days_checked.count
   end
   def longestChain
-    30
+    # NSLog "calculating chain #{title}"
+    result = 0
+    count = 0
+    last_day = Time.now
+    last_day = Time.local last_day.year, last_day.month, last_day.day
+    for checked_day in @days_checked.reverse
+      compare = last_day - checked_day
+      count += 1
+      if compare > @interval
+        # NSLog "compare(#{compare}) was more than interval (@interval), count = #{count}, result = #{result}"
+        result = [count, result].max
+        count = 0
+      end
+      last_day = checked_day
+    end
+    [result, count].max
   end
   def blank?
     @days_checked.count == 0

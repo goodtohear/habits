@@ -14,7 +14,7 @@ class HabitCell < UITableViewCell
     addSubview @backgroundColorView
     self.selectionStyle = UITableViewCellSelectionStyleNone
     
-    @input = UITextField.alloc.initWithFrame [[42,8],[200,30]]
+    @input = UITextField.alloc.initWithFrame [[42,8],[194,30]]
     @input.font = UIFont.fontWithName 'HelveticaNeue-Bold', size: 20
     @input.userInteractionEnabled = false
     @input.delegate = self
@@ -62,7 +62,7 @@ class HabitCell < UITableViewCell
     
     count = @habit.currentChainLength
     
-    @count.text = [count.to_s, 1000]
+    @count.text = [count.to_s, @habit.longestChain]
     
     
     # @backgroundColorView.backgroundColor = @habit.color

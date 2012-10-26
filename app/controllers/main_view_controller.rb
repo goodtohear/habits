@@ -19,11 +19,12 @@ class MainViewController < UITableViewController
     
     self.view.dataSource = self
     self.view.reloadData
+
+    @info_button = UIBarButtonItem.alloc.initWithImage UIImage.imageNamed("info"), style: UIBarButtonItemStyleDone,  target:self, action: 'showInfo'
+    navigationItem.leftBarButtonItem = @info_button
     
     @add_button = UIBarButtonItem.alloc.initWithImage UIImage.imageNamed("add"), style: UIBarButtonItemStyleDone,  target:self, action: 'addItem'
-
-    
-    self.navigationItem.rightBarButtonItem = @add_button
+    navigationItem.rightBarButtonItem = @add_button
   end
   def refresh
     loadGroups
@@ -39,7 +40,10 @@ class MainViewController < UITableViewController
   def viewWillDisappear animated
     self.navigationItem.title = "All"
   end
-
+  def showInfo
+    info = InformationScreen.alloc.init
+    navigationController.pushViewController info, animated: true
+  end
   def addItem
     new_habit = Habit.new
     Habit.all.push new_habit

@@ -34,7 +34,7 @@ class HabitDetailViewController < UIViewController
     view.addSubview @calendar.view
     @calendar.showChainsForHabit @habit
     
-    @titleTextField = UITextField.alloc.initWithFrame( [[0,0],[320,80]])
+    @titleTextField = UITextField.alloc.initWithFrame( [[0,0],[320,70]])
     @titleTextField.delegate = self
     @titleTextField.font = UIFont.fontWithName("HelveticaNeue-Bold", size:24)
     @titleTextField.textAlignment = UITextAlignmentCenter 
@@ -42,8 +42,8 @@ class HabitDetailViewController < UIViewController
     @titleTextField.text = @habit.title
     view.addSubview(@titleTextField)
 
-    addIcon 'clock', [13,88 - 16]
-    addTitle 'Reminders', 89 - 16
+    addIcon 'clock', [13,63]
+    addTitle 'Reminders', 64
     # addIcon 'notes', [13,88]
     # addTitle 'Notes', 88
     
@@ -129,7 +129,7 @@ class HabitDetailViewController < UIViewController
   end
   
   def viewDidAppear animated
-    if @habit.is_new?
+    if @habit.is_new? and @habit.active
       @titleTextField.becomeFirstResponder
       @titleTextField.selectAll self
     end
