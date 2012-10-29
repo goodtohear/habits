@@ -33,7 +33,7 @@ class MainViewController < UITableViewController
     navigationItem.rightBarButtonItem = UIBarButtonItem.alloc.initWithCustomView @add_button
      
     back =  UIBarButtonItem.alloc.init
-    back.title = "Back"
+    back.title = "BACK"
     self.navigationItem.backBarButtonItem = back
      
   end

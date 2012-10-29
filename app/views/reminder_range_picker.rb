@@ -10,7 +10,7 @@ class ReminderRangePicker < UIView
   BAR_HEIGHT  = 44
   TIME_TO_DO_COMPONENT_INDEX = 0
   DEADLINE_COMPONENT_INDEX = 1
-  FIRST_OPTION_OFFSET = 6 # must be >= 0
+  
   def createPicker
     result = UIPickerView.alloc.initWithFrame [[0,BAR_HEIGHT],[320,self.frame.size.height - BAR_HEIGHT]]
     result.dataSource = self
@@ -21,7 +21,7 @@ class ReminderRangePicker < UIView
   end
   def build
     
-    @options = TimeHelper.hours.rotate(FIRST_OPTION_OFFSET)
+    @options = TimeHelper.rotatedHours
 
     @toolbar = UIToolbar.alloc.initWithFrame [[0,0],[320,44]]
     @toolbar.items = [
@@ -36,23 +36,12 @@ class ReminderRangePicker < UIView
     @picker = createPicker
   end
   
-  def rowIndexOfHour hour
-  	return 0 if hour.nil?
-  	hour -= FIRST_OPTION_OFFSET 
-  	hour += 24 if hour < 0
-  	hour
-  end
-
-  def hourForRowIndex index
-  	index += FIRST_OPTION_OFFSET
-  	index -= 24 if index > 23 
-  	index
-  end
+  
   def setHabit habit
   	@habit = habit
   	unless @habit.no_reminders?
-	  	@picker.selectRow rowIndexOfHour(@habit.time_to_do), inComponent:TIME_TO_DO_COMPONENT_INDEX, animated:false
-		@picker.selectRow rowIndexOfHour(@habit.deadline), inComponent:DEADLINE_COMPONENT_INDEX, animated:false
+	  	@picker.selectRow TimeHelper.indexOfHour(@habit.time_to_do), inComponent:TIME_TO_DO_COMPONENT_INDEX, animated:false
+		@picker.selectRow TimeHelper.indexOfHour(@habit.deadline), inComponent:DEADLINE_COMPONENT_INDEX, animated:false
 	end
   end
 
@@ -64,8 +53,8 @@ class ReminderRangePicker < UIView
   end
 
   def save
-  	@habit.time_to_do = hourForRowIndex( @picker.selectedRowInComponent(TIME_TO_DO_COMPONENT_INDEX) )
-  	@habit.deadline = hourForRowIndex( @picker.selectedRowInComponent(DEADLINE_COMPONENT_INDEX) )
+  	@habit.time_to_do = TimeHelper.hourForIndex( @picker.selectedRowInComponent(TIME_TO_DO_COMPONENT_INDEX) )
+  	@habit.deadline = TimeHelper.hourForIndex( @picker.selectedRowInComponent(DEADLINE_COMPONENT_INDEX) )
   	Habit.save!
     delegate.dismissRangePickerAnimated true
   end

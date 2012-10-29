@@ -5,4 +5,10 @@ class Integer
   def days
     day
   end
+  def hour
+    60 * 60 * self
+  end
+  def hours
+    hour
+  end
 end

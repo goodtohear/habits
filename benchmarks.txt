@@ -1,0 +1,4 @@
+0.5210 - before started
+0.06360  - without checking for the integer extensions first
+# removed a trace, speeding it up a bit too much:
+0.023134 - quit searching for day in habit if it's not worth searching any more !BUT BROKE IT!

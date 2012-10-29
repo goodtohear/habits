@@ -30,41 +30,41 @@ class MonthGridViewController < UIViewController
   end
   #
   def showChainsForHabit habit
-    
+    return unless Array.instance_methods.include? :'item_before:' # in case called before class extensions applied
     @habit = habit
     for grid_index in CELL_INDICES
       cell = @cells[grid_index]
       comparison = Time.now > cell.day
       Dispatch::Queue.concurrent.async do
-        state = cellStateForHabit habit, date: cell.day
+        state = MonthGridViewController.cellStateForHabit habit, date: cell.day
         Dispatch::Queue.main.sync do
           cell.setSelectionState state, color: habit.color
         end
       end
     end
   end
-  def cellStateForHabit habit, date: date
+  def self.cellStateForHabit habit, date: date
     return :before_start unless date
     return :future if (Time.now < date) 
     day = Time.local(date.year,date.month,date.day)
     if habit habit, includesDate: day
-      if habit.days_checked.methods.include? :'item_before:' # class extensions don't seem to be applied immediately.
-        item_before =  habit.days_checked.item_before(day)
-        item_after = habit.days_checked.item_after(day)
-        first_in_chain = !item_before || item_before && item_before < day - 1.day
-        last_in_chain = !item_after || item_after && item_after > day + 1.day
-        return :alone if first_in_chain && last_in_chain
-        return :first_in_chain if first_in_chain
-        return :last_in_chain if last_in_chain
-      end
+      item_before =  habit.days_checked.item_before(day)
+      item_after = habit.days_checked.item_after(day)
+      first_in_chain = !item_before || item_before && item_before < day - 1.day
+      last_in_chain = !item_after || item_after && item_after > day + 1.day
+      return :alone if first_in_chain && last_in_chain
+      return :first_in_chain if first_in_chain
+      return :last_in_chain if last_in_chain
       return :mid_chain 
     end
     return :before_start if habit.earliest_date && date <= habit.earliest_date
     return :missed
   end
-  def habit habit, includesDate: day
+  def self.habit habit, includesDate: day
+    # assume goes forward
     for checked_day in habit.days_checked
       return true if checked_day >= day and (day + 1.day) > checked_day
+      return false if checked_day > day
     end
     false
   end
@@ -78,7 +78,7 @@ class MonthGridViewController < UIViewController
     return unless @habit
     touch = touches.anyObject
     return unless touch.view.class == CalendarDayView
-    @togglingOn = !habit( @habit, includesDate: touch.view.day)
+    @togglingOn = !MonthGridViewController.habit( @habit, includesDate: touch.view.day)
     @daysTouched = []
     @daysTouched << touch.view.day unless isFutureDate(touch.view.day)
   end

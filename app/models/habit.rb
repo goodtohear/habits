@@ -203,7 +203,7 @@ class Habit < NSObject
   end
 
   def done?(time)
-    @days_checked.include? day(time)
+    @days_checked.include? day(time - TimeHelper.dateline_offset.hours)
   end
   def to_do_later?(time)
     !done?(time)
@@ -212,7 +212,8 @@ class Habit < NSObject
   def overdue?(time)
     return false unless @active
     return false if time_to_do.nil? or time_to_do == ''
-    !done?(time) and time.hour >= time_to_do 
+    return false if done?(time) 
+    return TimeHelper.indexOfHour( time.hour) >= TimeHelper.indexOfHour( time_to_do )
     
   end
 

@@ -3,7 +3,7 @@ class InformationScreen < UIViewController
       'home_screen', 'detail_screen'
     ]
   
-  ASSET_HEIGHT = 460
+  ASSET_HEIGHT = 460.0
   def init
     if super
       build
@@ -33,7 +33,7 @@ class InformationScreen < UIViewController
     view.addSubview @paging
     
     w = 80
-    @done = Button.create [[300-w,7],[w,30]], title: "Close", color: Colors::COBALT 
+    @done = Button.create [[320-w,7],[w,30]], title: "Close", color: UIColor.blackColor
     @done.when(UIControlEventTouchUpInside) do
       dismissViewControllerAnimated true, completion: ->(){}
     end
@@ -47,7 +47,10 @@ class InformationScreen < UIViewController
   INSET = 44
   def swipeView swipeView, viewForItemAtIndex: index, reusingView: view # watch out for the scope of view here
     unless view
-      view = UIImageView.alloc.initWithFrame [[INSET,INSET], [320 - INSET * 2, ASSET_HEIGHT - INSET * 2]] # 460 reflects the asset size, not the screen size
+      ratio = (ASSET_HEIGHT - INSET * 2) / ASSET_HEIGHT
+      w = 320.0 * ratio
+      view = UIImageView.alloc.initWithFrame [[(320 - w) * 0.5,INSET], [w, ASSET_HEIGHT - INSET * 2]] # 460 reflects the asset size, not the screen size
+      NSLog "#{view.frame}"
       Shadow.addTo view
     end
     view.image = UIImage.imageNamed PAGES[index]
