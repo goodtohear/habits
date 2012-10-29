@@ -14,8 +14,10 @@ class MonthGridViewController < UIViewController
     next_x = 0
     next_y = 0
     @cells = []
+    components = NSDateComponents.alloc.init
     for grid_index in CELL_INDICES
-      day = firstDay + grid_index.days
+      components.day = grid_index
+      day = NSCalendar.currentCalendar.dateByAddingComponents components, toDate: firstDay, options: 0
       cell = CalendarDayView.alloc.initWithFrame( [[next_x + 1,next_y], [CELL_SIZE[0], 43]] )
       cell.day = day
       cell.label.text = "#{day.day}"
@@ -32,10 +34,10 @@ class MonthGridViewController < UIViewController
   def showChainsForHabit habit
     return unless Array.instance_methods.include? :'item_before:' # in case called before class extensions applied
     @habit = habit
-    for grid_index in CELL_INDICES
-      cell = @cells[grid_index]
-      comparison = Time.now > cell.day
-      Dispatch::Queue.concurrent.async do
+    Dispatch::Queue.concurrent.async do
+      for grid_index in CELL_INDICES
+        cell = @cells[grid_index]
+        comparison = Time.now > cell.day
         state = MonthGridViewController.cellStateForHabit habit, date: cell.day
         Dispatch::Queue.main.sync do
           cell.setSelectionState state, color: habit.color
@@ -50,8 +52,8 @@ class MonthGridViewController < UIViewController
     if habit habit, includesDate: day
       item_before =  habit.days_checked.item_before(day)
       item_after = habit.days_checked.item_after(day)
-      first_in_chain = !item_before || item_before && item_before < day - 1.day
-      last_in_chain = !item_after || item_after && item_after > day + 1.day
+      first_in_chain = !item_before || item_before && TimeHelper.daysBetweenDate(item_before, andDate: day).day > 1
+      last_in_chain = !item_after || item_after && TimeHelper.daysBetweenDate(day, andDate: item_after).day > 1 
       return :alone if first_in_chain && last_in_chain
       return :first_in_chain if first_in_chain
       return :last_in_chain if last_in_chain

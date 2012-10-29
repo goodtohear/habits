@@ -39,7 +39,7 @@ class CalendarViewController < UIViewController
     @dayInNextMonth = firstDay + 36.days
     
     until firstDay.sunday? do
-      firstDay -= 1.day
+      firstDay = TimeHelper.addDays -1, toDate: firstDay
     end
   
     @grid = MonthGridViewController.alloc.init

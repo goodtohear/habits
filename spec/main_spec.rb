@@ -29,12 +29,12 @@ describe "Application 'habits'" do
     habit = Habit.new time_to_do: 0, deadline: 2, active: true
     habit.overdue?(time 12).should.not == true
   end
-  it "should mark any 'done' tasks against the previous day if it's before the dateline hour" do
+  it "should NOT mark any 'done' tasks against the previous day if it's before the dateline hour" do
     habit = Habit.new time_to_do: 12, deadline: 14, active: true
     today = time(12, 0) # midnight today
     habit.check_days [today] 
     habit.done?(time 13).should == true
-    habit.done?(time 1).should == false # because it should check against yesterday
+    habit.done?(time 1).should == true
   end
   
 end

@@ -29,7 +29,7 @@ class Habit < NSObject
     @created_at = options[:created_at] || Time.now
     @time_to_do = options[:time_to_do]
     @deadline = options[:deadline]
-    @interval = 1.day
+    @interval = 1 # day
   end
   
   def is_new?
@@ -88,14 +88,32 @@ class Habit < NSObject
   def self.days_ago(days)
     days.map{ |days_ago| Time.now - days_ago.days  }
   end
+  def longestChain
+    # NSLog "calculating chain #{title}"
+    result = 0
+    count = 0
+    last_day = Time.now
+    last_day = Time.local last_day.year, last_day.month, last_day.day
+    for checked_day in @days_checked.reverse
+      comparison = TimeHelper.daysBetweenDate checked_day, andDate: last_day
+      if comparison.day > @interval
+        # NSLog "compare(#{compare}) was more than interval (@interval), count = #{count}, result = #{result}"
+        result = [count, result].max
+        count = 0
+      end
+      count += 1
+      last_day = checked_day
+    end
+    [result, count].max
+  end
   
   def currentChainLength
     count = 0
     last_day = Time.now
     last_day = Time.local last_day.year, last_day.month, last_day.day
     for checked_day in @days_checked.reverse
-      compare = last_day - checked_day
-      return count if compare > @interval
+      comparison = TimeHelper.daysBetweenDate checked_day, andDate: last_day
+      return count if comparison.day > @interval
       count += 1
       last_day = checked_day
     end
@@ -124,31 +142,15 @@ class Habit < NSObject
   def totalDays
     @days_checked.count
   end
-  def longestChain
-    # NSLog "calculating chain #{title}"
-    result = 0
-    count = 0
-    last_day = Time.now
-    last_day = Time.local last_day.year, last_day.month, last_day.day
-    for checked_day in @days_checked.reverse
-      compare = last_day - checked_day
-      count += 1
-      if compare > @interval
-        # NSLog "compare(#{compare}) was more than interval (@interval), count = #{count}, result = #{result}"
-        result = [count, result].max
-        count = 0
-      end
-      last_day = checked_day
-    end
-    [result, count].max
-  end
   def blank?
     @days_checked.count == 0
   end
   
   def self.reschedule_all_notifications
-    UIApplication.sharedApplication.cancelAllLocalNotifications
-    active.each(&:reschedule_notifications)
+    queue = Dispatch::Queue.concurrent do
+      UIApplication.sharedApplication.cancelAllLocalNotifications
+      active.each(&:reschedule_notifications)
+    end
   end
 
   def timeWithHour hour, daysTime: dayOffset
@@ -203,7 +205,7 @@ class Habit < NSObject
   end
 
   def done?(time)
-    @days_checked.include? day(time - TimeHelper.dateline_offset.hours)
+    @days_checked.include? day(time)
   end
   def to_do_later?(time)
     !done?(time)
@@ -213,7 +215,7 @@ class Habit < NSObject
     return false unless @active
     return false if time_to_do.nil? or time_to_do == ''
     return false if done?(time) 
-    return TimeHelper.indexOfHour( time.hour) >= TimeHelper.indexOfHour( time_to_do )
+    return time.hour > time_to_do 
     
   end
 
