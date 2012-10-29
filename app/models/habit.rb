@@ -61,7 +61,7 @@ class Habit < NSObject
   end
   
   def self.all
-    @all ||= load || [Habit.new(title: "Double-tap here...")]
+    @all ||= load || []
   end
   
   def self.active
