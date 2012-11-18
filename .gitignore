@@ -7,3 +7,5 @@ resources/*.storyboardc
 .dat*
 vendor/Pods
 config.yml
+
+marketing/iPhone4STemplate.psd
