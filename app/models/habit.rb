@@ -148,7 +148,7 @@ class Habit < NSObject
   
   def self.reschedule_all_notifications
     NSLog "reschedule_all_notifications"
-    NSLog "active: #{active}"
+    # NSLog "active: #{active}"
     UIApplication.sharedApplication.cancelAllLocalNotifications
     queue = Dispatch::Queue.concurrent do
       active.each(&:reschedule_notifications)
