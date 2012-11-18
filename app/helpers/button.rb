@@ -1,3 +1,4 @@
+# Author: Michael Forrest | Good To Hear | http://goodtohear.co.uk | License terms: credit me.
 class Button < UIControl
   def self.create frame, options= {title: "OK"}
     result = Button.alloc.initWithFrame frame

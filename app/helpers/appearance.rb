@@ -1,3 +1,4 @@
+# Author: Michael Forrest | Good To Hear | http://goodtohear.co.uk | License terms: credit me.
 class Appearance
   def self.init
     UINavigationBar.appearance.setBackgroundImage UIImage.imageNamed("nav.png"), forBarMetrics: UIBarMetricsDefault

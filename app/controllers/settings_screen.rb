@@ -1,3 +1,4 @@
+# Author: Michael Forrest | Good To Hear | http://goodtohear.co.uk | License terms: credit me.
 class SettingsScreen < UITableViewController
   def tableView tableView, numberOfRowsInSection: section
     5

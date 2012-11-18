@@ -1,3 +1,4 @@
+# Author: Michael Forrest | Good To Hear | http://goodtohear.co.uk | License terms: credit me.
 class CalendarDayView < UIView
   
   FUTURE_COLOR = '#A6B4C3'.to_color

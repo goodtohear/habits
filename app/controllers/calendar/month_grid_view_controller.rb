@@ -1,3 +1,4 @@
+# Author: Michael Forrest | Good To Hear | http://goodtohear.co.uk | License terms: credit me.
 class MonthGridViewController < UIViewController
   CELL_SIZE = [45,44]
   CELL_INDICES = (0..7*5)

@@ -1,3 +1,4 @@
+# Author: Michael Forrest | Good To Hear | http://goodtohear.co.uk | License terms: credit me.
 class AppDelegate
   def application(application, didFinishLaunchingWithOptions:launchOptions)
     Appearance.init()

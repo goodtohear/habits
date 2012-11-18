@@ -1,3 +1,4 @@
+# Author: Michael Forrest | Good To Hear | http://goodtohear.co.uk | License terms: credit me.
 class CalendarDayViewController < UIViewController
   def add_view view
     self.view = view
