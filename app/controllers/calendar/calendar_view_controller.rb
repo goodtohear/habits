@@ -1,5 +1,5 @@
 class CalendarViewController < UIViewController
-  # https://github.com/mattetti/BubbleWrap
+
   attr_accessor :dataSource
   
   def viewDidLoad
