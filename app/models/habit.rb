@@ -147,8 +147,10 @@ class Habit < NSObject
   end
   
   def self.reschedule_all_notifications
+    NSLog "reschedule_all_notifications"
+    NSLog "active: #{active}"
+    UIApplication.sharedApplication.cancelAllLocalNotifications
     queue = Dispatch::Queue.concurrent do
-      UIApplication.sharedApplication.cancelAllLocalNotifications
       active.each(&:reschedule_notifications)
     end
   end
@@ -165,10 +167,14 @@ class Habit < NSObject
     notification = UILocalNotification.alloc.init
     notification.alertBody = text
     notification.fireDate = timeWithHour hour, daysTime: dayOffset
-    UIApplication.sharedApplication.scheduleLocalNotification notification
+    NSLog "alarm:#{text} #{notification.fireDate}"
+    Dispatch::Queue.main do
+      UIApplication.sharedApplication.scheduleLocalNotification notification
+    end
   end
 
   def reschedule_notifications
+    NSLog "reschedule #{title} #{time_to_do} - #{deadline}"
     return if no_reminders?
 
     dayOffset = 0

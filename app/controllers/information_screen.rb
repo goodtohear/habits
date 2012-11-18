@@ -1,6 +1,6 @@
 class InformationScreen < UIViewController
   PAGES = [ 
-      'home_screen', 'detail_screen'
+      'main_screen', 'detail_screen'
     ]
   
   ASSET_HEIGHT = 460.0

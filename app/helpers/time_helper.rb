@@ -6,7 +6,7 @@ class TimeHelper
   end
 
   def self.hours
-    @hours ||= (["Midnight"] + (1..11).map{|h|"#{h}am"} + ["Noon"] + (1..11).map{|h|"#{h}pm"} + ["Midnight"])
+    @hours ||= (["Midnight"] + (1..11).map{|h|"#{h}am"} + ["Noon"] + (1..11).map{|h|"#{h}pm"})
   end
   def self.rotatedHours
   	@rotatedHours ||= hours.rotate(FIRST_OPTION_OFFSET)
