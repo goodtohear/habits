@@ -10,7 +10,7 @@ Good Habits is an iOS app built with [RubyMotion](http://rubymotion.com). With t
 
 About Good To Hear
 ------------------
-[Good To Hear Ltd](http://goodtohear.co.uk) was founded by Michael Forrest in 2011 devoted to improving life through technology. 
+[Good To Hear Ltd](http://goodtohear.co.uk) was founded by Michael Forrest in 2011 and is devoted to improving life through technology. 
 
 Good To Hear has a flagship app called [Happiness](http://goodtohear.co.uk/happiness), a mood-tracker / journal iOS app. 
 
