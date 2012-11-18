@@ -14,4 +14,4 @@ About Good To Hear
 
 Good To Hear has a flagship app called [Happiness](http://goodtohear.co.uk/happiness), a mood-tracker / journal iOS app. 
 
-Habits was designed in collaboration with [Ulrich Atz](http://ulrichatz.com/)
+Habits was designed in collaboration with [Ulrich Atz](http://ulrichatz.com/).
