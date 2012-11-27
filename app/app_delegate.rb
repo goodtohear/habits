@@ -10,11 +10,20 @@ class AppDelegate
     @window.backgroundColor = "#ffffff".to_color
 
     @window.makeKeyAndVisible
+
+    Habit.recalculate_all_notifications
+    Notifications.reschedule!
+    
     true
   end
   
   def applicationWillEnterForeground application
     @main.refresh
+  end
+  def applicationDidReceiveLocalNotification notification
+    @main.refresh
+    Habit.recalculate_all_notifications
+    Notifications.reschedule!
   end
   def applicationWillResignActive application
     Notifications.reschedule!

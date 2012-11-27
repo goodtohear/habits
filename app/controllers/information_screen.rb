@@ -46,7 +46,15 @@ class InformationScreen < UIViewController
     end
     view.addSubview @good_to_hear
     
+    @debug_tap = UITapGestureRecognizer.alloc.initWithTarget self, action: 'reveal_debug_info'
+    @debug_tap.numberOfTouchesRequired = Device.simulator? ? 2 : 3
+    view.addGestureRecognizer @debug_tap
     
+  end
+
+  def reveal_debug_info
+    @debugger = Debugger.alloc.initWithFrame [[0,30],[320,420]]
+    view.addSubview @debugger
   end
   
   def numberOfItemsInSwipeView swipeView

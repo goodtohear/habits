@@ -110,7 +110,7 @@ class HabitDetailViewController < UIViewController
   
   def remindersButtonTitle
     unless (@habit.no_reminders?) 
-      return "Remind at #{TimeHelper.hours[@habit.time_to_do]}. Deadline #{TimeHelper.hours[@habit.deadline]}"
+      return "Remind at #{TimeHelper.hours[@habit.time_to_do]}"
     end
     "Set reminders..."
   end

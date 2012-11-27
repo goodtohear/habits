@@ -54,7 +54,7 @@ class HabitCell < UITableViewCell
   #   @input.textColor = UIColor.blackColor
   # end
   def textColor
-    @habit.due?(Time.now) ? '#C1272D'.to_color : UIColor.blackColor
+    (@habit.due?(Time.now) and !@habit.done?(Time.now)) ? '#C1272D'.to_color : UIColor.blackColor
   end
   def habit= value
     @habit = value

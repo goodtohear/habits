@@ -10,8 +10,8 @@ class Habit < NSObject
       '#7A5D35' #BROWN
     ]
   # :first_in_chain, :last_in_chain, :mid_chain, :missed, :future, :before_start
-  attr_accessor :title, :color_index, :created_at, :days_checked, :time_to_do, :deadline, :active
-  attr_reader :notifications
+  attr_accessor :title, :color_index, :created_at, :days_checked, :time_to_do, :active
+  attr_reader :notification
   def serialize
     {
       title: @title,
@@ -19,7 +19,6 @@ class Habit < NSObject
       created_at: @created_at,
       days_checked: @days_checked,
       time_to_do: @time_to_do || "",
-      deadline: @deadline || "",
       active: @active || false
     }
   end  
@@ -30,9 +29,7 @@ class Habit < NSObject
     @days_checked = Array.new(options[:days_checked] || [])
     @created_at = options[:created_at] || Time.now
     @time_to_do = options[:time_to_do]
-    @deadline = options[:deadline]
     @interval = 1 # day
-    @notifications = []
   end
   
   def is_new?
@@ -43,15 +40,16 @@ class Habit < NSObject
     COLORS[@color_index].to_color
   end
   def no_reminders?
-    deadline.nil? or deadline == "" or time_to_do.nil? or time_to_do == ""
+    time_to_do.nil? or time_to_do == ""
   end
   def self.save!
-    queue = Dispatch::Queue.concurrent('goodtohear.habits.save')
-    queue.async do
+    recalculate_all_notifications
+    @queue ||= Dispatch::Queue.concurrent('goodtohear.habits.save')
+    @queue.async do
       data = all.map(&:serialize)
       # NSLog "saving data #{data}"
       App::Persistence['habits'] = data
-      recalculate_all_notifications
+
     end
   end
   
@@ -150,58 +148,43 @@ class Habit < NSObject
   end
   
   def self.recalculate_all_notifications
-    active.each(&:recalculate_notifications)
+    active.each(&:recalculate_notification)
   end
-  def recalculate_notifications
-    @notifications = []
-    calculate_notifications()
+  def recalculate_notification
+    @notification = nil
+    calculate_notification()
   end
 
   def timeWithHour hour, daysTime: dayOffset
     day = TimeHelper.addDays dayOffset, toDate: Time.now
-    Time.local day.year, day.month, day.day, hour
+    Time.local day.year, day.month, day.day, hour, 0
   end
 
   TOMORROW = 1
   TODAY = 0
 
   def alarm dayOffset, atHour: hour, text: text
-    notification = UILocalNotification.alloc.init
-    notification.alertBody = text
-    notification.fireDate = timeWithHour hour, daysTime: dayOffset
+    @notification = UILocalNotification.alloc.init
+    # @notification.timeZone = NSTimeZone.defaultTimeZone
+    @notification.fireDate = timeWithHour hour, daysTime: dayOffset
+    @notification.alertBody = text
+    @notification.applicationIconBadgeNumber = 1
+    # @notification.repeatCalendar = NSCalendar.currentCalendar
+    @notification.repeatInterval = NSDayCalendarUnit
+    
+    # Debugger.buffer << "Scheduled #{title} initial at #{time_to_do} for time #{@notification.fireDate}"
+    
     # NSLog "alarm:#{text} #{notification.fireDate}"
-    @notifications << notification
   end
 
-  def calculate_notifications
+  def calculate_notification now=Time.now
     return if no_reminders?
-
-    dayOffset = 0
-    now = Time.now
-
-    # always schedule tomorrow's reminders
-    (TOMORROW..TOMORROW+3).each do |dayOffset|
-      alarm dayOffset, atHour: time_to_do, text: title
-      alarm dayOffset, atHour: deadline, text: "Last chance: #{title}"
-    end
-    calculate_notifications_for_today(now)
+    # schedule for tomorrow if already passed reminder for today
+    day = due?(now) ? TOMORROW : TODAY
+    
+    alarm day, atHour: time_to_do, text: title
   end
   
-  def calculate_notifications_for_today(now)
-    # if not done yet then schedule both; deadline first
-    # so schedule deadline:
-    return if done?( now) or !active
-    NSLog "Scheduling #{title} deadline at #{deadline}"
-    day = (deadline == 0 ? TOMORROW : TODAY)
-    alarm day, atHour: deadline, text: "Last chance: #{title}"
-
-    # if due don't schedule first reminder - it's in the past
-    return if due? now
-    NSLog "Scheduling #{title} initial at #{time_to_do}"
-    alarm TODAY, atHour: time_to_do, text: title
-    
-  end
- 
   def toggle(time)
     day = day(time)
     if @days_checked.include?(day)
@@ -224,8 +207,7 @@ class Habit < NSObject
   def due?(time)
     return false unless @active
     return false if time_to_do.nil? or time_to_do == ''
-    return false if done?(time) 
-    return time.hour > time_to_do 
+    return time.hour >= time_to_do 
     
   end
 
