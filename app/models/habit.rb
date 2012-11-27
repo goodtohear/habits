@@ -22,9 +22,9 @@ class Habit < NSObject
       active: @active || false
     }
   end  
-  def initialize(options={title: "New Habit", active:true, days_checked: []})
+  def initialize(options={title: "New Habit", active: true, days_checked: []})
     @title = options[:title]
-    @active = options[:active]
+    @active = options[:active] || false
     @color_index =  options[:color_index] || Habit.next_unused_color_index
     @days_checked = Array.new(options[:days_checked] || [])
     @created_at = options[:created_at] || Time.now
@@ -149,15 +149,16 @@ class Habit < NSObject
   
   def self.reschedule_all_notifications
     NSLog "reschedule_all_notifications"
-    # NSLog "active: #{active}"
-    UIApplication.sharedApplication.cancelAllLocalNotifications
-    queue = Dispatch::Queue.concurrent do
+    @queue ||= Dispatch::Queue.concurrent(priority=:low)
+    @queue.async{
+      UIApplication.sharedApplication.cancelAllLocalNotifications
       active.each(&:reschedule_notifications)
-    end
+      NSLog "Scheduled #{UIApplication.sharedApplication.scheduledLocalNotifications.count} notifications"
+    }
   end
 
   def timeWithHour hour, daysTime: dayOffset
-    day = Time.now + dayOffset.days
+    day = TimeHelper.addDays dayOffset, toDate: Time.now
     Time.local day.year, day.month, day.day, hour
   end
 
@@ -168,32 +169,37 @@ class Habit < NSObject
     notification = UILocalNotification.alloc.init
     notification.alertBody = text
     notification.fireDate = timeWithHour hour, daysTime: dayOffset
-    NSLog "alarm:#{text} #{notification.fireDate}"
-    Dispatch::Queue.main do
-      UIApplication.sharedApplication.scheduleLocalNotification notification
-    end
+    # NSLog "alarm:#{text} #{notification.fireDate}"
+    UIApplication.sharedApplication.scheduleLocalNotification notification
   end
 
   def reschedule_notifications
-    NSLog "reschedule #{title} #{time_to_do} - #{deadline}"
     return if no_reminders?
 
     dayOffset = 0
     now = Time.now
 
     # always schedule tomorrow's reminders
-    (TOMORROW..TOMORROW+7).each do |dayOffset|
+    (TOMORROW..TOMORROW+3).each do |dayOffset|
       alarm dayOffset, atHour: time_to_do, text: title
       alarm dayOffset, atHour: deadline, text: "Last chance: #{title}"
     end
-    # if to_do_later then schedule both
+    schedule_notifications_for_today(now)
+  end
+  
+  def schedule_notifications_for_today(now)
+    # if not done yet then schedule both; deadline first
     # so schedule deadline:
-    return unless to_do_later?(now)
-    alarm TODAY, atHour: deadline, text: "Last chance: #{title}"
-    # if overdue don't schedule first reminder - it's in the past
-    return if overdue? now
-    alarm TODAY, atHour: time_to_do, text: title
+    return if done?( now) or !active
+    NSLog "Scheduling #{title} deadline at #{deadline}"
+    day = deadline == 0 ? TODAY + 1 : TODAY
+    alarm day, atHour: deadline, text: "Last chance: #{title}"
 
+    # if due don't schedule first reminder - it's in the past
+    return if due? now
+    NSLog "Scheduling #{title} initial at #{time_to_do}"
+    alarm TODAY, atHour: time_to_do, text: title
+    
   end
  
   def toggle(time)
@@ -214,11 +220,8 @@ class Habit < NSObject
   def done?(time)
     @days_checked.include? day(time)
   end
-  def to_do_later?(time)
-    !done?(time)
-    
-  end
-  def overdue?(time)
+
+  def due?(time)
     return false unless @active
     return false if time_to_do.nil? or time_to_do == ''
     return false if done?(time) 

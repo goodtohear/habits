@@ -4,6 +4,8 @@ require 'motion/project'
 require 'bubble-wrap'
 
 Motion::Project::App.setup do |app|
+  load_config(app) if File.exists? 'config.yml'
+  
   app.deployment_target = "5.0"
   app.identifier = 'goodtohear.habits'
   app.version = "1.0"
@@ -14,4 +16,16 @@ Motion::Project::App.setup do |app|
   app.frameworks += ["QuartzCore"]
   app.info_plist['UIStatusBarStyle'] = 'UIStatusBarStyleBlackOpaque'
 
+end
+
+
+def load_config(app)
+  config = YAML::load( File.open( 'config.yml' ) )
+  for mode in config.keys
+    app.send(mode) do |c|
+      for key, value in config[mode]
+        app.send "#{key}=", value
+      end
+    end
+  end
 end
