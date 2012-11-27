@@ -5,7 +5,14 @@ class MonthGridViewController < UIViewController
   attr_accessor :month, :firstDay
   
   SELECTION_STATES = :first_in_chain, :last_in_chain, :mid_chain, :missed, :future, :alone
-  
+  STATE_LABEL = {
+    first_in_chain: "first in chain",
+    last_in_chain: "last in chain",
+    mid_chain: "mid-chain",
+    missed: "missed day",
+    future: "future",
+    alone: "isolated day"
+  }
   def loadView
     self.view = UIView.alloc.initWithFrame [[2,0], [315,45 * 5]]
   end
@@ -22,6 +29,7 @@ class MonthGridViewController < UIViewController
       cell = CalendarDayView.alloc.initWithFrame( [[next_x + 1,next_y], [CELL_SIZE[0], 43]] )
       cell.day = day
       cell.label.text = "#{day.day}"
+
       self.view.addSubview cell
       @cells << cell
       next_x += cell.frame.size.width
@@ -42,6 +50,7 @@ class MonthGridViewController < UIViewController
         state = MonthGridViewController.cellStateForHabit habit, date: cell.day
         Dispatch::Queue.main.sync do
           cell.setSelectionState state, color: habit.color
+          cell.accessibilityLabel = cell.day.strftime('%d %B') + ", " + STATE_LABEL[state]
         end
       end
     end

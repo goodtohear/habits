@@ -2,7 +2,7 @@
 $:.unshift("/Library/RubyMotion/lib")
 require 'motion/project'
 require 'bubble-wrap'
-
+require 'motion-cocoapods'
 Motion::Project::App.setup do |app|
   load_config(app) if File.exists? 'config.yml'
   
@@ -15,7 +15,9 @@ Motion::Project::App.setup do |app|
   app.prerendered_icon = true
   app.frameworks += ["QuartzCore"]
   app.info_plist['UIStatusBarStyle'] = 'UIStatusBarStyleBlackOpaque'
-
+  app.pods do
+    pod 'SwipeView'
+  end
 end
 
 

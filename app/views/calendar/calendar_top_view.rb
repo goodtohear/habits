@@ -10,7 +10,7 @@ class CalendarTopView < UIView
   def build
     color = '#8A95A1'.to_color
     self.backgroundColor = UIColor.clearColor
-    @label = HeaderLabel.alloc.initWithFrame [[0,14],[320,24]]
+    @label = HeaderLabel.alloc.initWithFrame [[0,12],[320,24]]
     addSubview @label
 
     @label.textColor = color
@@ -29,6 +29,7 @@ class CalendarTopView < UIView
     
     %w[Sun Mon Tue Wed Thu Fri Sat].each_with_index do |dayName, index|
       label = UILabel.alloc.initWithFrame [[15 + index * 45,40],[18,11]]
+      label.isAccessibilityElement = false
       label.text = dayName
       label.backgroundColor = UIColor.clearColor
       label.font = UIFont.fontWithName "Helvetica-Bold", size: 8

@@ -54,12 +54,14 @@ class HabitCell < UITableViewCell
   #   @input.textColor = UIColor.blackColor
   # end
   def textColor
-    @habit.overdue?(Time.now) ? '#C1272D'.to_color : UIColor.blackColor
+    @habit.due?(Time.now) ? '#C1272D'.to_color : UIColor.blackColor
   end
   def habit= value
     @habit = value
     @input.alpha = @habit.active ? 1.0 : 0.5
     @checkbox.set_checked @habit.done? @now
+    @checkbox.label = @habit.title
+  
     @input.text = @habit.title
     @input.textColor = textColor
     

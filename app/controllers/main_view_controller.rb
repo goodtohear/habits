@@ -22,18 +22,21 @@ class MainViewController < UITableViewController
     self.view.reloadData
 
     @info_button = BarImageButton.alloc.initWithImageNamed('info')
+    @info_button.accessibilityLabel = "Information"
     @info_button.when(UIControlEventTouchUpInside) do
       self.showInfo
     end
     navigationItem.leftBarButtonItem = UIBarButtonItem.alloc.initWithCustomView @info_button
     
     @add_button = BarImageButton.alloc.initWithImageNamed('add')
+    @add_button.accessibilityLabel = "Add new habit"
     @add_button.when(UIControlEventTouchUpInside) do
       self.addItem
     end
     navigationItem.rightBarButtonItem = UIBarButtonItem.alloc.initWithCustomView @add_button
      
     back =  UIBarButtonItem.alloc.init
+    back.accessibilityLabel = "Back"
     back.title = "BACK"
     self.navigationItem.backBarButtonItem = back
      

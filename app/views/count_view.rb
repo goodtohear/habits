@@ -11,6 +11,12 @@ class CountView < UIView
     self
   end
 
+  def isAccessibilityElement
+    true
+  end
+  def accessibilityLabel
+    "Current chain length #{@current_chain_label.text}, longest chain #{@longest_chain_label.text}"
+  end
   def label x
     result = UILabel.alloc.initWithFrame [[x,0],[frame.size.width*0.5 - TEXT_PADDING * 2, frame.size.height]]
     result.textAlignment = UITextAlignmentCenter

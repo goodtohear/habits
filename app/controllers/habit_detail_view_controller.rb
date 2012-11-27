@@ -57,7 +57,7 @@ class HabitDetailViewController < UIViewController
       showRemindersPickerAnimated true
     end
 
-    @remindersPicker = ReminderRangePicker.alloc.initWithFrame [[0,156],[320,480-20-44-150]]
+    @remindersPicker = ReminderRangePicker.alloc.initWithFrame [[0,156],[320,UIScreen.mainScreen.bounds.size.height-20-44-150]]
     @remindersPicker.setHabit @habit
     @remindersPicker.delegate = self
     view.addSubview @remindersPicker
@@ -96,6 +96,9 @@ class HabitDetailViewController < UIViewController
   end
   def updateActiveState animated=true
     @active.image = UIImage.imageNamed( @habit.active ? 'pause' : 'play' )
+    @active.accessibilityLabel = "Toggle paused: Currently #{@habit.active ? "active" : "paused"}"
+    UIAccessibilityPostNotification UIAccessibilityLayoutChangedNotification, nil
+    
     @inactive_overlay.toggleActive @habit.active, animated
   end
   def toggleActive
@@ -117,16 +120,24 @@ class HabitDetailViewController < UIViewController
   end
   def showRemindersPickerAnimated animated
     t = (animated ? 0.3 : 0)
+    @remindersPicker.hidden = false
     UIView.animateWithDuration t, animations: ->{
       @remindersPicker.frame = [[0,156], @remindersPicker.frame.size]
+    },completion: ->(complete){
+       @calendar.view.hidden = true
+       UIAccessibilityPostNotification UIAccessibilityLayoutChangedNotification, nil
     }
   end
 
   def dismissRangePickerAnimated animated
     updateRemindersButtonTitle
     t = (animated ? 0.3 : 0)
+    @calendar.view.hidden = false
     UIView.animateWithDuration t, animations: ->{
-      @remindersPicker.frame = [[0,480], @remindersPicker.frame.size]
+      @remindersPicker.frame = [[0,UIScreen.mainScreen.bounds.size.height], @remindersPicker.frame.size]
+    }, completion: ->(complete){
+      @remindersPicker.hidden = true
+      UIAccessibilityPostNotification UIAccessibilityLayoutChangedNotification, nil
     }
   end
   

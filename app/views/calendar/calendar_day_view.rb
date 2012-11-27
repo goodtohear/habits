@@ -26,6 +26,10 @@ class CalendarDayView < UIView
     self
   end
   
+  def isAccessibilityElement 
+    true
+  end
+  
   # :first_in_chain, :last_in_chain, :mid_chain, :missed, :future, :before_start
   def setSelectionState state, color: color
     if [:first_in_chain,:last_in_chain,:mid_chain,:alone].include? state

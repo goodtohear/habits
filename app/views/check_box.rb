@@ -1,6 +1,6 @@
 # Author: Michael Forrest | Good To Hear | http://goodtohear.co.uk | License terms: credit me.
 class CheckBox < UIView
-  
+  attr_accessor :label
   def initWithFrame frame
     if super
       build
@@ -19,5 +19,14 @@ class CheckBox < UIView
   end
   def set_checked checked
     @checkmark.hidden = !checked
+  end
+  def checked?
+    !@checkmark.hidden?
+  end
+  def accessibilityLabel
+    "Checkbox for #{@label} #{checked? ? "Checked" : "Not checked" }"
+  end
+  def isAccessibilityElement
+    true
   end
 end

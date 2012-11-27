@@ -22,4 +22,9 @@ class BarImageButton < UIControl
   def image= image
     @image_view.image = image
   end
+  
+  def isAccessibilityElement
+    true
+  end
+  
 end

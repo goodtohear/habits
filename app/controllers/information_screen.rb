@@ -23,7 +23,7 @@ class InformationScreen < UIViewController
     @gallery.delegate = self
     
     @gallery.itemSize = @gallery.frame.size
-    @gallery.alignment = SwipeViewAlignmentCenter
+    @gallery.alignment = 1 # SwipeViewAlignment.SwipeViewAlignmentCenter
     @gallery.pagingEnabled = true
     @gallery.itemsPerPage = 1
 
@@ -39,6 +39,13 @@ class InformationScreen < UIViewController
       dismissViewControllerAnimated true, completion: ->(){}
     end
     view.addSubview @done
+    
+    @good_to_hear = Button.create [[0,7], [160,30]], title: "Good To Hear ⇗", color: UIColor.blackColor
+    @good_to_hear.when(UIControlEventTouchUpInside) do
+      App.open_url "http://goodtohear.co.uk"
+    end
+    view.addSubview @good_to_hear
+    
     
   end
   
