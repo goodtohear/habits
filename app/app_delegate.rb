@@ -10,10 +10,9 @@ class AppDelegate
     @window.backgroundColor = "#ffffff".to_color
 
     @window.makeKeyAndVisible
-
     Habit.recalculate_all_notifications
     Notifications.reschedule!
-    
+
     true
   end
   

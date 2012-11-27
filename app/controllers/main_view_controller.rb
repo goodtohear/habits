@@ -40,13 +40,28 @@ class MainViewController < UITableViewController
     back.title = "BACK"
     self.navigationItem.backBarButtonItem = back
      
+    @loading = UIView.alloc.initWithFrame [[0,0],self.view.frame.size]
+    @loading.backgroundColor = UIColor.blackColor
+    @loading.alpha = 0
+    @loading.userInteractionEnabled = false
+    self.view.addSubview @loading
   end
   
   def refresh
-    @now = Time.now
-    @day_navigation.date = @now unless @day_navigation.nil?
-    loadGroups
-    self.view.reloadData
+    UIView.animateWithDuration 0.3, animations: ->{
+      @loading.alpha = 0.2
+    }
+    Dispatch::Queue.concurrent(:default).async do    
+      @now = Time.now
+      @day_navigation.date = @now unless @day_navigation.nil?
+      loadGroups
+      Dispatch::Queue.main.async do
+        self.view.reloadData
+        UIView.animateWithDuration 0.3, animations: ->{
+          @loading.alpha = 0
+        }
+      end
+    end
     
   end
   def viewWillAppear animated
