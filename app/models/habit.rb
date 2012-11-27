@@ -11,6 +11,7 @@ class Habit < NSObject
     ]
   # :first_in_chain, :last_in_chain, :mid_chain, :missed, :future, :before_start
   attr_accessor :title, :color_index, :created_at, :days_checked, :time_to_do, :deadline, :active
+  attr_reader :notifications
   def serialize
     {
       title: @title,
@@ -31,6 +32,7 @@ class Habit < NSObject
     @time_to_do = options[:time_to_do]
     @deadline = options[:deadline]
     @interval = 1 # day
+    @notifications = []
   end
   
   def is_new?
@@ -49,7 +51,7 @@ class Habit < NSObject
       data = all.map(&:serialize)
       # NSLog "saving data #{data}"
       App::Persistence['habits'] = data
-      reschedule_all_notifications
+      recalculate_all_notifications
     end
   end
   
@@ -147,14 +149,12 @@ class Habit < NSObject
     @days_checked.count == 0
   end
   
-  def self.reschedule_all_notifications
-    NSLog "reschedule_all_notifications"
-    @queue ||= Dispatch::Queue.concurrent(priority=:low)
-    @queue.async{
-      UIApplication.sharedApplication.cancelAllLocalNotifications
-      active.each(&:reschedule_notifications)
-      NSLog "Scheduled #{UIApplication.sharedApplication.scheduledLocalNotifications.count} notifications"
-    }
+  def self.recalculate_all_notifications
+    active.each(&:recalculate_notifications)
+  end
+  def recalculate_notifications
+    @notifications = []
+    calculate_notifications()
   end
 
   def timeWithHour hour, daysTime: dayOffset
@@ -170,10 +170,10 @@ class Habit < NSObject
     notification.alertBody = text
     notification.fireDate = timeWithHour hour, daysTime: dayOffset
     # NSLog "alarm:#{text} #{notification.fireDate}"
-    UIApplication.sharedApplication.scheduleLocalNotification notification
+    @notifications << notification
   end
 
-  def reschedule_notifications
+  def calculate_notifications
     return if no_reminders?
 
     dayOffset = 0
@@ -184,15 +184,15 @@ class Habit < NSObject
       alarm dayOffset, atHour: time_to_do, text: title
       alarm dayOffset, atHour: deadline, text: "Last chance: #{title}"
     end
-    schedule_notifications_for_today(now)
+    calculate_notifications_for_today(now)
   end
   
-  def schedule_notifications_for_today(now)
+  def calculate_notifications_for_today(now)
     # if not done yet then schedule both; deadline first
     # so schedule deadline:
     return if done?( now) or !active
     NSLog "Scheduling #{title} deadline at #{deadline}"
-    day = deadline == 0 ? TODAY + 1 : TODAY
+    day = (deadline == 0 ? TOMORROW : TODAY)
     alarm day, atHour: deadline, text: "Last chance: #{title}"
 
     # if due don't schedule first reminder - it's in the past
