@@ -33,8 +33,8 @@ class InformationScreen < UIViewController
     @paging.numberOfPages = PAGES.count
     view.addSubview @paging
     
-    w = 80
-    @done = Button.create [[320-w,7],[w,30]], title: "Close", color: UIColor.blackColor
+    w = 100
+    @done = Button.create [[320-w,7],[w,30]], title: "Close ╳", color: UIColor.blackColor
     @done.when(UIControlEventTouchUpInside) do
       dismissViewControllerAnimated true, completion: ->(){}
     end
@@ -45,6 +45,11 @@ class InformationScreen < UIViewController
       App.open_url "http://goodtohear.co.uk"
     end
     view.addSubview @good_to_hear
+    
+    
+    [@done,@good_to_hear].each do |button|
+      button.label.font = UIFont.fontWithName "HelveticaNeue-Bold", size: 16
+    end
     
     @debug_tap = UITapGestureRecognizer.alloc.initWithTarget self, action: 'reveal_debug_info'
     @debug_tap.numberOfTouchesRequired = Device.simulator? ? 2 : 3

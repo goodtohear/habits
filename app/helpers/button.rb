@@ -12,7 +12,7 @@ class Button < UIControl
     end
     self
   end
-  
+  attr_reader :label
   def build
     layer.cornerRadius = self.frame.size.height * 0.5
     
