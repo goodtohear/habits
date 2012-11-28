@@ -25,6 +25,7 @@ class AppDelegate
     Notifications.reschedule!
   end
   def applicationWillResignActive application
+    Habit.recalculate_all_notifications
     Notifications.reschedule!
   end
   def applicationDidBecomeActive application

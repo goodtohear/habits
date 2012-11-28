@@ -180,7 +180,7 @@ class Habit < NSObject
   def calculate_notification now=Time.now
     return if no_reminders?
     # schedule for tomorrow if already passed reminder for today
-    day = due?(now) ? TOMORROW : TODAY
+    day = (due?(now) or done?(now)) ? TOMORROW : TODAY
     
     alarm day, atHour: time_to_do, text: title
   end
