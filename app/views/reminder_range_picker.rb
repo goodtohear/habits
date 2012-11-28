@@ -20,7 +20,7 @@ class ReminderRangePicker < UIView
     result
   end
   def build
-    
+    self.backgroundColor = UIColor.blackColor
     @options = TimeHelper.rotatedHours
 
     @toolbar = UIToolbar.alloc.initWithFrame [[0,0],[320,44]]
