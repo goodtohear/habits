@@ -14,6 +14,7 @@ Motion::Project::App.setup do |app|
   app.icons += ['icon_57','icon_114.png']
   app.prerendered_icon = true
   app.frameworks += ["QuartzCore"]
+  app.interface_orientations = [:portrait]
   app.info_plist['UIStatusBarStyle'] = 'UIStatusBarStyleBlackOpaque'
   app.pods do
     pod 'SwipeView'

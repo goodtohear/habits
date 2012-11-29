@@ -15,7 +15,7 @@ class AppDelegate
 
     true
   end
-  
+
   def applicationWillEnterForeground application
     @main.refresh
   end
