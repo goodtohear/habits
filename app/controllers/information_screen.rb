@@ -40,14 +40,9 @@ class InformationScreen < UIViewController
     end
     view.addSubview @done
     
-    @good_to_hear = Button.create [[0,7], [160,30]], title: "Good To Hear ⇗", color: UIColor.blackColor
-    @good_to_hear.when(UIControlEventTouchUpInside) do
-      App.open_url "http://goodtohear.co.uk"
-    end
-    view.addSubview @good_to_hear
     
     
-    [@done,@good_to_hear].each do |button|
+    [@done].each do |button|
       button.label.font = UIFont.fontWithName "HelveticaNeue-Bold", size: 16
     end
     

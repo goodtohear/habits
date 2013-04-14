@@ -62,8 +62,14 @@ class MonthGridViewController < UIViewController
     if habit habit, includesDate: day
       item_before =  habit.days_checked.item_before(day)
       item_after = habit.days_checked.item_after(day)
-      first_in_chain = !item_before || item_before && TimeHelper.daysBetweenDate(item_before, andDate: day).day > 1
-      last_in_chain = !item_after || item_after && TimeHelper.daysBetweenDate(day, andDate: item_after).day > 1 
+
+      NSLog "item_before: #{item_before}, day: #{day} days_checked: #{habit.days_checked.join('\n')}"
+      NSLog "item_before: #{TimeHelper.daysBetweenDate(item_before, andDate: day).day}" if item_before
+      NSLog "item_after: #{TimeHelper.daysBetweenDate(day, andDate: item_after).day}" if item_after
+      
+ 
+      first_in_chain = !item_before || item_before && TimeHelper.daysBetweenDate(item_before, andDate: day).day > 1.5
+      last_in_chain = !item_after || item_after && TimeHelper.daysBetweenDate(day, andDate: item_after).day > 1.5 
       return :alone if first_in_chain && last_in_chain
       return :first_in_chain if first_in_chain
       return :last_in_chain if last_in_chain

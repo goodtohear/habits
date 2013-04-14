@@ -9,6 +9,7 @@ class HabitCell < UITableViewCell
   end
   
   def build
+    self.backgroundColor= UIColor.whiteColor
     @backgroundColorView = UIView.alloc.initWithFrame [[0,0],self.frame.size]
     @backgroundColorView.backgroundColor = '#d6cdbf'.to_color
     @backgroundColorView.hidden = true
@@ -62,7 +63,7 @@ class HabitCell < UITableViewCell
     @checkbox.set_checked @habit.done? @now
     @checkbox.label = @habit.title
   
-    @input.text = @habit.title
+    @input.text = "#{@habit.order}. #{@habit.title}"
     @input.textColor = textColor
     
     count = @habit.currentChainLength

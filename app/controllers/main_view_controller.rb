@@ -1,5 +1,5 @@
 # Author: Michael Forrest | Good To Hear | http://goodtohear.co.uk | License terms: credit me.
-class MainViewController < UITableViewController 
+class MainViewController < ATSDragToReorderTableViewController
   SECTIONS = [:active, :inactive]
   
   def init
@@ -10,10 +10,12 @@ class MainViewController < UITableViewController
   end
 
   def loadGroups
-    @groups = [Habit.active,Habit.inactive]
+    @groups = [Habit.active.sort,Habit.inactive.sort]
   end
   
   def build
+    @reload_queue = Dispatch::Queue.concurrent(:default)
+    
     loadGroups
     
     @now = Time.now
@@ -40,7 +42,7 @@ class MainViewController < UITableViewController
     back.title = "BACK"
     self.navigationItem.backBarButtonItem = back
      
-    @loading = UIView.alloc.initWithFrame [[0,0],self.view.frame.size]
+    @loading = UIView.alloc.initWithFrame [[0,0], [320,3000]]
     @loading.backgroundColor = UIColor.blackColor
     @loading.alpha = 0
     @loading.userInteractionEnabled = false
@@ -48,18 +50,14 @@ class MainViewController < UITableViewController
   end
   
   def refresh
-    UIView.animateWithDuration 0.3, animations: ->{
-      @loading.alpha = 0.2
-    }
-    Dispatch::Queue.concurrent(:default).async do    
+    @loading.alpha = 0.2
+    @reload_queue.async do    
       @now = Time.now
       @day_navigation.date = @now unless @day_navigation.nil?
       loadGroups
       Dispatch::Queue.main.async do
         self.view.reloadData
-        UIView.animateWithDuration 0.3, animations: ->{
-          @loading.alpha = 0
-        }
+        @loading.alpha = 0
       end
     end
     
@@ -72,8 +70,7 @@ class MainViewController < UITableViewController
     # self.navigationItem.title = "ALL"
   end
   def showInfo
-    info = InformationScreen.alloc.init
-    presentViewController info, animated: true, completion: ->(){}
+    presentViewController InfoOverviewScreen.alloc.init, animated: true, completion: ->(){}
   end
   def addItem
     new_habit = Habit.new
@@ -102,12 +99,8 @@ class MainViewController < UITableViewController
   end
 
   CELLID = 'HabitRow'
-  def tableView tableView, cellForRowAtIndexPath: indexPath
-    cell = tableView.dequeueReusableCellWithIdentifier(CELLID) || begin
-      cell = HabitCell.alloc.initWithStyle(UITableViewCellStyleDefault, reuseIdentifier:CELLID)
-      # cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator
-      cell
-    end
+  
+  def configureCell cell, forIndexPath: indexPath
     cell.now = @now
     habit = @groups[indexPath.section][indexPath.row]
     cell.habit = habit
@@ -115,6 +108,18 @@ class MainViewController < UITableViewController
     cell
   end
   
+  def tableView tableView, cellForRowAtIndexPath: indexPath
+    cell = tableView.dequeueReusableCellWithIdentifier(CELLID) || HabitCell.alloc.initWithStyle(UITableViewCellStyleDefault, reuseIdentifier:CELLID)
+    configureCell cell, forIndexPath: indexPath
+  end
+  def cellIdenticalToCellAtIndexPath indexPath, forDragTableViewController: dragTableViewController
+    cell = HabitCell.alloc.initWithStyle(UITableViewCellStyleDefault, reuseIdentifier:nil)
+    cell.layer.shadowColor = UIColor.blackColor.CGColor
+    cell.layer.shadowOpacity = 0.15
+    cell.layer.shadowRadius = 3
+    cell.layer.shadowOffset = [0,1]
+    configureCell cell, forIndexPath: indexPath
+  end
   def tableView tableView, heightForHeaderInSection: section
     if SECTIONS.index(:active) == section
       return 44
@@ -135,6 +140,18 @@ class MainViewController < UITableViewController
     end
   end
 
+  def tableView tableView, moveRowAtIndexPath: indexPath, toIndexPath: newIndexPath 
+    moved = @groups[indexPath.section][indexPath.row]
+    moved.active = SECTIONS[newIndexPath.section] == :active
+    @groups[indexPath.section].delete_at indexPath.row
+    @groups[newIndexPath.section].insert newIndexPath.row, moved
+    for group in @groups
+      group.each_with_index do |habit, index|
+        habit.order = index
+      end
+    end
+    
+  end
   # swiper table delgate
   def tableView tableView, didSelectRowAtIndexPath:indexPath
     habit = @groups[indexPath.section][indexPath.row]

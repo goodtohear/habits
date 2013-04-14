@@ -10,7 +10,7 @@ class Habit < NSObject
       '#7A5D35' #BROWN
     ]
   # :first_in_chain, :last_in_chain, :mid_chain, :missed, :future, :before_start
-  attr_accessor :title, :color_index, :created_at, :days_checked, :time_to_do, :active
+  attr_accessor :title, :color_index, :created_at, :days_checked, :time_to_do, :active, :order
   attr_reader :notification
   def serialize
     {
@@ -19,9 +19,17 @@ class Habit < NSObject
       created_at: @created_at,
       days_checked: @days_checked,
       time_to_do: @time_to_do || "",
-      active: @active || false
+      active: @active || false,
+      order: @order
     }
   end  
+  
+  def self.nextOrder
+    @@order ||= 0
+    @@order += 1
+    @@order
+  end
+  
   def initialize(options={title: "New Habit", active: true, days_checked: []})
     @title = options[:title]
     @active = options[:active] || false
@@ -30,6 +38,7 @@ class Habit < NSObject
     @created_at = options[:created_at] || Time.now
     @time_to_do = options[:time_to_do]
     @interval = 1 # day
+    @order = options[:order] || Habit.nextOrder
   end
   
   def is_new?
@@ -60,16 +69,21 @@ class Habit < NSObject
       Habit.new item
     end
   end
-  
+   
   def self.all
     @all ||= load || []
   end
   
   def self.active
-    all.select { |h| h.active }
+    (all.select { |h| h.active }).sort { |a, b| b.order <=> a.order }
   end
+  
   def self.inactive
-    all.select { |h| !h.active } 
+    (all.select { |h| !h.active }).sort { |a, b| b.order <=> a.order }
+  end
+  
+  def compare other
+    self.order.compare other.order
   end
   
   def self.next_unused_color_index
@@ -168,7 +182,7 @@ class Habit < NSObject
     # @notification.timeZone = NSTimeZone.defaultTimeZone
     @notification.fireDate = timeWithHour hour, daysTime: dayOffset
     @notification.alertBody = text
-    @notification.applicationIconBadgeNumber = 1
+    # @notification.applicationIconBadgeNumber = 1
     # @notification.repeatCalendar = NSCalendar.currentCalendar
     @notification.repeatInterval = NSDayCalendarUnit
     
