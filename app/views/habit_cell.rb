@@ -63,7 +63,7 @@ class HabitCell < UITableViewCell
     @checkbox.set_checked @habit.done? @now
     @checkbox.label = @habit.title
   
-    @input.text = "#{@habit.order}. #{@habit.title}"
+    @input.text = @habit.title
     @input.textColor = textColor
     
     count = @habit.currentChainLength
