@@ -13,14 +13,15 @@ class HabitDetailViewController < UIViewController
   def addIcon name, position
     icon = UIImageView.alloc.initWithImage UIImage.imageNamed name
     icon.frame = [position, icon.frame.size]
-    view.addSubview icon
+    @scroller.addSubview icon
   end
+  
   def addTitle text, y
     label = UILabel.alloc.initWithFrame [[35,y], [270, 12]]
     label.font = UIFont.fontWithName "HelveticaNeue-Bold", size: 10
     label.textColor = "#999999".to_color
     label.text = text
-    view.addSubview label
+    @scroller.addSubview label
   end
   
   def build
@@ -28,33 +29,48 @@ class HabitDetailViewController < UIViewController
 
     view.autoresizesSubviews = false
 
+    @scroller = UIScrollView.alloc.initWithFrame [[0, 44],[320, self.view.bounds.size.height - 44]]
+    @scroller.showsVerticalScrollIndicator = false
+    view.addSubview @scroller
+
     @navbar = UIImageView.alloc.initWithImage UIImage.imageNamed("nav")
     self.view.addSubview(@navbar)
 
-    add_calendar
-    add_title_textfield
+    addTitleTextfield
+    addBarButtons
+
     
-    addIcon 'clock', [13,63]
-    addTitle 'Reminders', 64
+    addIcon 'alarm', [13, 14]
+    addTitle 'Reminders', 15
+    addDateRangePicker 30
+    addIcon 'clock', [13, 81]
+    addTitle 'Days', 81 + 1
+    addDayPicker 97
+    addCalendar 146
+    
+    @scroller.contentSize = [320, CGRectGetMaxY(@calendar.view.frame)]
+
     # addIcon 'notes', [13,88]
     # addTitle 'Notes', 88
     
-    add_date_range_picker
     dismissRangePickerAnimated false
     
-    add_bar_buttons
     
     add_inactive_overlay
     
   end
-  def add_calendar
+  def addDayPicker y
+    @days = DayPicker.alloc.initWithFrame [[PADDING, y],[320 - 2 * PADDING, 49]]
+    @scroller.addSubview @days
+  end
+  def addCalendar y
     @calendar = CalendarViewController.alloc.init
-    @calendar.view.frame = [[0,140], [320,276]]
+    @calendar.view.frame = [[0,y], [320,276]]
     @calendar.dataSource = self
-    view.addSubview @calendar.view
+    @scroller.addSubview @calendar.view
     @calendar.showChainsForHabit @habit
   end
-  def add_title_textfield
+  def addTitleTextfield
     @titleTextField = UITextField.alloc.initWithFrame( [[PADDING + TITLE_BUTTONS_WIDTH,0],[320 - (PADDING + TITLE_BUTTONS_WIDTH) * 2,44]])
     @titleTextField.delegate = self
     @titleTextField.font = UIFont.fontWithName("HelveticaNeue-Bold", size:24)
@@ -65,10 +81,10 @@ class HabitDetailViewController < UIViewController
     @titleTextField.text = @habit.title
     view.addSubview(@titleTextField)
   end
-  def add_date_range_picker
-    @reminders_button = Button.create [[10,106-16], [300,44]], color: Colors::COBALT
+  def addDateRangePicker y
+    @reminders_button = Button.create [[10,y], [300,44]], color: Colors::COBALT
     updateRemindersButtonTitle
-    view.addSubview @reminders_button
+    @scroller.addSubview @reminders_button
     
 
     @reminders_button.when UIControlEventTouchUpInside do
@@ -105,7 +121,7 @@ class HabitDetailViewController < UIViewController
     end
   end
   
-  def add_bar_buttons
+  def addBarButtons
     # navigationItem.leftBarButtonItem.titleLabel.textColor = UIColor.blackColor
     @active = BarImageButton.normalButtonWithImageNamed('pause')
     @active.when(UIControlEventTouchUpInside) do

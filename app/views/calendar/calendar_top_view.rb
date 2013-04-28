@@ -27,7 +27,7 @@ class CalendarTopView < UIView
     addSubview @next_button
     
     
-    %w[Sun Mon Tue Wed Thu Fri Sat].each_with_index do |dayName, index|
+    Calendar::DAYS.each_with_index do |dayName, index|
       label = UILabel.alloc.initWithFrame [[15 + index * 45,40],[18,11]]
       label.isAccessibilityElement = false
       label.text = dayName

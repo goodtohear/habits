@@ -15,20 +15,12 @@ class HomeViewController < UIViewController
     @navbar = UIImageView.alloc.initWithImage UIImage.imageNamed("nav")
     self.view.addSubview(@navbar)
 
-    @title_label = UILabel.alloc.initWithFrame [[0,0],[320,44]]
-    @title_label.text = "GOOD HABITS"
-    @title_label.backgroundColor = UIColor.clearColor
-    @title_label.textAlignment = UITextAlignmentCenter
-    @title_label.textColor = UIColor.whiteColor
-    @title_label.font = UIFont.fontWithName "HelveticaNeue-Bold", size: 20
-    view.addSubview @title_label
-
+    add_title
     @info_button = BarImageButton.normalButtonWithImageNamed('info')
     @info_button.accessibilityLabel = "Information"
     @info_button.when(UIControlEventTouchUpInside) do
       self.showInfo
     end
-    # navigationItem.leftBarButtonItem = UIBarButtonItem.alloc.initWithCustomView @info_button
     @info_button.frame = [[0,0], [44,44]]
     self.view.addSubview @info_button
     
@@ -42,13 +34,21 @@ class HomeViewController < UIViewController
     self.view.addSubview @add_button
     
   end
+  def add_title
+    @title_label = UILabel.alloc.initWithFrame [[0,0],[320,44]]
+    @title_label.text = "GOOD HABITS"
+    @title_label.backgroundColor = UIColor.clearColor
+    @title_label.textAlignment = UITextAlignmentCenter
+    @title_label.textColor = UIColor.whiteColor
+    @title_label.font = UIFont.fontWithName "HelveticaNeue-Bold", size: 20
+    view.addSubview @title_label
+  end
   def showInfo
     presentViewController InfoOverviewScreen.alloc.init, animated: true, completion: ->(){}
   end
   def addItem
     @list.addItem
   end
-  
   def reload
     @list.tableView.reloadData
   end
