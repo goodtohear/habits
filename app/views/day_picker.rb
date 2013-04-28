@@ -2,7 +2,7 @@ class DayPicker < UIView
   ITEM_WIDTH = 34
   VERTICAL_PADDING = 5
   SPACE = 8
-
+  attr_accessor :delegate
   def initWithFrame frame, habit: habit
     if initWithFrame frame
       @habit = habit
@@ -26,6 +26,7 @@ class DayPicker < UIView
         button.toggleOn !button.isOn
         @habit.days_required[n] = button.isOn
         Habit.save!
+        delegate.dayPickerDidChange self
       end
       
       @dayButtons << button

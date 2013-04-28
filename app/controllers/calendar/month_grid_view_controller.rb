@@ -4,10 +4,11 @@ class MonthGridViewController < UIViewController
   CELL_INDICES = (0..7*5)
   attr_accessor :month, :firstDay
   
-  SELECTION_STATES = :first_in_chain, :last_in_chain, :mid_chain, :missed, :future, :alone
+  SELECTION_STATES = :first_in_chain, :last_in_chain, :mid_chain, :missed, :future, :alone, :not_required
   STATE_LABEL = {
     first_in_chain: "first in chain",
     before_start: "before start",
+    not_required: "not required",
     last_in_chain: "last in chain",
     mid_chain: "mid-chain",
     missed: "missed day",
@@ -69,11 +70,10 @@ class MonthGridViewController < UIViewController
       item_before =  habit.days_checked.item_before(day)
       item_after = habit.days_checked.item_after(day)
 
-      NSLog "item_before: #{item_before}, day: #{day} days_checked: #{habit.days_checked.join('\n')}"
-      NSLog "item_before: #{TimeHelper.daysBetweenDate(item_before, andDate: day).day}" if item_before
-      NSLog "item_after: #{TimeHelper.daysBetweenDate(day, andDate: item_after).day}" if item_after
-      
- 
+      # NSLog "item_before: #{item_before}, day: #{day} days_checked: #{habit.days_checked.join('\n')}"
+      # NSLog "item_before: #{TimeHelper.daysBetweenDate(item_before, andDate: day).day}" if item_before
+      # NSLog "item_after: #{TimeHelper.daysBetweenDate(day, andDate: item_after).day}" if item_after
+
       first_in_chain = !item_before || item_before && TimeHelper.daysBetweenDate(item_before, andDate: day).day > 1.5
       last_in_chain = !item_after || item_after && TimeHelper.daysBetweenDate(day, andDate: item_after).day > 1.5 
       return :alone if first_in_chain && last_in_chain
@@ -82,6 +82,7 @@ class MonthGridViewController < UIViewController
       return :mid_chain 
     end
     return :before_start if habit.earliest_date && date <= habit.earliest_date
+    return :not_required unless habit.days_required[date.wday]
     return :missed
   end
   def self.habit habit, includesDate: day

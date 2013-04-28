@@ -61,7 +61,11 @@ class HabitDetailViewController < UIViewController
   end
   def addDayPicker y
     @days = DayPicker.alloc.initWithFrame [[PADDING, y],[320 - 2 * PADDING, 49]], habit: @habit
+    @days.delegate = self
     @scroller.addSubview @days
+  end
+  def dayPickerDidChange sender
+    @calendar.showChainsForHabit @habit
   end
   def addCalendar y
     @calendar = CalendarViewController.alloc.init

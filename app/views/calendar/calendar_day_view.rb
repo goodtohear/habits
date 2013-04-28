@@ -48,12 +48,13 @@ class CalendarDayView < UIView
       self.backgroundColor = UIColor.whiteColor
       @label.textColor = FUTURE_COLOR
     end
-    if state == :before_start
+    if [:before_start, :not_required].include? state
       @label.textColor = BEFORE_START_COLOR
     end
     if state == :missed
       @label.textColor = MISSED_COLOR
     end
+    
   end
   
 end
