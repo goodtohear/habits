@@ -39,7 +39,12 @@ class MonthGridViewController < UIViewController
         next_y += CELL_SIZE[1]
       end
     end
+    @tap = UITapGestureRecognizer.alloc.initWithTarget self, action:'tapped'
+    view.addGestureRecognizer @tap
+    
   end
+  
+  
   #
   def showChainsForHabit habit
     return unless Array.instance_methods.include? :'item_before:' # in case called before class extensions applied
@@ -92,38 +97,21 @@ class MonthGridViewController < UIViewController
     day > Time.now
   end
   
-  # selection
-  def touchesBegan touches, withEvent: event
-    return unless @habit
-    touch = touches.anyObject
-    subview = touch.view
-    return unless subview.class == CalendarDayView
-    
-    @togglingOn = !MonthGridViewController.habit( @habit, includesDate: subview.day)
-    subview.setSelectionState @togglingOn ? :alone : :before_start, color: @habit.color
-    
-    @daysTouched = []
-    @daysTouched << touch.view.day unless isFutureDate(touch.view.day)
-  end
-  def touchesMoved touches, withEvent: event
-    return unless @habit
-    touch = touches.anyObject
-    subview = view.hitTest touch.locationInView(view), withEvent: nil
-    return unless subview.class == CalendarDayView
-    day = subview.day
-    subview.setSelectionState @togglingOn ? :alone : :before_start, color: @habit.color
-    @daysTouched << day unless @daysTouched.include?(day) or isFutureDate(day)
-  end
-  def touchesEnded touches, withEvent: event
-    return unless @habit
-    touch = touches.anyObject
-    if @togglingOn
-      @habit.check_days @daysTouched
-    else
-      @habit.uncheck_days @daysTouched
-    end
-    Habit.save!
-    showChainsForHabit @habit
-  end
 
+  def tapped 
+    location = @tap.locationInView(view)
+    subview = view.hitTest location, withEvent: nil
+    if subview.class == CalendarDayView
+      return if isFutureDate(subview.day)
+      togglingOn = !MonthGridViewController.habit( @habit, includesDate: subview.day)
+      subview.setSelectionState @togglingOn ? :alone : :before_start, color: @habit.color
+      if togglingOn
+        @habit.check_days [subview.day]
+      else
+        @habit.uncheck_days [subview.day]
+      end
+      Habit.save!
+      showChainsForHabit @habit
+    end
+  end
 end
