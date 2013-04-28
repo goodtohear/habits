@@ -10,7 +10,7 @@ class Habit < NSObject
       '#7A5D35' #BROWN
     ]
   # :first_in_chain, :last_in_chain, :mid_chain, :missed, :future, :before_start
-  attr_accessor :title, :color_index, :created_at, :days_checked, :time_to_do, :active, :order
+  attr_accessor :title, :color_index, :created_at, :days_checked, :time_to_do, :active, :order, :days_required
   attr_reader :notification
   def serialize
     {
@@ -20,7 +20,8 @@ class Habit < NSObject
       days_checked: @days_checked,
       time_to_do: @time_to_do || "",
       active: @active || false,
-      order: @order
+      order: @order,
+      days_required: @days_required
     }
   end  
   
@@ -38,6 +39,7 @@ class Habit < NSObject
     @created_at = options[:created_at] || Time.now
     @time_to_do = options[:time_to_do]
     @interval = 1 # day
+    @days_required = options[:days_required] || Calendar::DAYS.map{|d| true }
     @order = options[:order] || Habit.nextOrder
   end
   

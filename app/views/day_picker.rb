@@ -3,8 +3,9 @@ class DayPicker < UIView
   VERTICAL_PADDING = 5
   SPACE = 8
 
-  def initWithFrame frame
-    if super frame
+  def initWithFrame frame, habit: habit
+    if initWithFrame frame
+      @habit = habit
       build
     end
     self
@@ -16,13 +17,15 @@ class DayPicker < UIView
     7.times do |n|
       frame = [[x, VERTICAL_PADDING],[ITEM_WIDTH, self.frame.size.height - VERTICAL_PADDING * 2 ]]
       day = Calendar::DAYS[n]
-      isOn = true
-      color = Colors::GREEN
+      isOn = @habit.days_required[n]
+      color = @habit.color
       button = DayToggle.alloc.initWithFrame frame, day: day, color: color, isOn: isOn
       addSubview button
       
       button.when UIControlEventTouchUpInside do
         button.toggleOn !button.isOn
+        @habit.days_required[n] = button.isOn
+        Habit.save!
       end
       
       @dayButtons << button
