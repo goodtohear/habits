@@ -27,4 +27,11 @@ class BarImageButton < UIControl
     true
   end
   
+  
+  def self.normalButtonWithImageNamed imageName
+    result = UIButton.alloc.init
+    result.setImage UIImage.imageNamed(imageName), forState: UIControlStateNormal
+    result
+  end
+  
 end

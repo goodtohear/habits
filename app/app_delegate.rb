@@ -4,8 +4,10 @@ class AppDelegate
     Appearance.init()
     @window = UIWindow.alloc.initWithFrame UIScreen.mainScreen.bounds
     
-    @main = MainViewController.alloc.init
+    @main = HomeViewController.alloc.init
     @nav = UINavigationController.alloc.initWithRootViewController @main
+    @main.list.nav = @nav # (not happy about this)
+    @nav.setNavigationBarHidden true, animated: false
     @window.rootViewController =  @nav
     @window.backgroundColor = "#ffffff".to_color
 
@@ -29,6 +31,6 @@ class AppDelegate
     Notifications.reschedule!
   end
   def applicationDidBecomeActive application
-    @main.tableView.reloadData
+    @main.reload
   end
 end

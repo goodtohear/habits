@@ -1,4 +1,5 @@
 class InfoOverviewScreen < UIViewController
+  
   def init
     if super
       build

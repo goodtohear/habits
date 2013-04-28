@@ -7,6 +7,7 @@ class MonthGridViewController < UIViewController
   SELECTION_STATES = :first_in_chain, :last_in_chain, :mid_chain, :missed, :future, :alone
   STATE_LABEL = {
     first_in_chain: "first in chain",
+    before_start: "before start",
     last_in_chain: "last in chain",
     mid_chain: "mid-chain",
     missed: "missed day",

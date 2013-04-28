@@ -9,7 +9,7 @@ class HabitCell < UITableViewCell
   end
   
   def build
-    self.backgroundColor= UIColor.whiteColor
+    self.backgroundColor = UIColor.whiteColor
     @backgroundColorView = UIView.alloc.initWithFrame [[0,0],self.frame.size]
     @backgroundColorView.backgroundColor = '#d6cdbf'.to_color
     @backgroundColorView.hidden = true

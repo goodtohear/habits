@@ -1,7 +1,7 @@
 # Author: Michael Forrest | Good To Hear | http://goodtohear.co.uk | License terms: credit me.
-class MainViewController < ATSDragToReorderTableViewController
+class HabitListViewController < ATSDragToReorderTableViewController
   SECTIONS = [:active, :inactive]
-  
+  attr_accessor :nav
   def init
     if super
       build
@@ -22,26 +22,7 @@ class MainViewController < ATSDragToReorderTableViewController
     
     self.view.dataSource = self
     self.view.reloadData
-
-    @info_button = BarImageButton.alloc.initWithImageNamed('info')
-    @info_button.accessibilityLabel = "Information"
-    @info_button.when(UIControlEventTouchUpInside) do
-      self.showInfo
-    end
-    navigationItem.leftBarButtonItem = UIBarButtonItem.alloc.initWithCustomView @info_button
     
-    @add_button = BarImageButton.alloc.initWithImageNamed('add')
-    @add_button.accessibilityLabel = "Add new habit"
-    @add_button.when(UIControlEventTouchUpInside) do
-      self.addItem
-    end
-    navigationItem.rightBarButtonItem = UIBarButtonItem.alloc.initWithCustomView @add_button
-     
-    back =  UIBarButtonItem.alloc.init
-    back.accessibilityLabel = "Back"
-    back.title = "BACK"
-    self.navigationItem.backBarButtonItem = back
-     
     @loading = UIView.alloc.initWithFrame [[0,0], [320,3000]]
     @loading.backgroundColor = UIColor.blackColor
     @loading.alpha = 0
@@ -62,26 +43,8 @@ class MainViewController < ATSDragToReorderTableViewController
     end
     
   end
-  def viewWillAppear animated
-    refresh()
-    self.navigationItem.title = "GOOD HABITS"
-  end
   def viewWillDisappear animated
     # self.navigationItem.title = "ALL"
-  end
-  def showInfo
-    presentViewController InfoOverviewScreen.alloc.init, animated: true, completion: ->(){}
-  end
-  def addItem
-    new_habit = Habit.new
-    Habit.all.push new_habit
-    loadGroups
-    section = SECTIONS.index(new_habit.active ? :active : :inactive)
-    view.beginUpdates
-    indexPath = NSIndexPath.indexPathForRow(@groups[section].count - 1, inSection: section)
-    tableView.insertRowsAtIndexPaths [indexPath], withRowAnimation: UITableViewRowAnimationAutomatic
-    view.endUpdates
-    tableView tableView, didSelectRowAtIndexPath: indexPath
   end
 
   #swiper table dataSource
@@ -156,8 +119,19 @@ class MainViewController < ATSDragToReorderTableViewController
   def tableView tableView, didSelectRowAtIndexPath:indexPath
     habit = @groups[indexPath.section][indexPath.row]
     detail = HabitDetailViewController.alloc.initWithHabit habit
-    self.navigationController.pushViewController detail, animated: true
+    self.nav.pushViewController detail, animated: true
   end
 
+  def addItem
+    new_habit = Habit.new
+    Habit.all.push new_habit
+    loadGroups
+    section = SECTIONS.index(new_habit.active ? :active : :inactive)
+    view.beginUpdates
+    indexPath = NSIndexPath.indexPathForRow(@groups[section].count - 1, inSection: section)
+    tableView.insertRowsAtIndexPaths [indexPath], withRowAnimation: UITableViewRowAnimationAutomatic
+    view.endUpdates
+    tableView tableView, didSelectRowAtIndexPath: indexPath
+  end
 
 end
