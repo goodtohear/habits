@@ -29,18 +29,14 @@ class DayToggle < UIButton
   
   def addCheckmark
     @checkmark = UIImageView.alloc.initWithImage UIImage.imageNamed "check_mark"
-    @checkmark.frame = [[8,17],@checkmark.frame.size]
+    @checkmark.frame = [[8,19],@checkmark.frame.size]
     addSubview @checkmark
   end
   
   def toggleOn isOn
     @isOn = isOn
     @checkmark.hidden = !isOn
-    if isOn
-      self.backgroundColor = @color
-    else
-      self.backgroundColor = Colors::GREY
-    end
+
   end
   
 end

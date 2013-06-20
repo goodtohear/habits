@@ -1,7 +1,7 @@
 # Author: Michael Forrest | Good To Hear | http://goodtohear.co.uk | License terms: credit me.
 class HabitDetailViewController < UIViewController
   TITLE_BUTTONS_WIDTH = 55
-  PADDING = 10
+  PADDING = 3
   def initWithHabit habit
     if init
       @habit = habit
@@ -17,7 +17,7 @@ class HabitDetailViewController < UIViewController
   end
   
   def addTitle text, y
-    label = UILabel.alloc.initWithFrame [[35,y], [270, 12]]
+    label = UILabel.alloc.initWithFrame [[13,y], [270, 12]]
     label.font = UIFont.fontWithName "HelveticaNeue-Bold", size: 10
     label.textColor = "#999999".to_color
     label.text = text
@@ -40,11 +40,11 @@ class HabitDetailViewController < UIViewController
     addBarButtons
 
     
-    addIcon 'alarm', [13, 14]
-    addTitle 'Reminders', 15
+
+    addTitle 'Reminder time', 15
     addDateRangePicker 30
-    addIcon 'clock', [13, 81]
-    addTitle 'Days', 81 + 1
+
+    addTitle 'Days to do this', 81 + 1
     addDayPicker 97
     addCalendar 146
     
@@ -60,7 +60,7 @@ class HabitDetailViewController < UIViewController
     
   end
   def addDayPicker y
-    @days = DayPicker.alloc.initWithFrame [[PADDING, y],[320 - 2 * PADDING, 49]], habit: @habit
+    @days = DayPicker.alloc.initWithFrame [[PADDING, y],[320 - 2 * PADDING, 48]], habit: @habit
     @days.delegate = self
     @scroller.addSubview @days
   end
@@ -86,7 +86,7 @@ class HabitDetailViewController < UIViewController
     view.addSubview(@titleTextField)
   end
   def addDateRangePicker y
-    @reminders_button = Button.create [[10,y], [300,44]], color: Colors::COBALT
+    @reminders_button = Button.create [[PADDING,y], [320 - 2 * PADDING,44]], color: Colors::COBALT
     updateRemindersButtonTitle
     @scroller.addSubview @reminders_button
     
@@ -165,7 +165,7 @@ class HabitDetailViewController < UIViewController
     unless (@habit.no_reminders?) 
       return "Remind at #{TimeHelper.hours[@habit.time_to_do]}"
     end
-    "Set reminders..."
+    "Set reminder..."
   end
   def updateRemindersButtonTitle 
     

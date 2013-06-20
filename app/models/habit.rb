@@ -143,19 +143,19 @@ class Habit < NSObject
   end
   
   def currentChainLength
-    return 0
-    NSLog "TODO: figure out the current chain length for #{@title}: #{@days_checked.reverse} / days required: #{@days_required}"
     count = 0
     now = Time.now
     last_day = Time.local now.year, now.month, now.day
     
-    for checked_day in @days_checked.reverse
-      comparison = TimeHelper.daysBetweenDate checked_day, andDate: last_day
-      if comparison.day > @interval
-        return count # if @days_required[checked_day] # BUT NOT IF THE DAY WAS NOT REQUIRED!
+    while last_day > earliest_date
+      if includesDate last_day
+        count += 1
       end
-      count += 1
-      last_day = checked_day
+      if !continuesActivityBefore(last_day)
+        return count
+      end
+
+      last_day = TimeHelper.addDays -1, toDate: last_day
     end
     count
   end
