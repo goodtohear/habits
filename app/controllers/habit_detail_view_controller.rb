@@ -175,7 +175,7 @@ class HabitDetailViewController < UIViewController
     t = (animated ? 0.3 : 0)
     @remindersPicker.hidden = false
     UIView.animateWithDuration t, animations: ->{
-      @remindersPicker.frame = [[0,156], @remindersPicker.frame.size]
+      @remindersPicker.frame = [[0,200], @remindersPicker.frame.size]
     },completion: ->(complete){
        @calendar.view.hidden = true
        UIAccessibilityPostNotification UIAccessibilityLayoutChangedNotification, nil
@@ -196,7 +196,6 @@ class HabitDetailViewController < UIViewController
   
   def viewDidAppear animated
     super
-    return
     if @habit.is_new? and @habit.active
       @titleTextField.becomeFirstResponder
       @titleTextField.selectAll self
