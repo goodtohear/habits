@@ -78,8 +78,8 @@ class HabitListViewController < ATSDragToReorderTableViewController
   def cellIdenticalToCellAtIndexPath indexPath, forDragTableViewController: dragTableViewController
     cell = HabitCell.alloc.initWithStyle(UITableViewCellStyleDefault, reuseIdentifier:nil)
     cell.layer.shadowColor = UIColor.blackColor.CGColor
-    cell.layer.shadowOpacity = 0.15
-    cell.layer.shadowRadius = 3
+    cell.layer.shadowOpacity = 0.5
+    cell.layer.shadowRadius = 5
     cell.layer.shadowOffset = [0,1]
     configureCell cell, forIndexPath: indexPath
   end
