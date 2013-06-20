@@ -77,7 +77,7 @@ class HabitDetailViewController < UIViewController
   def addTitleTextfield
     @titleTextField = UITextField.alloc.initWithFrame( [[PADDING + TITLE_BUTTONS_WIDTH,0],[320 - (PADDING + TITLE_BUTTONS_WIDTH) * 2,44]])
     @titleTextField.delegate = self
-    @titleTextField.font = UIFont.fontWithName("HelveticaNeue-Bold", size:24)
+    @titleTextField.font = UIFont.fontWithName("HelveticaNeue-Bold", size:20)
     @titleTextField.textColor = UIColor.whiteColor
     @titleTextField.minimumFontSize = 15
     @titleTextField.textAlignment = UITextAlignmentCenter 
@@ -138,8 +138,8 @@ class HabitDetailViewController < UIViewController
     @back.setBackgroundImage UIImage.imageNamed('back'), forState:UIControlStateNormal
     @back.setTitleColor Colors::COBALT, forState:UIControlStateNormal
     @back.setTitle "BACK", forState: UIControlStateNormal
-    @back.font = UIFont.fontWithName "HelveticaNeue-Bold", size: 14
-    @back.titleEdgeInsets = [2, 10, 0, 5 ] # top left bottom right
+    @back.font = UIFont.fontWithName "HelveticaNeue-Bold", size: 12
+    @back.titleEdgeInsets = [2, 13, 0, 4 ] # top left bottom right
     view.addSubview @back
     @back.when(UIControlEventTouchUpInside) do
       self.navigationController.popViewControllerAnimated(true)
@@ -147,7 +147,7 @@ class HabitDetailViewController < UIViewController
   end
   
   def updateActiveState animated=true
-    image = UIImage.imageNamed( @habit.active ? 'pause' : 'play' )
+    image = UIImage.imageNamed( @habit.active ? 'pause' : 'play' )  
     @active.setImage image, forState:UIControlStateNormal
     @active.accessibilityLabel = "Toggle paused: Currently #{@habit.active ? "active" : "paused"}"
     UIAccessibilityPostNotification UIAccessibilityLayoutChangedNotification, nil
@@ -195,6 +195,8 @@ class HabitDetailViewController < UIViewController
   end
   
   def viewDidAppear animated
+    super
+    return
     if @habit.is_new? and @habit.active
       @titleTextField.becomeFirstResponder
       @titleTextField.selectAll self
@@ -202,7 +204,7 @@ class HabitDetailViewController < UIViewController
   end
   
   def viewWillDisappear animated
-    
+    super
     @titleTextField.resignFirstResponder
     @habit.title = @titleTextField.text
     Habit.save!

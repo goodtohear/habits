@@ -5,16 +5,24 @@ class CalendarDayView < UIView
   MISSED_COLOR = '#C1272D'.to_color
   ON_COLOR = UIColor.whiteColor
   BEFORE_START_COLOR = '#3A4450'.to_color
-  
+  NOT_REQUIRED_COLOR = FUTURE_COLOR
+
+  CIRCLE_INSET = 7
   
   attr_reader :label
   attr_accessor :day
   def initWithFrame(rect)
     if super
-      @block = UIView.alloc.initWithFrame [[0,0], frame.size]
+      @block = UIView.alloc.initWithFrame self.bounds
       addSubview @block
       @block.userInteractionEnabled = false
-      
+    
+      @circle = UIView.alloc.initWithFrame [[CIRCLE_INSET,CIRCLE_INSET], [frame.size.width - 2 * CIRCLE_INSET, frame.size.height - 2 * CIRCLE_INSET]] # CGRectInset would be useful here...
+      addSubview(@circle)
+      @circle.backgroundColor = UIColor.whiteColor
+      @circle.layer.cornerRadius = @circle.frame.size.height * 0.5
+      @circle.userInteractionEnabled = false
+
       @label = UILabel.alloc.initWithFrame [[0,0], frame.size]
       @label.font = UIFont.fontWithName "Helvetica-Bold", size: 18
       @label.backgroundColor = UIColor.clearColor
@@ -40,9 +48,16 @@ class CalendarDayView < UIView
     @block.backgroundColor = color
     layer.cornerRadius = state == :mid_chain ? 0 : 22
     
-    @block.hidden = !([:last_in_chain, :first_in_chain].include? state)
-    @block.frame = [[0, 0],[frame.size.width * 0.5, frame.size.height]] if state == :last_in_chain
-    @block.frame = [[frame.size.width * 0.5, 0],[frame.size.width * 0.5, frame.size.height]] if state == :first_in_chain
+    @block.hidden = !([:last_in_chain, :first_in_chain, :between_subchains].include? state)
+    if state == :last_in_chain
+      @block.frame = [[0, 0],[frame.size.width * 0.5, frame.size.height]]
+    elsif state == :first_in_chain
+      @block.frame = [[frame.size.width * 0.5, 0],[frame.size.width * 0.5, frame.size.height]] 
+    else
+      @block.frame = self.bounds
+    end
+
+    @circle.hidden = state != :between_subchains
 
     if [:missed, :future, :before_start].include? state
       self.backgroundColor = UIColor.whiteColor
@@ -50,6 +65,9 @@ class CalendarDayView < UIView
     end
     if [:before_start, :not_required].include? state
       @label.textColor = BEFORE_START_COLOR
+    end
+    if [:between_subchains, :not_required].include? state
+      @label.textColor = NOT_REQUIRED_COLOR
     end
     if state == :missed
       @label.textColor = MISSED_COLOR

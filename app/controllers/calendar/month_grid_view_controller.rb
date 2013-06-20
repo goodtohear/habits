@@ -4,7 +4,7 @@ class MonthGridViewController < UIViewController
   CELL_INDICES = (0..7*5)
   attr_accessor :month, :firstDay
   
-  SELECTION_STATES = :first_in_chain, :last_in_chain, :mid_chain, :missed, :future, :alone, :not_required
+  SELECTION_STATES = :first_in_chain, :last_in_chain, :mid_chain, :missed, :future, :alone, :not_required, :between_subchains # subchains are segments of chains between required days of the week
   STATE_LABEL = {
     first_in_chain: "first in chain",
     before_start: "before start",
@@ -13,7 +13,9 @@ class MonthGridViewController < UIViewController
     mid_chain: "mid-chain",
     missed: "missed day",
     future: "future",
-    alone: "isolated day"
+    alone: "isolated day",
+    between_subchains: "between subchains"
+
   }
   def loadView
     self.view = UIView.alloc.initWithFrame [[2,0], [315,45 * 5]]
@@ -48,7 +50,6 @@ class MonthGridViewController < UIViewController
   
   #
   def showChainsForHabit habit
-    return unless Array.instance_methods.include? :'item_before:' # in case called before class extensions applied
     @habit = habit
     Dispatch::Queue.concurrent.async do
       for grid_index in CELL_INDICES
@@ -62,38 +63,34 @@ class MonthGridViewController < UIViewController
       end
     end
   end
+  
   def self.cellStateForHabit habit, date: date
     return :before_start unless date
     return :future if (Time.now < date) 
     day = Time.local(date.year,date.month,date.day)
-    if habit habit, includesDate: day
-      item_before =  habit.days_checked.item_before(day)
-      item_after = habit.days_checked.item_after(day)
 
-      # NSLog "item_before: #{item_before}, day: #{day} days_checked: #{habit.days_checked.join('\n')}"
-      # NSLog "item_before: #{TimeHelper.daysBetweenDate(item_before, andDate: day).day}" if item_before
-      # NSLog "item_after: #{TimeHelper.daysBetweenDate(day, andDate: item_after).day}" if item_after
+    day_after = day + 1.day
 
-      first_in_chain = !item_before || item_before && TimeHelper.daysBetweenDate(item_before, andDate: day).day > 1.5
-      last_in_chain = !item_after || item_after && TimeHelper.daysBetweenDate(day, andDate: item_after).day > 1.5 
-      return :alone if first_in_chain && last_in_chain
+    if habit.includesDate day
+      first_in_chain = !habit.continuesActivityBefore(day)
+      last_in_chain = !habit.continuesActivityAfter(day)  || Time.now < day_after
+      alone = first_in_chain && last_in_chain
+
+      return :alone if alone
       return :first_in_chain if first_in_chain
       return :last_in_chain if last_in_chain
       return :mid_chain 
     end
     return :before_start if habit.earliest_date && date <= habit.earliest_date
-    return :not_required unless habit.days_required[date.wday]
+    
+    unless habit.days_required[date.wday]
+      return :between_subchains if habit.continuesActivityBefore(day) && habit.continuesActivityAfter(day)
+      return :not_required 
+    end
     return :missed
   end
-  def self.habit habit, includesDate: day
-    # assume goes forward
-    for checked_day in habit.days_checked
-      return true if checked_day >= day and (day + 1.day) > checked_day
-      return false if checked_day > day
-    end
-    false
-  end
   
+
   def isFutureDate(day)
     day > Time.now
   end
@@ -104,7 +101,7 @@ class MonthGridViewController < UIViewController
     subview = view.hitTest location, withEvent: nil
     if subview.class == CalendarDayView
       return if isFutureDate(subview.day)
-      togglingOn = !MonthGridViewController.habit( @habit, includesDate: subview.day)
+      togglingOn = !@habit.includesDate(subview.day)
       subview.setSelectionState @togglingOn ? :alone : :before_start, color: @habit.color
       if togglingOn
         @habit.check_days [subview.day]

@@ -31,16 +31,33 @@ class Habit < NSObject
     @@order
   end
   
-  def initialize(options={title: "New Habit", active: true, days_checked: []})
+  def initialize(options={title: "New Habit", active: true, days_checked: {}})
     @title = options[:title]
     @active = options[:active] || false
     @color_index =  options[:color_index] || Habit.next_unused_color_index
-    @days_checked = Array.new(options[:days_checked] || [])
+
+    # migrate to new format if needed
+    if(options[:days_checked].class == Array)
+      NSLog "MIGRATING #{options[:days_checked]}"
+      @days_checked = migrate_array_to_hash options[:days_checked]
+    else
+      @days_checked = options[:days_checked] || {}
+    end  
+
     @created_at = options[:created_at] || Time.now
     @time_to_do = options[:time_to_do]
     @interval = 1 # day
     @days_required = options[:days_required] || Calendar::DAYS.map{|d| true }
     @order = options[:order] || Habit.nextOrder
+  end
+
+  def migrate_array_to_hash days_checked_array
+    result = {}
+    for item in days_checked_array
+      key = item.to_s[0..9]
+      result[key] = true
+    end
+    return result
   end
   
   def is_new?
@@ -106,6 +123,7 @@ class Habit < NSObject
     days.map{ |days_ago| Time.now - days_ago.days  }
   end
   def longestChain
+    return 0
     # NSLog "calculating chain #{title}"
     result = 0
     count = 0
@@ -125,12 +143,17 @@ class Habit < NSObject
   end
   
   def currentChainLength
+    return 0
+    NSLog "TODO: figure out the current chain length for #{@title}: #{@days_checked.reverse} / days required: #{@days_required}"
     count = 0
-    last_day = Time.now
-    last_day = Time.local last_day.year, last_day.month, last_day.day
+    now = Time.now
+    last_day = Time.local now.year, now.month, now.day
+    
     for checked_day in @days_checked.reverse
       comparison = TimeHelper.daysBetweenDate checked_day, andDate: last_day
-      return count if comparison.day > @interval
+      if comparison.day > @interval
+        return count # if @days_required[checked_day] # BUT NOT IF THE DAY WAS NOT REQUIRED!
+      end
       count += 1
       last_day = checked_day
     end
@@ -139,21 +162,27 @@ class Habit < NSObject
   
   def check_days days
     for day in days
-      day = Time.local day.year, day.month, day.day
-      @days_checked << day unless @days_checked.include? day
+      key = key(day)
+      @days_checked[key] = true
     end
-    @days_checked.sort!
+    clearDaysCache()
   end
   
   def uncheck_days days
     for day in days
-      found = @days_checked.find{|d| d == Time.local(day.year, day.month, day.day) }
-      @days_checked.delete found
+      key = key(day)
+      @days_checked.delete key
     end
-    @days_checked.sort!
+    clearDaysCache()
   end
   def earliest_date
-    @days_checked.first
+    return @earliest_date if @earliest_date
+    return Time.now if @days_checked.count == 0
+
+    @earliest_date = NSDate.dateWithNaturalLanguageString @days_checked.keys.sort.first
+  end
+  def clearDaysCache
+    @earliest_date = nil
   end
   
   def totalDays
@@ -202,22 +231,45 @@ class Habit < NSObject
   end
   
   def toggle(time)
-    day = day(time)
-    if @days_checked.include?(day)
-      @days_checked.delete day
+    key = key(time)
+    if @days_checked[key]
+      @days_checked.delete key
     else
-      @days_checked << day
+      @days_checked[key] = true
     end
-    @days_checked.sort!
+    clearDaysCache()
     Habit.save!
   end
-
+  def includesDate date
+    @days_checked[key(date)] # || !days_required[date.wday]
+  end
+  def continuesActivityBefore date
+    # iterate back up to 6 days 
+    (1..7).each do |n|
+      possible_date = TimeHelper.addDays -n, toDate: date
+      return true if self.includesDate possible_date
+      return false if days_required[possible_date.wday]
+    end
+    false
+  end
+  def continuesActivityAfter date
+    # iterate forward up to 6 days 
+    (1..7).each do |n|
+      possible_date = TimeHelper.addDays n, toDate: date
+      return true if self.includesDate possible_date
+      return false if days_required[possible_date.wday]
+    end
+    false
+  end
+  def key(day)
+    Time.local( day.year, day.month, day.day).to_s[0..9]
+  end
   def day(time)
      Time.local time.year, time.month, time.day
   end
 
   def done?(time)
-    @days_checked.include? day(time)
+    @days_checked[key(time)]
   end
 
   def due?(time)

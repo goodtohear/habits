@@ -1,6 +1,7 @@
 source 'https://rubygems.org'
-gem 'bubble-wrap'
+gem "bubble-wrap", "~> 1.3.0", :require => 'bubble-wrap/all'
 gem 'rake'
+gem 'cocoapods'
 gem 'motion-cocoapods'
 gem 'motion-testflight'
 gem 'guard'
