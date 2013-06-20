@@ -15,10 +15,10 @@ class CalendarViewController < UIViewController
     view.addSubview @top
     
     @top.prev_button.when(UIControlEventTouchUpInside) do
-      showMonthIncludingTime @dayInPreviousMonth if @dayInPreviousMonth
+      showMonthIncludingTime @dayInPreviousMonth # if @dayInPreviousMonth
     end
     @top.next_button.when(UIControlEventTouchUpInside) do
-      showMonthIncludingTime @dayInNextMonth if @dayInNextMonth
+      showMonthIncludingTime @dayInNextMonth # if @dayInNextMonth
     end
     
     @scroller = UIScrollView.alloc.initWithFrame [[0,56], [320,220]]
@@ -28,27 +28,27 @@ class CalendarViewController < UIViewController
   end
   
   def showMonthIncludingTime time
-    return if @grid and @grid.month == time.month
+    month = time.month
+    return if @grid and @grid.month == month
     @grid.view.removeFromSuperview if @grid and @grid.view.superview
     
     @top.label.text = time.strftime '%B %Y'
     
-    firstDay = time
     firstDay = Time.local time.year, time.month
     
-    @dayInPreviousMonth = firstDay - 2.days
+    @dayInPreviousMonth = firstDay - 10.days
     @dayInNextMonth = firstDay + 36.days
     
     until firstDay.sunday? do
       firstDay = TimeHelper.addDays -1, toDate: firstDay
     end
-  
+    
     @grid = MonthGridViewController.alloc.init
     @grid.firstDay = firstDay
-    @grid.month = time.month
+    @grid.month = month 
     @scroller.addSubview @grid.view
     @grid.showChainsForHabit(@habit) if @habit
-  
+    
   end
   
   def showChainsForHabit habit
