@@ -21,7 +21,8 @@ class Habit < NSObject
       time_to_do: @time_to_do || "",
       active: @active || false,
       order: @order,
-      days_required: @days_required
+      days_required: @days_required,
+      longest_chain: @longest_chain
     }
   end  
   
@@ -41,12 +42,12 @@ class Habit < NSObject
     else
       @days_checked = options[:days_checked] || {}
     end  
-
     @created_at = options[:created_at] || Time.now
     @time_to_do = options[:time_to_do]
     @interval = 1 # day
     @days_required = options[:days_required] || Calendar::DAYS.map{|d| true }
     @order = options[:order] || Habit.nextOrder
+    @longest_chain = options[:longest_chain] || recalculate_longest_chain
   end
 
   def migrate_array_to_hash days_checked_array
@@ -124,8 +125,7 @@ class Habit < NSObject
   def targetChainLength
     return 28
   end
-  def longestChain
-    return 0
+  def recalculate_longest_chain
     result = 0
     count = 0
     last_day = Time.now
@@ -142,7 +142,11 @@ class Habit < NSObject
 
       last_day = TimeHelper.addDays -1, toDate: last_day
     end
-    [result, count].max
+    @longest_chain = [result, count].max  
+  end
+
+  def longestChain
+    @longest_chain
   end
   
   def currentChainLength
@@ -186,6 +190,7 @@ class Habit < NSObject
   end
   def clearDaysCache
     @earliest_date = nil
+    recalculate_longest_chain()
   end
   
   def totalDays
