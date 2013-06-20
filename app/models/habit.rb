@@ -26,9 +26,7 @@ class Habit < NSObject
   end  
   
   def self.nextOrder
-    @@order ||= 0
-    @@order += 1
-    @@order
+    self.all.count + 1
   end
   
   def initialize(options={title: "New Habit", active: true, days_checked: {}})
@@ -122,22 +120,27 @@ class Habit < NSObject
   def self.days_ago(days)
     days.map{ |days_ago| Time.now - days_ago.days  }
   end
+
+  def targetChainLength
+    return 28
+  end
   def longestChain
     return 0
-    # NSLog "calculating chain #{title}"
     result = 0
     count = 0
     last_day = Time.now
     last_day = Time.local last_day.year, last_day.month, last_day.day
-    for checked_day in @days_checked.reverse
-      comparison = TimeHelper.daysBetweenDate checked_day, andDate: last_day
-      if comparison.day > @interval
-        # NSLog "compare(#{compare}) was more than interval (@interval), count = #{count}, result = #{result}"
-        result = [count, result].max
+    # this is the same as currentChainLength only instead of returning a resultt, we reset the count when a missed day is found.
+    while last_day > earliest_date
+      if includesDate last_day
+        count += 1
+      end
+      if !continuesActivityBefore(last_day)
+        result = [result,count].max
         count = 0
       end
-      count += 1
-      last_day = checked_day
+
+      last_day = TimeHelper.addDays -1, toDate: last_day
     end
     [result, count].max
   end
