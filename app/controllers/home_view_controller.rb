@@ -55,5 +55,7 @@ class HomeViewController < UIViewController
   def viewWillAppear animated
     @list.refresh()
   end
-  
+  def refresh
+    @list.refresh()
+  end
 end
