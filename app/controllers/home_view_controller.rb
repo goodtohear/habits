@@ -33,6 +33,11 @@ class HomeViewController < UIViewController
     @add_button.frame = [[self.view.frame.size.width - 44, 0], [44,44]]
     self.view.addSubview @add_button
     
+    if Habit.all.count == 0 and !@get_started_button
+      @get_started_button = TooltipView.alloc.initWithText "TAP HERE TO GET STARTED", fromRect: @add_button.frame
+      view.addSubview @get_started_button
+    end
+
   end
   def add_title
     @title_label = UILabel.alloc.initWithFrame [[0,0],[320,44]]
@@ -48,6 +53,11 @@ class HomeViewController < UIViewController
   end
   def addItem
     @list.addItem
+    if @get_started_button
+      UIView.animateWithDuration 0.2, animations: ->{
+        @get_started_button.alpha = 0
+      }
+    end
   end
   def reload
     @list.tableView.reloadData

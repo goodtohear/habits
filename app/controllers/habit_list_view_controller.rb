@@ -28,8 +28,17 @@ class HabitListViewController < ATSDragToReorderTableViewController
     @loading.alpha = 0
     @loading.userInteractionEnabled = false
     self.view.addSubview @loading
+
+    @easter_egg = ScrollEasterEggView.alloc.initWithFrame [[0,-200],[320,200]]
+    self.view.addSubview @easter_egg
+
   end
-  
+  def scrollViewDidScroll scrollView
+    return if !@easter_egg 
+    offset = -scrollView.contentOffset.y
+    return if offset < 0 
+    @easter_egg.scrolledTo offset
+  end
   def refresh
     @loading.alpha = 0.2
     @reload_queue.async do    

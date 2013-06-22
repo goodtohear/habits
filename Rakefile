@@ -1,12 +1,11 @@
 # -*- coding: utf-8 -*-
 $:.unshift("/Library/RubyMotion/lib")
-require 'motion/project/template/ios'
 require "rubygems"
+require 'motion/project/template/ios'
 require "yaml"
-require "motion-bundler"
-require 'motion-cocoapods'
 require "bubble-wrap"
 require "bubble-wrap/all"
+require 'motion-cocoapods'
 
 def load_config(app)
   config = YAML::load( File.open( 'config.yml' ) )
