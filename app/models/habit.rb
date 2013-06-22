@@ -11,7 +11,7 @@ class Habit < NSObject
     ]
   # :first_in_chain, :last_in_chain, :mid_chain, :missed, :future, :before_start
   attr_accessor :title, :color_index, :created_at, :days_checked, :time_to_do, :active, :order, :days_required
-  attr_reader :notification
+  attr_reader :notifications
   def serialize
     {
       title: @title,
@@ -94,6 +94,12 @@ class Habit < NSObject
   
   def self.active
     (all.select { |h| h.active }).sort { |a, b| b.order <=> a.order }
+  end
+  def self.active_today
+    self.active.select{|h| h.days_required[Time.now.wday] }
+  end
+  def self.active_but_not_today
+    self.active.select{|h| !h.days_required[Time.now.wday] }
   end
   
   def self.inactive
@@ -204,40 +210,37 @@ class Habit < NSObject
     active.each(&:recalculate_notification)
   end
   def recalculate_notification
-    @notification = nil
+    @notifications = []
     calculate_notification()
-  end
-
-  def timeWithHour hour, daysTime: dayOffset
-    day = TimeHelper.addDays dayOffset, toDate: Time.now
-    Time.local day.year, day.month, day.day, hour, 0
   end
 
   TOMORROW = 1
   TODAY = 0
 
-  def alarm dayOffset, atHour: hour, text: text
-    @notification = UILocalNotification.alloc.init
-    # @notification.timeZone = NSTimeZone.defaultTimeZone
-    @notification.fireDate = timeWithHour hour, daysTime: dayOffset
-    @notification.alertBody = text
-    # @notification.applicationIconBadgeNumber = 1
-    # @notification.repeatCalendar = NSCalendar.currentCalendar
-    @notification.repeatInterval = NSDayCalendarUnit
-    
-    # Debugger.buffer << "Scheduled #{title} initial at #{time_to_do} for time #{@notification.fireDate}"
-    
-    # NSLog "alarm:#{text} #{notification.fireDate}"
-  end
-
   def calculate_notification now=Time.now
     return if no_reminders?
     # schedule for tomorrow if already passed reminder for today
-    day = (due?(now) or done?(now)) ? TOMORROW : TODAY
-    
-    alarm day, atHour: time_to_do, text: title
+    dayOffset = (due?(now) or done?(now)) ? TOMORROW : TODAY
+    for n in (0..6)
+      day = TimeHelper.addDays dayOffset + n, toDate: now
+      if days_required[day.wday]
+        notification = UILocalNotification.alloc.init
+        notification.fireDate = Time.local day.year, day.month, day.day, time_to_do, 0
+        notification.alertBody = title
+        notification.repeatInterval = NSWeekCalendarUnit
+        @notifications << notification
+      end
+    end
+
   end
-  
+  def self.habitCountForDate date
+    weekday = date.wday
+    count = 0
+    for habit in self.active
+      count +=1 if habit.days_required[weekday]
+    end
+    count
+  end
   def toggle(time)
     key = key(time)
     if @days_checked[key]
@@ -282,6 +285,7 @@ class Habit < NSObject
 
   def due?(time)
     return false unless @active
+    return false unless days_required[time.wday]
     return false if time_to_do.nil? or time_to_do == ''
     return time.hour >= time_to_do 
     
