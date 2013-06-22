@@ -34,7 +34,7 @@ class CountView < UIView
     
     @current_chain_label = label TEXT_PADDING
     @longest_chain_label = label frame.size.width*0.5 + TEXT_PADDING
-
+            
     @background.backgroundColor = Colors::COBALT
     @background.layer.cornerRadius = RADIUS
     

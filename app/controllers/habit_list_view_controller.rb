@@ -1,6 +1,6 @@
 # Author: Michael Forrest | Good To Hear | http://goodtohear.co.uk | License terms: credit me.
 class HabitListViewController < ATSDragToReorderTableViewController
-  SECTIONS = [:active, :inactive]
+  SECTIONS = [:active, :not_today, :inactive]
   attr_accessor :nav
   def init
     if super
@@ -10,7 +10,7 @@ class HabitListViewController < ATSDragToReorderTableViewController
   end
 
   def loadGroups
-    @groups = [Habit.active.sort,Habit.inactive.sort]
+    @groups = [Habit.active_today.sort, Habit.active_but_not_today.sort, Habit.inactive.sort]
   end
   
   def build
@@ -67,7 +67,7 @@ class HabitListViewController < ATSDragToReorderTableViewController
     cell.now = @now
     habit = @groups[indexPath.section][indexPath.row]
     cell.habit = habit
-    cell.set_color habit.color
+    cell.set_color habit.active && habit.days_required[Time.new.wday] ? habit.color : Colors::COBALT
     cell
   end
   
@@ -87,9 +87,7 @@ class HabitListViewController < ATSDragToReorderTableViewController
     if SECTIONS.index(:active) == section
       return 44
     end
-    if SECTIONS.index(:inactive) == section
-      return @groups[section].count > 0 ? 44 : 0
-    end
+    return @groups[section].count > 0 ? 20 : 0
   end
   
   def tableView tableView, viewForHeaderInSection: section
@@ -98,6 +96,9 @@ class HabitListViewController < ATSDragToReorderTableViewController
       @day_navigation.date = @now
       return @day_navigation
     end
+    if section == SECTIONS.index(:not_today)
+      return @not_required_today_title ||= InactiveHabitsHeader.alloc.initWithTitle( "Not on #{Calendar::DAY_NAMES_PLURAL[ Time.new.wday ]}")
+    end
     if section == SECTIONS.index(:inactive)
       return @inactive_title ||= InactiveHabitsHeader.alloc.init
     end
@@ -105,9 +106,16 @@ class HabitListViewController < ATSDragToReorderTableViewController
 
   def tableView tableView, moveRowAtIndexPath: indexPath, toIndexPath: newIndexPath 
     moved = @groups[indexPath.section][indexPath.row]
-    moved.active = SECTIONS[newIndexPath.section] == :active
+    section_id = SECTIONS[newIndexPath.section] 
+    moved.active = section_id != :inactive
+    unless section_id == :inactive
+      moved.days_required[Time.new.wday] = section_id == :active
+    end
+
     @groups[indexPath.section].delete_at indexPath.row
     @groups[newIndexPath.section].insert newIndexPath.row, moved
+
+    return if section_id == :active_but_not_today  # because we don't want to mess up the order in this case.
     for group in @groups
       group.each_with_index do |habit, index|
         habit.order = index

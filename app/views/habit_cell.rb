@@ -59,7 +59,7 @@ class HabitCell < UITableViewCell
   end
   def habit= value
     @habit = value
-    @input.alpha = @habit.active ? 1.0 : 0.5
+    @input.alpha = @habit.active && habit.days_required[Time.new.wday] ? 1.0 : 0.5
     @checkbox.set_checked @habit.done? @now
     @checkbox.label = @habit.title
   

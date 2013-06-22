@@ -27,6 +27,7 @@ class DayPicker < UIView
         button.toggleOn !button.isOn
         @habit.days_required[n] = button.isOn
         Habit.save!
+        Notifications.reschedule!
         delegate.dayPickerDidChange self
       end
       
