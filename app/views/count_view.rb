@@ -49,7 +49,7 @@ class CountView < UIView
     @gap.backgroundColor = UIColor.whiteColor.CGColor
     @gap.frame = [[halfway - 1, 0], [2,frame.size.height] ]
     
-    [@square,@circle,@gap].each {|l| @background.layer.addSublayer l }
+    [@square, @circle, @gap].each{|l| @background.layer.addSublayer l }
 
   end
   
@@ -59,17 +59,19 @@ class CountView < UIView
     CATransaction.setDisableActions true
     color = highlighted ? UIColor.whiteColor : @color
     [@square,@circle].each {|l| l.backgroundColor = color.CGColor }
-    @background.backgroundColor = highlighted ? UIColor.whiteColor : Colors::COBALT  # dup
+    @background.backgroundColor = highlighted ? UIColor.whiteColor : (@is_happy ? @color : Colors::COBALT)  # dup
     [@current_chain_label, @longest_chain_label].each do |label|
       label.textColor = highlighted ? @color : UIColor.whiteColor # dup
     end
     @gap.backgroundColor = highlighted ? @color.CGColor : UIColor.whiteColor.CGColor # dup
     CATransaction.commit
   end
-  
+  def is_happy= value
+    @is_happy = value
+  end
   def total_color= value
     @color = value
-    [@square,@circle].each {|l| l.backgroundColor = value.CGColor }
+    [@square, @circle].each{|l| l.backgroundColor = value.CGColor }
   end
   def text= value
     current, longest = *value

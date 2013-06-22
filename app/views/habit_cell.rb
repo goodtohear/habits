@@ -23,14 +23,19 @@ class HabitCell < UITableViewCell
     addSubview @input
                                             # y = 10 because the check box starts at 10. yes. not idea.
     @count = CountView.alloc.initWithFrame [[240,8],[70, 28]]
-    @count.text = "THIS IS TEXT"
+    @count.text = ""
     addSubview @count
 
     @checkbox = CheckBox.alloc.initWithFrame [[0,0], [44,44]]
     addSubview @checkbox
     @checkbox.when_tapped do
-      @habit.toggle @now
-      self.habit = @habit # force update
+      @checkbox.set_checked !@checkbox.checked?
+      Dispatch::Queue.concurrent.async do
+        @habit.toggle @now
+        Dispatch::Queue.main.async do
+          self.habit = @habit # force update
+        end
+      end
     end    
   end
 
@@ -65,11 +70,10 @@ class HabitCell < UITableViewCell
   
     @input.text = @habit.title
     @input.textColor = textColor
-    
-    count = @habit.currentChainLength
-    
-    @count.text = [count.to_s, @habit.longestChain]
-    
+    current_chain_length = @habit.currentChainLength 
+    longest_chain = @habit.longestChain
+    @count.text = [current_chain_length.to_s, longest_chain]
+    @count.is_happy = current_chain_length > 0 && current_chain_length == longest_chain
     
     # @backgroundColorView.backgroundColor = @habit.color
   end

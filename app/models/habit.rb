@@ -48,6 +48,7 @@ class Habit < NSObject
     @days_required = options[:days_required] || Calendar::DAYS.map{|d| true }
     @order = options[:order] || Habit.nextOrder
     @longest_chain = options[:longest_chain] || recalculate_longest_chain
+    
   end
 
   def migrate_array_to_hash days_checked_array
@@ -132,45 +133,35 @@ class Habit < NSObject
     return 28
   end
   def recalculate_longest_chain
+    @longest_chain = calculateChainLengthFindLongest true
+  end
+
+  def longestChain
+    @longest_chain
+  end
+  def calculateChainLengthFindLongest shouldFindLongest
     result = 0
+    
     count = 0
-    last_day = Time.now
-    last_day = Time.local last_day.year, last_day.month, last_day.day
-    # this is the same as currentChainLength only instead of returning a resultt, we reset the count when a missed day is found.
-    while last_day > earliest_date
+    now = Time.now
+    last_day = Time.local now.year, now.month, now.day
+    # this is the same as currentChainLength only instead of returning a result, we reset the count when a missed day is found.
+    while last_day >= earliest_date
       if includesDate last_day
         count += 1
       end
       if !continuesActivityBefore(last_day)
+        return count unless shouldFindLongest
         result = [result,count].max
         count = 0
       end
 
       last_day = TimeHelper.addDays -1, toDate: last_day
     end
-    @longest_chain = [result, count].max  
+    [result, count].max  
   end
-
-  def longestChain
-    @longest_chain
-  end
-  
   def currentChainLength
-    count = 0
-    now = Time.now
-    last_day = Time.local now.year, now.month, now.day
-    
-    while last_day > earliest_date
-      if includesDate last_day
-        count += 1
-      end
-      if !continuesActivityBefore(last_day)
-        return count
-      end
-
-      last_day = TimeHelper.addDays -1, toDate: last_day
-    end
-    count
+    calculateChainLengthFindLongest false
   end
   
   def check_days days
@@ -192,7 +183,8 @@ class Habit < NSObject
     return @earliest_date if @earliest_date
     return Time.now if @days_checked.count == 0
 
-    @earliest_date = NSDate.dateWithNaturalLanguageString @days_checked.keys.sort.first
+    date = NSDate.dateWithNaturalLanguageString @days_checked.keys.sort.first
+    @earliest_date = Time.local date.year, date.month, date.day
   end
   def clearDaysCache
     @earliest_date = nil
@@ -252,25 +244,23 @@ class Habit < NSObject
     Habit.save!
   end
   def includesDate date
-    @days_checked[key(date)] # || !days_required[date.wday]
+    @days_checked[key(date)]
   end
-  def continuesActivityBefore date
+  def continuesActivityFromDate date, overRange: range
     # iterate back up to 6 days 
-    (1..7).each do |n|
-      possible_date = TimeHelper.addDays -n, toDate: date
-      return true if self.includesDate possible_date
-      return false if days_required[possible_date.wday]
-    end
-    false
-  end
-  def continuesActivityAfter date
-    # iterate forward up to 6 days 
-    (1..7).each do |n|
+    range.each do |n|
       possible_date = TimeHelper.addDays n, toDate: date
       return true if self.includesDate possible_date
       return false if days_required[possible_date.wday]
     end
-    false
+    false  
+  end
+
+  def continuesActivityBefore date
+    return continuesActivityFromDate date, overRange: (-7..-1).to_a.reverse
+  end
+  def continuesActivityAfter date
+    return continuesActivityFromDate date, overRange: (1..7).to_a
   end
   def key(day)
     Time.local( day.year, day.month, day.day).to_s[0..9]

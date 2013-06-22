@@ -6,6 +6,7 @@ require "yaml"
 require "motion-bundler"
 require 'motion-cocoapods'
 require "bubble-wrap"
+require "bubble-wrap/all"
 
 def load_config(app)
   config = YAML::load( File.open( 'config.yml' ) )

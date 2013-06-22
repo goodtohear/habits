@@ -49,9 +49,10 @@ class MonthGridViewController < UIViewController
   
   
   #
-  def showChainsForHabit habit
+  def showChainsForHabit habit,&block
     @habit = habit
-    Dispatch::Queue.concurrent.async do
+    @chain_queue ||= Dispatch::Queue.concurrent
+    @chain_queue.async do
       for grid_index in CELL_INDICES
         cell = @cells[grid_index]
         comparison = Time.now > cell.day
@@ -60,6 +61,9 @@ class MonthGridViewController < UIViewController
           cell.setSelectionState state, color: habit.color
           cell.accessibilityLabel = cell.day.strftime('%d %B') + ", " + STATE_LABEL[state]
         end
+      end
+      Dispatch::Queue.main.sync do
+        block.call
       end
     end
   end
