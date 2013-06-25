@@ -24,6 +24,9 @@ class HomeViewController < UIViewController
     @info_button.frame = [[0,0], [44,44]]
     self.view.addSubview @info_button
     
+    @info_count_badge = InfoCountBadge.alloc.initWithFrame [[28,8],[16,16]]
+    self.view.addSubview @info_count_badge
+
     @add_button = BarImageButton.normalButtonWithImageNamed('add')
     @add_button.accessibilityLabel = "Add new habit"
     @add_button.when(UIControlEventTouchUpInside) do
@@ -40,12 +43,8 @@ class HomeViewController < UIViewController
 
   end
   def add_title
-    @title_label = UILabel.alloc.initWithFrame [[0,0],[320,44]]
+    @title_label = Labels.navbarLabelWithFrame [[0,0],[320,44]]
     @title_label.text = "GOOD HABITS"
-    @title_label.backgroundColor = UIColor.clearColor
-    @title_label.textAlignment = UITextAlignmentCenter
-    @title_label.textColor = UIColor.whiteColor
-    @title_label.font = UIFont.fontWithName "HelveticaNeue-Bold", size: 20
     view.addSubview @title_label
   end
   def showInfo
@@ -63,9 +62,11 @@ class HomeViewController < UIViewController
     @list.tableView.reloadData
   end
   def viewWillAppear animated
-    @list.refresh()
+    super
+    refresh()
   end
   def refresh
     @list.refresh()
+    @info_count_badge.refresh()
   end
 end

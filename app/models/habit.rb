@@ -1,13 +1,13 @@
 # Author: Michael Forrest | Good To Hear | http://goodtohear.co.uk | License terms: credit me.
 class Habit < NSObject
   COLORS = [
-      '#77A247', #GREEN
-      '#875495', #PURPLE
-      '#E2804F', #ORANGE
-      '#E7BE2B', #YELLOW
-      '#D28895', #PINK
-      '#488FB4', #BLUE
-      '#7A5D35' #BROWN
+    Colors::GREEN,
+    Colors::PURPLE,
+    Colors::ORANGE,
+    Colors::YELLOW,
+    Colors::PINK,
+    Colors::BLUE,
+    Colors::BROWN
     ]
   # :first_in_chain, :last_in_chain, :mid_chain, :missed, :future, :before_start
   attr_accessor :title, :color_index, :created_at, :days_checked, :time_to_do, :active, :order, :days_required
@@ -65,7 +65,7 @@ class Habit < NSObject
   end
   
   def color
-    COLORS[@color_index].to_color
+    COLORS[@color_index]
   end
   def no_reminders?
     time_to_do.nil? or time_to_do == ""

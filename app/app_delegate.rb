@@ -4,6 +4,11 @@ class AppDelegate
     Appearance.init()
     @window = UIWindow.alloc.initWithFrame UIScreen.mainScreen.bounds
     
+    unless App::Persistence['installed_date']
+      App::Persistence['installed_date'] = Habit.all.count > 0 ? Habit.all.map(&:earliest_date).min : Time.now
+      NSLog "Earliest date set to #{App::Persistence['installed_date']}"
+    end
+
     @main = HomeViewController.alloc.init
     @nav = UINavigationController.alloc.initWithRootViewController @main
     @main.list.nav = @nav # (not happy about this)

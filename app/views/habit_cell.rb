@@ -1,33 +1,15 @@
 # Author: Michael Forrest | Good To Hear | http://goodtohear.co.uk | License terms: credit me.
-class HabitCell < UITableViewCell
+class HabitCell < CellWithCheckBox
   attr_accessor :habit, :now
-  def initWithStyle style, reuseIdentifier: identifier
-    if super
-      build
-    end
-    self
-  end
+
   
   def build
-    self.backgroundColor = UIColor.whiteColor
-    @backgroundColorView = UIView.alloc.initWithFrame [[0,0],self.frame.size]
-    @backgroundColorView.backgroundColor = '#d6cdbf'.to_color
-    @backgroundColorView.hidden = true
-    addSubview @backgroundColorView
-    self.selectionStyle = UITableViewCellSelectionStyleNone
-    
-    @input = UITextField.alloc.initWithFrame [[42,8],[194,30]]
-    @input.font = UIFont.fontWithName 'HelveticaNeue-Bold', size: 20
-    @input.userInteractionEnabled = false
-    @input.delegate = self
-    addSubview @input
-                                            # y = 10 because the check box starts at 10. yes. not idea.
+    super
+                                            # y = 8 because the check box starts at 10. yes. not ideal.
     @count = CountView.alloc.initWithFrame [[240,8],[70, 28]]
     @count.text = ""
     addSubview @count
 
-    @checkbox = CheckBox.alloc.initWithFrame [[0,0], [44,44]]
-    addSubview @checkbox
     @checkbox.when_tapped do
       @checkbox.set_checked !@checkbox.checked?
       Dispatch::Queue.concurrent.async do
@@ -40,36 +22,32 @@ class HabitCell < UITableViewCell
   end
 
   def set_color color
-    @color = color
-    @checkbox.set_color color
+    super
     @count.total_color = color
-    @backgroundColorView.backgroundColor = color
   end  
 
   def setHighlighted selected, animated: animated
     super
-    @backgroundColorView.hidden = !selected
-    @input.textColor = selected ? UIColor.whiteColor : textColor
     @count.highlighted = selected
   end
   
   # def touchesBegan touches, withEvent: event
-  #   @input.textColor = UIColor.whiteColor
+  #   @label.textColor = UIColor.whiteColor
   # end
   # def touchesEnded touches, withEvent: event
-  #   @input.textColor = UIColor.blackColor
+  #   @label.textColor = UIColor.blackColor
   # end
   def textColor
-    (@habit.due?(Time.now) and !@habit.done?(Time.now)) ? '#C1272D'.to_color : UIColor.blackColor
+    (@habit.due?(Time.now) and !@habit.done?(Time.now)) ? Colors::RED : UIColor.blackColor
   end
   def habit= value
     @habit = value
-    @input.alpha = @habit.active && habit.days_required[Time.new.wday] ? 1.0 : 0.5
+    @label.alpha = @habit.active && habit.days_required[Time.new.wday] ? 1.0 : 0.5
     @checkbox.set_checked @habit.done? @now
     @checkbox.label = @habit.title
   
-    @input.text = @habit.title
-    @input.textColor = textColor
+    @label.text = @habit.title
+    @label.textColor = textColor
     current_chain_length = @habit.currentChainLength 
     longest_chain = @habit.longestChain
     @count.text = [current_chain_length.to_s, longest_chain]
