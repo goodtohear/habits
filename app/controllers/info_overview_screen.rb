@@ -34,20 +34,32 @@ class InfoOverviewScreen < UITableViewController
   def links
     @links ||= [
       {text: "Log an issue", url: "https://github.com/goodtohear/habits/issues" },
-      {text: "Contact us", url: "mailto:info@goodtohear.co.uk?subject=Good%20Habits"}
+      {text: "Contact us", url: "http://goodtohear.co.uk/contact"}
+    ]
+  end
+  def credits
+    @credits ||= [
+      {text: "Michael Forrest (Design/Build)", url: "http://facebook.com/forrestmichael"},
+      {text: "Ulrich Atz (Design)", url: "http://ulrichatz.com?from=goodhabitsapp"}
     ]
   end
 
   def numberOfSectionsInTableView(tableView)
-    2
+    3
   end
-
+  SECTION_HEADINGS = [
+    "",
+    "You can also",
+    "Credits"
+  ]
   def tableView(tableView, numberOfRowsInSection:section)
-    if section == 0
-      return tasks.count
-    end
-    if section == 1
-      return links.count
+    case section
+      when 0
+       return tasks.count
+      when 1
+       return links.count
+      when 2
+       return credits.count
     end
   end
 
@@ -55,7 +67,7 @@ class InfoOverviewScreen < UITableViewController
     if section == 0
       return @navbar ||= build_navbar
     end
-    return @secondary_header ||= InactiveHabitsHeader.alloc.initWithTitle( "You can also")
+    return InactiveHabitsHeader.alloc.initWithTitle( SECTION_HEADINGS[section])
   end
 
   def tableView(tableView, heightForHeaderInSection:section)
@@ -70,12 +82,11 @@ class InfoOverviewScreen < UITableViewController
       cell = tableView.dequeueReusableCellWithIdentifier(CELLID) || InfoCell.alloc.initWithStyle(UITableViewCellStyleDefault, reuseIdentifier:CELLID)
       return configureCell cell, forIndexPath: indexPath
     end
-    if indexPath.section == 1
-      cell = tableView.dequeueReusableCellWithIdentifier(LINK_CELL_ID) || LinkCell.alloc.initWithStyle(UITableViewCellStyleDefault, reuseIdentifier: LINK_CELL_ID)
-      link = links[indexPath.row]
-      cell.link = link
-      return cell
-    end
+    cell = tableView.dequeueReusableCellWithIdentifier(LINK_CELL_ID) || LinkCell.alloc.initWithStyle(UITableViewCellStyleDefault, reuseIdentifier: LINK_CELL_ID)
+    link = indexPath.section == 1 ? links[indexPath.row] : credits[indexPath.row]
+    cell.link = link
+    return cell
+   
   end
 
   def configureCell cell, forIndexPath: indexPath
@@ -88,10 +99,12 @@ class InfoOverviewScreen < UITableViewController
   def tableView tableView, didSelectRowAtIndexPath:indexPath
     if indexPath.section == 0
       tasks[indexPath.row].open(self)
+    else
+      things = indexPath.section == 1 ? links : credits
+      App.open_url things[indexPath.row][:url]
     end
-    if indexPath.section == 1
-      App.open_url links[indexPath.row][:url]
-    end
+    
+
   end
 
   def build_navbar

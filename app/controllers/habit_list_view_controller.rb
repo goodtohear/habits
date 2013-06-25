@@ -44,6 +44,7 @@ class HabitListViewController < ATSDragToReorderTableViewController
     @reload_queue.async do    
       @now = Time.now
       @day_navigation.date = @now unless @day_navigation.nil?
+      @not_required_today_title = nil
       loadGroups
       Dispatch::Queue.main.async do
         self.view.reloadData

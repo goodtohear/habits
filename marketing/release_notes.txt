@@ -1,0 +1,7 @@
+What's new in 1.1?
+- Drag and drop to reorder your list
+- Take Sundays off! Or set any other day(s) you'd like a break and you can skip those days without breaking the chain
+- Improved icon badge accuracy
+- Subtle design improvements
+- A new info screen that makes it easier to show your appreciation for this indispensable free app.
+

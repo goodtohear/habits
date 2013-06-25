@@ -21,6 +21,7 @@ class LinkCell < UITableViewCell
     @label.delegate = self
     addSubview @label
 
+    self.accessoryType = UITableViewCellAccessoryDisclosureIndicator
   end
   def setHighlighted selected, animated: animated
     super
@@ -28,7 +29,6 @@ class LinkCell < UITableViewCell
     @label.textColor = selected ? UIColor.whiteColor : textColor
   end
   def link= link
-    NSLog "configured cell with #{link}"
     @label.text = link[:text]
   end
 end

@@ -20,7 +20,7 @@ class InfoTask
       InfoTask.create(:like, text: "Like us on Facebook", color: Colors::BLUE, due:3, action: ->(controller){
           App.open_url "https://www.facebook.com/298561953497621"
         }),
-      InfoTask.create(:share, text: "Share the app", color: Colors::ORANGE, due:3, action: ->(controller){
+      InfoTask.create(:share, text: "Share the app", color: Colors::ORANGE, due:0, action: ->(controller){
           items = ["I like using the Good Habits app by @goodtohearuk to make myself a better person", NSURL.URLWithString("https://itunes.apple.com/gb/app/good-habits/id573844300?mt=8")]
 
           sheet = UIActivityViewController.alloc.initWithActivityItems items, applicationActivities: nil

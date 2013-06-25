@@ -36,10 +36,11 @@ Motion::Project::App.setup do |app|
   app.info_plist['UIStatusBarStyle'] = 'UIStatusBarStyleBlackOpaque'
   # app.info_plist['UIStatusBarHidden'] = false
   
-  app.vendor_project('vendor/ReorderingTableViewController', :static, :headers_dir => '.', :cflags => '-fobjc-arc')
   
   app.pods do
     pod 'SwipeView'
 #    pod 'FMMoveTableView'
   end
+  
+  app.vendor_project('vendor/ReorderingTableViewController', :static, :headers_dir => '.', :cflags => '-fobjc-arc')
 end
