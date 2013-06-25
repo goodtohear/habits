@@ -63,7 +63,7 @@ class MonthGridViewController < UIViewController
         end
       end
       Dispatch::Queue.main.sync do
-        block.call
+        block.call unless block.nil?
       end
     end
   end
