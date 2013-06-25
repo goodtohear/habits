@@ -268,7 +268,9 @@ class Habit < NSObject
   def day(time)
      Time.local time.year, time.month, time.day
   end
-
+  def needs_to_be_done?(time)
+    !done?(time) and days_required[time.wday]
+  end
   def done?(time)
     @days_checked[key(time)]
   end

@@ -1,7 +1,7 @@
 class Notifications
   def self.reschedule!
     now = Time.now
-    UIApplication.sharedApplication.setApplicationIconBadgeNumber Habit.active.select{|h| !h.done?(now) }.count
+    UIApplication.sharedApplication.setApplicationIconBadgeNumber Habit.active.select{|h| h.needs_to_be_done?(now) }.count
     start_time = Time.now
     notifications = Habit.active.map(&:notifications).flatten.compact
     Debugger.buffer << "Attempting to schedule #{notifications.count} notification(s)"
@@ -21,6 +21,7 @@ class Notifications
       notification.applicationIconBadgeNumber = Habit.habitCountForDate day
       UIApplication.sharedApplication.scheduleLocalNotification notification
     end
+
 
   end
 end
