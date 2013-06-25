@@ -4,7 +4,8 @@ require "rubygems"
 require 'motion/project/template/ios'
 require "yaml"
 require "bubble-wrap"
-require "bubble-wrap/all"
+require "bubble-wrap/core"
+require "bubble-wrap/http"
 require 'motion-cocoapods'
 
 def load_config(app)

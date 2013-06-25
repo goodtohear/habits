@@ -31,6 +31,12 @@ class InfoOverviewScreen < UITableViewController
   def tasks
     @tasks ||= InfoTask.due
   end
+  def links
+    @links ||= [
+      {text: "Log an issue", url: "https://github.com/goodtohear/habits/issues" },
+      {text: "Contact us", url: "mailto:info@goodtohear.co.uk?subject=Good%20Habits"}
+    ]
+  end
 
   def numberOfSectionsInTableView(tableView)
     2
@@ -40,7 +46,9 @@ class InfoOverviewScreen < UITableViewController
     if section == 0
       return tasks.count
     end
-    return 0
+    if section == 1
+      return links.count
+    end
   end
 
   def tableView(tableView, viewForHeaderInSection:section)
@@ -56,10 +64,18 @@ class InfoOverviewScreen < UITableViewController
   end
 
   CELLID = "InfoCell"
-
+  LINK_CELL_ID = "LinkCell"
   def tableView(tableView, cellForRowAtIndexPath:indexPath)
-    cell = tableView.dequeueReusableCellWithIdentifier(CELLID) || InfoCell.alloc.initWithStyle(UITableViewCellStyleDefault, reuseIdentifier:CELLID)
-    configureCell cell, forIndexPath: indexPath
+    if indexPath.section == 0
+      cell = tableView.dequeueReusableCellWithIdentifier(CELLID) || InfoCell.alloc.initWithStyle(UITableViewCellStyleDefault, reuseIdentifier:CELLID)
+      return configureCell cell, forIndexPath: indexPath
+    end
+    if indexPath.section == 1
+      cell = tableView.dequeueReusableCellWithIdentifier(LINK_CELL_ID) || LinkCell.alloc.initWithStyle(UITableViewCellStyleDefault, reuseIdentifier: LINK_CELL_ID)
+      link = links[indexPath.row]
+      cell.link = link
+      return cell
+    end
   end
 
   def configureCell cell, forIndexPath: indexPath
@@ -72,6 +88,9 @@ class InfoOverviewScreen < UITableViewController
   def tableView tableView, didSelectRowAtIndexPath:indexPath
     if indexPath.section == 0
       tasks[indexPath.row].open(self)
+    end
+    if indexPath.section == 1
+      App.open_url links[indexPath.row][:url]
     end
   end
 
