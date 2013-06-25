@@ -1,0 +1,3 @@
+[submodule "vendor/ReorderingTableViewController"]
+	path = vendor/ReorderingTableViewController
+	url = https://github.com/shusta/ReorderingTableViewController.git

@@ -1,0 +1,38 @@
+ATSDragToReorderTableViewController
+Daniel Shusta
+Acacia Tree Software
+<my first name> @ acaciatreesoftware.com
+
+
+ATSDragToReorderTableViewController is a UITableViewController subclass that adds drag and drop reordering to a UITableView. 
+
+I developed it as part of Acacia Tree Software’s SousChef for iPhone and it has since become an integral part of Ita for sister company Nice Mohawk. This is definitely a eating-our-own-dogfood piece of code.
+
+A UITableView with this functionality can be reordered without switching into edit mode. It’s simply a press and hold to start, then drag the cell to reorder. The UITableView automatically scrolls when approaching the top or bottom of the UITableView.
+
+=====
+
+It is straightforward to incorporate into your app. 
+
+	1.  Instead of subclassing from UITableViewController, you subclass from ATSDragToReorderTableViewController. 
+
+	2.  Then implement the UITableViewDataSource method -tableView:moveRowAtIndexPath:toIndexPath: . You might have already done this.
+
+	3.	If you want to better support iOS <redacted>, you'll want to check out -cellIdenticalToCellAtIndexPath:forDragTableViewController: I am very annoyed about this.
+
+The included sample app includes these changes as a demonstration. Further details are described at the top of the ATSDragToReorderTableViewController.h .
+
+For those curious, ATSDragToReorderTableViewController.m includes a fairly comprehensive overview of the implementation at the top and is ridiculously over-commented throughout.
+
+=====
+
+ATSDragToReorderTableViewController relies on UIGestureRecognizer and uses block-based animations throughout. It now has full support for ARC and I'm too lazy to continue to support non-ARC projects so this will be iOS 5+ only from now on.
+
+Licensing info is at the very top of the files as well as in a file called LICENSE.
+
+=====
+
+I am trying to be reserved here but I am pretty excited about this and hope you find this exciting too.
+
+Cheers,
+Daniel Shusta

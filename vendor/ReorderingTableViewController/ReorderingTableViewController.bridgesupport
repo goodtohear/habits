@@ -1,0 +1,117 @@
+<?xml version='1.0'?>
+<signatures version='1.0'>
+<class name='ATSDragToReorderTableViewController'>
+<method selector='dragDelegate'>
+<retval type='@' declared_type='NSObject*'/>
+</method>
+<method selector='indicatorDelegate'>
+<retval type='@' declared_type='NSObject*'/>
+</method>
+<method selector='isDraggingCell'>
+<retval type='B' declared_type='BOOL'/>
+</method>
+<method selector='isReorderingEnabled'>
+<retval type='B' declared_type='BOOL'/>
+</method>
+<method selector='setDragDelegate:'>
+<arg type='@' index='0' name='dragDelegate' declared_type='NSObject*'/>
+<retval type='v' declared_type='void'/>
+</method>
+<method selector='setIndicatorDelegate:'>
+<arg type='@' index='0' name='indicatorDelegate' declared_type='NSObject*'/>
+<retval type='v' declared_type='void'/>
+</method>
+<method selector='setReorderingEnabled:'>
+<arg type='B' index='0' name='reorderingEnabled' declared_type='BOOL'/>
+<retval type='v' declared_type='void'/>
+</method>
+</class>
+<class name='NSObject'>
+<method selector='cellIdenticalToCellAtIndexPath:forDragTableViewController:'>
+<arg type='@' index='0' name='indexPath' declared_type='NSIndexPath*'/>
+<arg type='@' index='1' name='dragTableViewController' declared_type='ATSDragToReorderTableViewController*'/>
+<retval type='@' declared_type='UITableViewCell*'/>
+</method>
+<method selector='dragTableViewController:addDraggableIndicatorsToCell:forIndexPath:'>
+<arg type='@' index='0' name='dragTableViewController' declared_type='ATSDragToReorderTableViewController*'/>
+<arg type='@' index='1' name='cell' declared_type='UITableViewCell*'/>
+<arg type='@' index='2' name='indexPath' declared_type='NSIndexPath*'/>
+<retval type='v' declared_type='void'/>
+</method>
+<method selector='dragTableViewController:didBeginDraggingAtRow:'>
+<arg type='@' index='0' name='dragTableViewController' declared_type='ATSDragToReorderTableViewController*'/>
+<arg type='@' index='1' name='dragRow' declared_type='NSIndexPath*'/>
+<retval type='v' declared_type='void'/>
+</method>
+<method selector='dragTableViewController:didEndDraggingToRow:'>
+<arg type='@' index='0' name='dragTableViewController' declared_type='ATSDragToReorderTableViewController*'/>
+<arg type='@' index='1' name='destinationIndexPath' declared_type='NSIndexPath*'/>
+<retval type='v' declared_type='void'/>
+</method>
+<method selector='dragTableViewController:hideDraggableIndicatorsOfCell:'>
+<arg type='@' index='0' name='dragTableViewController' declared_type='ATSDragToReorderTableViewController*'/>
+<arg type='@' index='1' name='cell' declared_type='UITableViewCell*'/>
+<retval type='v' declared_type='void'/>
+</method>
+<method selector='dragTableViewController:removeDraggableIndicatorsFromCell:'>
+<arg type='@' index='0' name='dragTableViewController' declared_type='ATSDragToReorderTableViewController*'/>
+<arg type='@' index='1' name='cell' declared_type='UITableViewCell*'/>
+<retval type='v' declared_type='void'/>
+</method>
+<method selector='dragTableViewController:shouldHideDraggableIndicatorForDraggingToRow:'>
+<arg type='@' index='0' name='dragTableViewController' declared_type='ATSDragToReorderTableViewController*'/>
+<arg type='@' index='1' name='destinationIndexPath' declared_type='NSIndexPath*'/>
+<retval type='B' declared_type='BOOL'/>
+</method>
+<method selector='dragTableViewController:willEndDraggingToRow:'>
+<arg type='@' index='0' name='dragTableViewController' declared_type='ATSDragToReorderTableViewController*'/>
+<arg type='@' index='1' name='destinationIndexPath' declared_type='NSIndexPath*'/>
+<retval type='v' declared_type='void'/>
+</method>
+</class>
+<informal_protocol name='ATSDragToReorderTableViewControllerDelegate'>
+<method type='v16@0:4@8@12' selector='dragTableViewController:didBeginDraggingAtRow:'>
+<arg type='@' index='0' name='dragTableViewController' declared_type='ATSDragToReorderTableViewController*'/>
+<arg type='@' index='1' name='dragRow' declared_type='NSIndexPath*'/>
+<retval type='v' declared_type='void'/>
+</method>
+<method type='v16@0:4@8@12' selector='dragTableViewController:didEndDraggingToRow:'>
+<arg type='@' index='0' name='dragTableViewController' declared_type='ATSDragToReorderTableViewController*'/>
+<arg type='@' index='1' name='destinationIndexPath' declared_type='NSIndexPath*'/>
+<retval type='v' declared_type='void'/>
+</method>
+<method type='B16@0:4@8@12' selector='dragTableViewController:shouldHideDraggableIndicatorForDraggingToRow:'>
+<arg type='@' index='0' name='dragTableViewController' declared_type='ATSDragToReorderTableViewController*'/>
+<arg type='@' index='1' name='destinationIndexPath' declared_type='NSIndexPath*'/>
+<retval type='B' declared_type='BOOL'/>
+</method>
+<method type='v16@0:4@8@12' selector='dragTableViewController:willEndDraggingToRow:'>
+<arg type='@' index='0' name='dragTableViewController' declared_type='ATSDragToReorderTableViewController*'/>
+<arg type='@' index='1' name='destinationIndexPath' declared_type='NSIndexPath*'/>
+<retval type='v' declared_type='void'/>
+</method>
+</informal_protocol>
+<informal_protocol name='ATSDragToReorderTableViewControllerDraggableIndicators'>
+<method type='@16@0:4@8@12' selector='cellIdenticalToCellAtIndexPath:forDragTableViewController:'>
+<arg type='@' index='0' name='indexPath' declared_type='NSIndexPath*'/>
+<arg type='@' index='1' name='dragTableViewController' declared_type='ATSDragToReorderTableViewController*'/>
+<retval type='@' declared_type='UITableViewCell*'/>
+</method>
+<method type='v20@0:4@8@12@16' selector='dragTableViewController:addDraggableIndicatorsToCell:forIndexPath:'>
+<arg type='@' index='0' name='dragTableViewController' declared_type='ATSDragToReorderTableViewController*'/>
+<arg type='@' index='1' name='cell' declared_type='UITableViewCell*'/>
+<arg type='@' index='2' name='indexPath' declared_type='NSIndexPath*'/>
+<retval type='v' declared_type='void'/>
+</method>
+<method type='v16@0:4@8@12' selector='dragTableViewController:hideDraggableIndicatorsOfCell:'>
+<arg type='@' index='0' name='dragTableViewController' declared_type='ATSDragToReorderTableViewController*'/>
+<arg type='@' index='1' name='cell' declared_type='UITableViewCell*'/>
+<retval type='v' declared_type='void'/>
+</method>
+<method type='v16@0:4@8@12' selector='dragTableViewController:removeDraggableIndicatorsFromCell:'>
+<arg type='@' index='0' name='dragTableViewController' declared_type='ATSDragToReorderTableViewController*'/>
+<arg type='@' index='1' name='cell' declared_type='UITableViewCell*'/>
+<retval type='v' declared_type='void'/>
+</method>
+</informal_protocol>
+</signatures>
