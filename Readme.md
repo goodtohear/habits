@@ -1,9 +1,6 @@
 Good Habits
 ============
 
-Good To Hear
-------------------------------------------------
-
 Good Habits is an iOS app built with [RubyMotion](http://rubymotion.com). With this app you can build good habits by doing keeping track of each consecutive day you did something. It's basically a 'daily to-do list' app. It is available [free in the App Store](https://itunes.apple.com/us/app/good-habits/id573844300?ls=1&mt=8).
 
 [![Screenshot](https://raw.github.com/goodtohear/habits/master/marketing/hero.png)](https://itunes.apple.com/us/app/good-habits/id573844300?ls=1&mt=8)
