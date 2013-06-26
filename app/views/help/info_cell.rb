@@ -3,6 +3,14 @@ class InfoCell < CellWithCheckBox
   def build
     super
     @label.frame = [@label.frame.origin, [260, @label.frame.size.height]]
+    @new_label = UILabel.alloc.initWithFrame [[260, 12], [35,18]]
+    @new_label.textColor = UIColor.whiteColor
+    @new_label.backgroundColor = Colors::RED
+    @new_label.textAlignment = UITextAlignmentCenter
+    @new_label.font = UIFont.fontWithName("HelveticaNeue-Bold", size:11)
+    @new_label.text = "NEW"
+    addSubview @new_label
+
     self.accessoryType = UITableViewCellAccessoryDisclosureIndicator
     @checkbox.when_tapped do
       # respond to tap
@@ -22,6 +30,11 @@ class InfoCell < CellWithCheckBox
     @checkbox.set_checked @task.done?
   end
   def mark_read
-    @label.font = UIFont.fontWithName 'HelveticaNeue', size: @label.font.pointSize
+    # @label.textColor = Colors::COBALT
+    @new_label.hidden = true
+  end
+  def textColor
+    Colors::DARK
+    # (@task and @task.opened?) ? Colors::COBALT : UIColor.blackColor
   end
 end

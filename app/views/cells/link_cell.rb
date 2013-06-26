@@ -16,6 +16,7 @@ class LinkCell < UITableViewCell
     @label = UITextField.alloc.initWithFrame [[10,8],[280,30]]
     @label.font = UIFont.fontWithName 'HelveticaNeue-Bold', size: 20
     @label.minimumFontSize = 10
+    @label.textColor = Colors::DARK
     @label.adjustsFontSizeToFitWidth = true
     @label.userInteractionEnabled = false
     @label.delegate = self
@@ -26,7 +27,7 @@ class LinkCell < UITableViewCell
   def setHighlighted selected, animated: animated
     super
     @backgroundColorView.hidden = !selected
-    @label.textColor = selected ? UIColor.whiteColor : textColor
+    @label.textColor = selected ? UIColor.whiteColor : Colors::DARK
   end
   def link= link
     @label.text = link[:text]
