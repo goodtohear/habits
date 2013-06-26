@@ -24,5 +24,6 @@ class Debugger < UITextView
        debug_info += "#{n.fireDate}, number: #{n.applicationIconBadgeNumber}, every #{n.repeatInterval}: #{n.alertBody}\n" unless n.nil?
      end
      self.text = debug_info
+     
    end
 end

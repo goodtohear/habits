@@ -41,7 +41,6 @@ class InformationScreen < UIViewController
     view.addSubview @done
     
     
-    
     [@done].each do |button|
       button.label.font = UIFont.fontWithName "HelveticaNeue-Bold", size: 16
     end
@@ -55,6 +54,13 @@ class InformationScreen < UIViewController
   def reveal_debug_info
     @debugger = Debugger.alloc.initWithFrame [[0,30],[320,420]]
     view.addSubview @debugger
+
+    @reset_button = Button.create [[0,400], [320,44]], {title: "Reset info content", color: Colors::RED } 
+    @reset_button.when(UIControlEventTouchUpInside) do
+      InfoTask.reset_all!
+    end
+    view.addSubview(@reset_button)
+
   end
   
   def numberOfItemsInSwipeView swipeView

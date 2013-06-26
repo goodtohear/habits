@@ -71,7 +71,7 @@ class InfoOverviewScreen < UITableViewController
   end
 
   def tableView(tableView, heightForHeaderInSection:section)
-    return 55 if section == 0
+    return 100 if section == 0
     return 20
   end
 
@@ -109,13 +109,20 @@ class InfoOverviewScreen < UITableViewController
   end
 
   def build_navbar
-    navbar = UIImageView.alloc.initWithImage UIImage.imageNamed("nav")
+    navbar = UIImageView.alloc.initWithImage UIImage.imageNamed("info_nav")
     navbar.setUserInteractionEnabled(true)
     titleLabel = Labels.navbarLabelWithFrame([[0,0],[320,44]])
 
     titleLabel.text = "GOOD TO HEAR"
     navbar.addSubview(titleLabel)
     
+    subheading = Labels.subheadingLabelWithFrame [[10,55],[300,30]]
+    subheading.numberOfLines = 2
+    subheading.font = subheading.font.fontWithSize(15)
+    subheading.textColor = Colors::DARK
+    subheading.text = "Hello! We hope you'd like to:"
+    navbar.addSubview subheading
+
     done = UIButton.alloc.initWithFrame [[320 - 60,1],[60,44]]
     done.setTitle("DONE", forState:UIControlStateNormal)
     done.titleLabel.font = UIFont.fontWithName "HelveticaNeue-Bold", size: 16
