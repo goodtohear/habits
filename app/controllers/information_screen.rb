@@ -66,7 +66,6 @@ class InformationScreen < UIViewController
       ratio = (ASSET_HEIGHT - INSET * 2) / ASSET_HEIGHT
       w = 320.0 * ratio
       view = UIImageView.alloc.initWithFrame [[(320 - w) * 0.5,INSET], [w, ASSET_HEIGHT - INSET * 2]] # 460 reflects the asset size, not the screen size
-      NSLog "#{view.frame}"
       Shadow.addTo view
     end
     view.image = UIImage.imageNamed PAGES[index]
