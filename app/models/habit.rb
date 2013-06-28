@@ -107,10 +107,12 @@ class Habit < NSObject
     (all.select { |h| !h.active }).sort { |a, b| b.order <=> a.order }
   end
   
+  def <=> other
+    self.order <=> other.order
+  end
   def compare other
     self.order.compare other.order
   end
-  
   def self.next_unused_color_index
     return 0 unless @all
     occurences = @all.map(&:color_index) + (0..COLORS.count-1).to_a

@@ -8,10 +8,10 @@ class InfoTask
   end
   def self.all
     @all ||= [
-      InfoTask.create(:instructions, due: 0, text: "Read the instructions", color: Colors::GREEN, action: ->(controller){
+      InfoTask.create(:guide, due: 0, text: "Look at the guide", color: Colors::GREEN, action: ->(controller){
         controller.presentViewController InformationScreen.alloc.init, animated: true, completion: ->(){}
         }),
-      InfoTask.create(:share, due: 0, text: "Share the app", color: Colors::ORANGE, action: ->(controller){
+      InfoTask.create(:share, due: 0, text: "Share this app", color: Colors::ORANGE, action: ->(controller){
           Appearance.remove()
           items = [AppSharing.alloc.init, NSURL.URLWithString("https://itunes.apple.com/gb/app/good-habits/id573844300?mt=8")]
 
@@ -26,7 +26,7 @@ class InfoTask
       InfoTask.create(:happiness, due: 3, text: "Get Happiness", color: Colors::YELLOW, action: ->(controller){
           App.open_url "http://goodtohear.co.uk/happiness?from=habits"
         }),
-      InfoTask.create(:rate, due: 3, text: "Rate the app", color: Colors::PURPLE,  action: ->(controller){
+      InfoTask.create(:rate, due: 3, text: "Rate this app", color: Colors::PURPLE,  action: ->(controller){
           App.open_url "https://userpub.itunes.apple.com/WebObjects/MZUserPublishing.woa/wa/addUserReview?id=573844300&type=Purple+Software"
         }),
       InfoTask.create(:like, due: 3, text: "Like us on Facebook", color: Colors::BLUE, action: ->(controller){

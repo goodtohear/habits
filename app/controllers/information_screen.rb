@@ -1,8 +1,6 @@
 # Author: Michael Forrest | Good To Hear | http://goodtohear.co.uk | License terms: credit me.
 class InformationScreen < UIViewController
-  PAGES = [ 
-      'main_screen', 'detail_screen'
-    ]
+  PAGES = (1..18).map{|n| "guide_#{n}"}
   
   ASSET_HEIGHT = 460.0
   def init
@@ -29,13 +27,18 @@ class InformationScreen < UIViewController
 
     view.addSubview @gallery
     
-    @paging = UIPageControl.alloc.initWithFrame [[0,ASSET_HEIGHT - INSET], [320,30]]
+    @paging = UIPageControl.alloc.initWithFrame [[0,view.frame.size.height - INSET], [320,30]]
     @paging.numberOfPages = PAGES.count
+    @paging.when(UIControlEventValueChanged) do
+      @gallery.scrollToPage @paging.currentPage, duration: 0.3
+    end
+
     view.addSubview @paging
     
     w = 100
     @done = Button.create [[320-w,7],[w,30]], title: "Close ╳", color: UIColor.blackColor
     @done.when(UIControlEventTouchUpInside) do
+      App::Persistence['guide_page'] = @paging.currentPage
       dismissViewControllerAnimated true, completion: ->(){}
     end
     view.addSubview @done
@@ -48,6 +51,11 @@ class InformationScreen < UIViewController
     @debug_tap = UITapGestureRecognizer.alloc.initWithTarget self, action: 'reveal_debug_info'
     @debug_tap.numberOfTouchesRequired = Device.simulator? ? 2 : 3
     view.addGestureRecognizer @debug_tap
+
+    if App::Persistence['guide_page']
+      @gallery.scrollToPage App::Persistence['guide_page'], duration: 0
+    end
+    
     
   end
 
@@ -67,11 +75,11 @@ class InformationScreen < UIViewController
     PAGES.count
   end
   INSET = 44
+  PAGE_INSET = 44
   def swipeView swipeView, viewForItemAtIndex: index, reusingView: view # watch out for the scope of view here
     unless view
-      ratio = (ASSET_HEIGHT - INSET * 2) / ASSET_HEIGHT
-      w = 320.0 * ratio
-      view = UIImageView.alloc.initWithFrame [[(320 - w) * 0.5,INSET], [w, ASSET_HEIGHT - INSET * 2]] # 460 reflects the asset size, not the screen size
+      view = UIImageView.alloc.initWithFrame CGRectInset(@gallery.frame, 0, PAGE_INSET)
+      view.contentMode = UIViewContentModeScaleAspectFit
       Shadow.addTo view
     end
     view.image = UIImage.imageNamed PAGES[index]

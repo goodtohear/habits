@@ -52,7 +52,7 @@ class HabitCell < CellWithCheckBox
     longest_chain = @habit.longestChain
     @count.text = [current_chain_length.to_s, longest_chain]
     @count.is_happy = current_chain_length > 0 && current_chain_length == longest_chain
-    
+    @count.highlighted = false
     # @backgroundColorView.backgroundColor = @habit.color
   end
 
