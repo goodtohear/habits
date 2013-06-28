@@ -17,7 +17,7 @@ class InfoCountBadge < UIView
     addSubview @label
   end 
   def refresh
-    count = InfoTask.not_done_count
+    count = InfoTask.unopened_count
     @label.text = "#{count}"
     self.alpha = count == 0 ? 0 : 1
   end

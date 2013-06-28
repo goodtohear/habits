@@ -3,24 +3,24 @@ class InfoTask
 
 
   def self.due
-    @due ||= all.select(&:due?)
+    all.select(&:due?)
     
   end
   def self.all
     @all ||= [
-      InfoTask.create(:instructions, text: "Read the instructions", color: Colors::GREEN, due: 0, action: ->(controller){
+      InfoTask.create(:instructions, due: 0, text: "Read the instructions", color: Colors::GREEN, action: ->(controller){
         controller.presentViewController InformationScreen.alloc.init, animated: true, completion: ->(){}
         }),
-      InfoTask.create(:happiness, text: "Check out Happiness", color: Colors::YELLOW, due:3, action: ->(controller){
+      InfoTask.create(:happiness, due: 5, text: "Get Happiness", color: Colors::YELLOW, action: ->(controller){
           App.open_url "http://goodtohear.co.uk/happiness?from=habits"
         }),
-      InfoTask.create(:rate, text: "Rate the app", color: Colors::PURPLE, due:3, action: ->(controller){
+      InfoTask.create(:rate, due: 4, text: "Rate the app", color: Colors::PURPLE,  action: ->(controller){
           App.open_url "https://userpub.itunes.apple.com/WebObjects/MZUserPublishing.woa/wa/addUserReview?id=573844300&type=Purple+Software"
         }),
-      InfoTask.create(:like, text: "Like us on Facebook", color: Colors::BLUE, due:3, action: ->(controller){
+      InfoTask.create(:like, due: 2, text: "Like us on Facebook", color: Colors::BLUE, action: ->(controller){
           App.open_url "https://www.facebook.com/298561953497621"
         }),
-      InfoTask.create(:share, text: "Share the app", color: Colors::ORANGE, due:0, action: ->(controller){
+      InfoTask.create(:share, due: 1, text: "Share the app", color: Colors::ORANGE, action: ->(controller){
           items = ["I like using the Good Habits app by @goodtohearuk to make myself a better person", NSURL.URLWithString("https://itunes.apple.com/gb/app/good-habits/id573844300?mt=8")]
 
           sheet = UIActivityViewController.alloc.initWithActivityItems items, applicationActivities: nil
@@ -29,7 +29,7 @@ class InfoTask
         })
     ]
   end
-  def self.create(id, text: text, color: color, due: due, action: action)
+  def self.create(id, due: due, text: text, color: color, action: action)
     task = InfoTask.new
     task.due = due
     task.id = id
@@ -58,8 +58,8 @@ class InfoTask
   def done?
     @done
   end
-  def not_done?
-    !@done
+  def unopened?
+    !opened?
   end
   def load!
     info = App::Persistence["info_task_#{@id}"] || {}
@@ -72,8 +72,8 @@ class InfoTask
       done: @done
     }
   end
-  def self.not_done_count 
-    due.select(&:not_done?).count
+  def self.unopened_count 
+    due.select(&:unopened?).count
   end
 
   def due?

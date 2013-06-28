@@ -99,6 +99,7 @@ class InfoOverviewScreen < UITableViewController
   def tableView tableView, didSelectRowAtIndexPath:indexPath
     if indexPath.section == 0
       tasks[indexPath.row].open(self)
+      tableView.cellForRowAtIndexPath(indexPath).mark_read
     else
       things = indexPath.section == 1 ? links : credits
       App.open_url things[indexPath.row][:url]

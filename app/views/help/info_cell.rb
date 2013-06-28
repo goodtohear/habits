@@ -7,6 +7,7 @@ class InfoCell < CellWithCheckBox
     @checkbox.when_tapped do
       # respond to tap
       @task.toggle(!@task.done?)
+      mark_read
       @checkbox.set_checked @task.done?
 
       unless @task.opened?
@@ -16,7 +17,11 @@ class InfoCell < CellWithCheckBox
   end
   def task= task
     @task = task
+    mark_read if @task.opened? 
     @label.text = @task.text
     @checkbox.set_checked @task.done?
+  end
+  def mark_read
+    @label.font = UIFont.fontWithName 'HelveticaNeue', size: @label.font.pointSize
   end
 end
