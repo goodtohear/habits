@@ -1,7 +1,7 @@
 # Author: Michael Forrest | Good To Hear | http://goodtohear.co.uk | License terms: credit me.
 class AppDelegate
   def application(application, didFinishLaunchingWithOptions:launchOptions)
-    Appearance.init()
+    Appearance.apply()
     @window = UIWindow.alloc.initWithFrame UIScreen.mainScreen.bounds
     
     unless App::Persistence['installed_date']

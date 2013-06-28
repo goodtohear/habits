@@ -12,11 +12,16 @@ class InfoTask
         controller.presentViewController InformationScreen.alloc.init, animated: true, completion: ->(){}
         }),
       InfoTask.create(:share, due: 0, text: "Share the app", color: Colors::ORANGE, action: ->(controller){
-          items = ["I like using the Good Habits app by @goodtohearuk to make myself a better person", NSURL.URLWithString("https://itunes.apple.com/gb/app/good-habits/id573844300?mt=8")]
+          Appearance.remove()
+          items = [AppSharing.alloc.init, NSURL.URLWithString("https://itunes.apple.com/gb/app/good-habits/id573844300?mt=8")]
 
           sheet = UIActivityViewController.alloc.initWithActivityItems items, applicationActivities: nil
           sheet.excludedActivityTypes = [ UIActivityTypePrint, UIActivityTypeCopyToPasteboard, UIActivityTypeAssignToContact, UIActivityTypeSaveToCameraRoll, UIActivityTypeMessage, UIActivityTypePostToWeibo]
-          controller.presentViewController(sheet, animated:true, completion:nil)
+          sheet.completionHandler = ->(activityType, completed){
+            Appearance.apply()
+          }
+          controller.presentViewController(sheet, animated:true, completion: nil)
+
         }),
       InfoTask.create(:happiness, due: 3, text: "Get Happiness", color: Colors::YELLOW, action: ->(controller){
           App.open_url "http://goodtohear.co.uk/happiness?from=habits"
