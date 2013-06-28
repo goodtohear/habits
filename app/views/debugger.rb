@@ -1,5 +1,5 @@
 class Debugger < UITextView
-  # I'm gonna keep debug info here statically. Sue me.
+  # I'm gonna keep debug info here statically. 
   class << self
     attr_accessor :buffer
     

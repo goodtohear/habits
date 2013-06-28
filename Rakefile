@@ -1,12 +1,10 @@
 # -*- coding: utf-8 -*-
 $:.unshift("/Library/RubyMotion/lib")
-require "rubygems"
 require 'motion/project/template/ios'
-require "yaml"
-require "bubble-wrap"
-require "bubble-wrap/core"
-require "bubble-wrap/http"
-require 'motion-cocoapods'
+require 'yaml'
+require 'bundler'
+Bundler.setup
+Bundler.require
 
 def load_config(app)
 =begin
