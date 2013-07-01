@@ -11,16 +11,16 @@ class InfoTask
       InfoTask.create(:instructions, due: 0, text: "Read the instructions", color: Colors::GREEN, action: ->(controller){
         controller.presentViewController InformationScreen.alloc.init, animated: true, completion: ->(){}
         }),
-      InfoTask.create(:happiness, due: 5, text: "Get Happiness", color: Colors::YELLOW, action: ->(controller){
+      InfoTask.create(:happiness, due: 3, text: "Get Happiness", color: Colors::YELLOW, action: ->(controller){
           App.open_url "http://goodtohear.co.uk/happiness?from=habits"
         }),
-      InfoTask.create(:rate, due: 4, text: "Rate the app", color: Colors::PURPLE,  action: ->(controller){
+      InfoTask.create(:rate, due: 3, text: "Rate the app", color: Colors::PURPLE,  action: ->(controller){
           App.open_url "https://userpub.itunes.apple.com/WebObjects/MZUserPublishing.woa/wa/addUserReview?id=573844300&type=Purple+Software"
         }),
-      InfoTask.create(:like, due: 2, text: "Like us on Facebook", color: Colors::BLUE, action: ->(controller){
+      InfoTask.create(:like, due: 3, text: "Like us on Facebook", color: Colors::BLUE, action: ->(controller){
           App.open_url "https://www.facebook.com/298561953497621"
         }),
-      InfoTask.create(:share, due: 1, text: "Share the app", color: Colors::ORANGE, action: ->(controller){
+      InfoTask.create(:share, due: 3, text: "Share the app", color: Colors::ORANGE, action: ->(controller){
           items = ["I like using the Good Habits app by @goodtohearuk to make myself a better person", NSURL.URLWithString("https://itunes.apple.com/gb/app/good-habits/id573844300?mt=8")]
 
           sheet = UIActivityViewController.alloc.initWithActivityItems items, applicationActivities: nil
