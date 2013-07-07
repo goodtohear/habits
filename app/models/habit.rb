@@ -25,9 +25,9 @@ class Habit < NSObject
       longest_chain: @longest_chain
     }
   end  
-  
+  @@count = 0
   def self.nextOrder
-    self.all.count + 1
+    @@count + 1 #self.all.count + 1
   end
   
   def initialize(options={title: "New Habit", active: true, days_checked: {}})
@@ -49,6 +49,7 @@ class Habit < NSObject
     @order = options[:order] || Habit.nextOrder
     @longest_chain = options[:longest_chain] || recalculate_longest_chain
     
+    @@count += 1
   end
 
   def migrate_array_to_hash days_checked_array

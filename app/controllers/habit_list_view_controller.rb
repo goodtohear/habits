@@ -131,7 +131,7 @@ class HabitListViewController < ATSDragToReorderTableViewController
         habit.order = index
       end
     end
-    
+    Habit.save!
   end
   # swiper table delgate
   def tableView tableView, didSelectRowAtIndexPath:indexPath
