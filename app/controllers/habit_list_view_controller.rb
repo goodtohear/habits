@@ -77,7 +77,11 @@ class HabitListViewController < ATSDragToReorderTableViewController
     cell.now = @now
     habit = @groups[indexPath.section][indexPath.row]
     cell.habit = habit
-    cell.set_color habit.active && habit.days_required[Time.new.wday] ? habit.color : Colors::COBALT
+    unless habit.nil? 
+      cell.set_color habit.active && habit.days_required[Time.new.wday] ? habit.color : Colors::COBALT
+    else
+      TFLog "Weird thing where the cell had no associated habit. Returning, and hoping this fixes the .active bug"
+    end
     cell
   end
   
@@ -116,6 +120,10 @@ class HabitListViewController < ATSDragToReorderTableViewController
 
   def tableView tableView, moveRowAtIndexPath: indexPath, toIndexPath: newIndexPath 
     moved = @groups[indexPath.section][indexPath.row]
+    if moved.nil?
+      TFLog "couldn't find an appropriate habit in hte tableView moveRow callback so returning"
+      return
+    end
     section_id = SECTIONS[newIndexPath.section] 
     moved.active = section_id != :inactive
     unless section_id == :inactive
