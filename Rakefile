@@ -37,7 +37,7 @@ Motion::Project::App.setup do |app|
   app.deployment_target = "5.0"
   app.sdk_version = "6.1"
   app.identifier = 'goodtohear.habits'
-  app.version = app.info_plist['CFBundleShortVersionString'] = "1.1"
+  app.version = app.info_plist['CFBundleShortVersionString'] = "1.1.1"
   
   app.name = 'Habits'
   app.icons += ['icon_57','icon_114.png']
