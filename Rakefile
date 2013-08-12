@@ -6,38 +6,11 @@ require 'bundler'
 Bundler.setup
 Bundler.require
 
-def load_config(app)
-=begin
-
-  Create a config.yml in the following format: 
-
-  development:
-    codesign_certificate: 'iPhone Developer: Your Name (12345678)'
-    provisioning_profile: "/path/to/profile.mobileprovision"
-
-  release:
-    codesign_certificate: 'iPhone Distribution: Your Company'
-    provisioning_profile: "/path/to/profile.mobileprovision"
-
-=end
-
-  config = YAML::load( File.open('config.yml') )
-  for mode in config.keys
-    app.send(mode) do
-      for key, value in config[mode]
-        app.send "#{key}=", value
-      end
-    end
-  end
-end
-
 Motion::Project::App.setup do |app|
-  load_config(app) if File.exists? 'config.yml'
-  
   app.deployment_target = "5.0"
   app.sdk_version = "6.1"
   app.identifier = 'goodtohear.habits'
-  app.version = app.info_plist['CFBundleShortVersionString'] = "1.1.1"
+  app.version = app.info_plist['CFBundleShortVersionString'] = "1.1.2"
   
   app.name = 'Habits'
   app.icons += ['icon_57','icon_114.png']
@@ -54,6 +27,27 @@ Motion::Project::App.setup do |app|
   end
   
   app.vendor_project('vendor/ReorderingTableViewController', :static, :headers_dir => '.', :cflags => '-fobjc-arc')
+
+
+  app.development do 
+    app.codesign_certificate = 'iPhone Developer: Michael Forrest (2Y46T85LFL)'
+    app.provisioning_profile = 'profiles/Testing.mobileprovision'
+  end
+  app.testflight do
+    app.codesign_certificate = 'iPhone Distribution: Good To Hear Ltd'
+    app.provisioning_profile = 'profiles/Testing.mobileprovision'
+
+    app.entitlements['get-task-allow'] = false
+    app.testflight.api_token = ENV['TESTFLIGHT_API_TOKEN'] || abort("You need to set your Testflight API Token environment variable.")
+    app.testflight.team_token = '359d8287044267ba5584957afcb44f57_MTE1NDM5MjAxMi0wNy0yOSAwODo0MTo1My4zMzk5MTI'
+  end
+  app.release do
+    app.entitlements['get-task-allow'] = false
+    app.codesign_certificate = 'iPhone Distribution: Good To Hear Ltd'
+    app.provisioning_profile = 'profiles/Distribution.mobileprovision'
+
+  end
+
 end
 
 
