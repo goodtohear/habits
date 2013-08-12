@@ -138,6 +138,7 @@ class HabitDetailViewController < UIViewController
     @back.setBackgroundImage UIImage.imageNamed('back'), forState:UIControlStateNormal
     @back.setTitleColor Colors::COBALT, forState:UIControlStateNormal
     @back.setTitle "BACK", forState: UIControlStateNormal
+    @back.setTitleColor(UIColor.whiteColor, forState:UIControlStateHighlighted)
     @back.font = UIFont.fontWithName "HelveticaNeue-Bold", size: 12
     @back.titleEdgeInsets = [2, 13, 0, 4 ] # top left bottom right
     view.addSubview @back
