@@ -22,7 +22,7 @@ Motion::Project::App.setup do |app|
   
   
   app.pods do
-    pod 'SwipeView'
+    pod 'SwipeView', '~> 1.2.10'
     pod 'TestFlightSDK'
   end
   

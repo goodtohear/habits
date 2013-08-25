@@ -1,13 +1,13 @@
 PODS:
-  - SwipeView (1.2.9)
+  - SwipeView (1.2.10)
   - TestFlightSDK (1.3.0-beta.6)
 
 DEPENDENCIES:
-  - SwipeView
+  - SwipeView (~> 1.2.10)
   - TestFlightSDK
 
 SPEC CHECKSUMS:
-  SwipeView: 4b05b28f0a2ea1c143459257e73a907912794700
+  SwipeView: 0218f1fe1a271a610279815101b808a054fe631a
   TestFlightSDK: f3e516c64f61abedeb26a7b184101df54df3db09
 
 COCOAPODS: 0.20.2
