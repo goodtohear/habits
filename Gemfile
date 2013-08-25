@@ -4,3 +4,4 @@ gem 'rake'
 gem 'cocoapods', '0.20.2'
 gem 'motion-cocoapods', '1.3.2'
 gem 'motion-testflight'
+gem 'motion-settings-bundle', :git=>"https://github.com/rheoli/motion-settings-bundle"

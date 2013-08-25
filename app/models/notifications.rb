@@ -17,7 +17,7 @@ class Notifications
     for n in (1..7)
       day = TimeHelper.addDays n, toDate: now
       notification = UILocalNotification.alloc.init
-      notification.fireDate = Time.local day.year, day.month, day.day, 6, 0
+      notification.fireDate = Time.local day.year, day.month, day.day, Preferences.day_boundary, 0
       notification.applicationIconBadgeNumber = Habit.habitCountForDate day
       UIApplication.sharedApplication.scheduleLocalNotification notification
     end

@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+Dir.glob('lib/tasks/*.rake').each { |r| import r }
 $:.unshift("/Library/RubyMotion/lib")
 require 'motion/project/template/ios'
 require 'yaml'
@@ -50,21 +51,7 @@ Motion::Project::App.setup do |app|
 
 end
 
-
-desc "symbolicate log"
-task :symbolicate do
-  base_address = "0x37000" # for now.
-  path = Dir['crashes/*.crash'].first
-  lines = File.read(path).to_a
-  Dir.chdir 'build/iPhoneOS-5.0-Release' do
-    addresses = []
-    lines.each do |line| 
-      line_number, app_name, address = line.split
-      if app_name == "Habits"
-        addresses << address
-        
-      end
-    end
-    puts system "atos -o Habits.app/Habits -l #{base_address} #{addresses.join(' ')}"    
-  end
+Motion::SettingsBundle.setup do |app|
+  app.multivalue "Start of day", :key=> "start_of_day", :default=> 6, :values=> (0..23).to_a, :titles=> (0..23).map{|t| "#{t.to_s.rjust(2,'0')}:00"}
 end
+
