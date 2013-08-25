@@ -9,7 +9,7 @@ class InfoOverviewScreen < UITableViewController
 
   def build
     view.backgroundColor = UIColor.whiteColor
-    
+    self.tableView.showsVerticalScrollIndicator = false
     # @how_to_use = Button.create [[30,30],[260,40]], title: "How to use", color: UIColor.blackColor
     # @how_to_use.when(UIControlEventTouchUpInside) do
     #   presentViewController InformationScreen.alloc.init, animated: true, completion: ->(){}
