@@ -10,7 +10,7 @@ Motion::Project::App.setup do |app|
   app.deployment_target = "5.0"
   app.sdk_version = "6.1"
   app.identifier = 'goodtohear.habits'
-  app.version = app.info_plist['CFBundleShortVersionString'] = "1.1.2"
+  app.version = app.info_plist['CFBundleShortVersionString'] = "1.1.3"
   
   app.name = 'Habits'
   app.icons += ['icon_57','icon_114.png']
@@ -23,7 +23,7 @@ Motion::Project::App.setup do |app|
   
   app.pods do
     pod 'SwipeView', '~> 1.2.10'
-    pod 'TestFlightSDK'
+    pod 'TestFlightSDK', '~> 2.0'
   end
   
   app.vendor_project('vendor/ReorderingTableViewController', :static, :headers_dir => '.', :cflags => '-fobjc-arc')
