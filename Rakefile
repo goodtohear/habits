@@ -6,9 +6,11 @@ require 'bundler'
 Bundler.setup
 Bundler.require
 
+ENV['COCOAPODS_NO_UPDATE']='1'
+
 Motion::Project::App.setup do |app|
   app.deployment_target = "5.0"
-  app.sdk_version = "6.1"
+  app.sdk_version = "7.0"
   app.identifier = 'goodtohear.habits'
   app.version = app.info_plist['CFBundleShortVersionString'] = "1.1.2"
   
