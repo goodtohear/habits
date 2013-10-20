@@ -7,32 +7,38 @@ class InfoTask
     
   end
   def self.all
-    @all ||= [
-      InfoTask.create(:guide, due: 0, text: "Look at the guide", color: Colors::GREEN, action: ->(controller){
-        controller.presentViewController InformationScreen.alloc.init, animated: true, completion: ->(){}
-        }),
-      InfoTask.create(:share, due: 0, text: "Share this app", color: Colors::ORANGE, action: ->(controller){
-          Appearance.remove()
-          items = [AppSharing.alloc.init, NSURL.URLWithString("https://itunes.apple.com/gb/app/good-habits/id573844300?mt=8")]
+    return @all if @all
+    @all = []
+    NSLog "Device version #{Device.ios_version}"
+    if Device.ios_version.to_f >= 6.0
+      @all += [
+        InfoTask.create(:guide, due: 0, text: "Look at the guide", color: Colors::GREEN, action: ->(controller){
+          controller.presentViewController InformationScreen.alloc.init, animated: true, completion: ->(){}
+          }),
+        InfoTask.create(:share, due: 0, text: "Share this app", color: Colors::ORANGE, action: ->(controller){
+            Appearance.remove()
+            items = [AppSharing.alloc.init, NSURL.URLWithString("https://itunes.apple.com/gb/app/good-habits/id573844300?mt=8")]
+            sheet = UIActivityViewController.alloc.initWithActivityItems items, applicationActivities: nil
+            sheet.completionHandler = ->(activityType, completed){
+              Appearance.apply()
+            }
+            controller.presentViewController(sheet, animated:true, completion: nil)
 
-          sheet = UIActivityViewController.alloc.initWithActivityItems items, applicationActivities: nil
-          sheet.excludedActivityTypes = [ UIActivityTypePrint, UIActivityTypeCopyToPasteboard, UIActivityTypeAssignToContact, UIActivityTypeSaveToCameraRoll, UIActivityTypeMessage, UIActivityTypePostToWeibo]
-          sheet.completionHandler = ->(activityType, completed){
-            Appearance.apply()
-          }
-          controller.presentViewController(sheet, animated:true, completion: nil)
-
-        }),
+          })
+        ]
+    end
+    @all += [
       InfoTask.create(:happiness, due: 3, text: "Get Happiness", color: Colors::YELLOW, action: ->(controller){
           App.open_url "http://goodtohear.co.uk/happiness?from=habits"
         }),
       InfoTask.create(:rate, due: 3, text: "Rate this app", color: Colors::PURPLE,  action: ->(controller){
           App.open_url "https://userpub.itunes.apple.com/WebObjects/MZUserPublishing.woa/wa/addUserReview?id=573844300&type=Purple+Software"
         }),
-      InfoTask.create(:like, due: 3, text: "Like us on Facebook", color: Colors::BLUE, action: ->(controller){
+      InfoTask.create(:like, due: 0, text: "Like us on Facebook", color: Colors::BLUE, action: ->(controller){
           App.open_url "https://www.facebook.com/298561953497621"
         })
-    ]
+      ]
+    return @all
   end
   def self.create(id, due: due, text: text, color: color, action: action)
     task = InfoTask.new

@@ -6,7 +6,7 @@ require 'bundler'
 Bundler.setup
 Bundler.require
 
-ENV['COCOAPODS_NO_UPDATE']='1'
+#ENV['COCOAPODS_NO_UPDATE']='1'
 
 Motion::Project::App.setup do |app|
   app.deployment_target = "5.0"
@@ -25,7 +25,7 @@ Motion::Project::App.setup do |app|
   
   app.pods do
     pod 'SwipeView', '~> 1.2.10'
-    pod 'TestFlightSDK', '~> 2.0'
+    # pod 'TestFlightSDK', '~> 2.0'
   end
   
   app.vendor_project('vendor/ReorderingTableViewController', :static, :headers_dir => '.', :cflags => '-fobjc-arc')
@@ -35,14 +35,14 @@ Motion::Project::App.setup do |app|
     app.codesign_certificate = 'iPhone Developer: Michael Forrest (2Y46T85LFL)'
     app.provisioning_profile = 'profiles/Testing.mobileprovision'
   end
-  app.testflight do
-    app.codesign_certificate = 'iPhone Distribution: Good To Hear Ltd'
-    app.provisioning_profile = 'profiles/Testing.mobileprovision'
-
-    app.entitlements['get-task-allow'] = false
-    app.testflight.api_token = ENV['TESTFLIGHT_API_TOKEN'] || abort("You need to set your Testflight API Token environment variable.")
-    app.testflight.team_token = '359d8287044267ba5584957afcb44f57_MTE1NDM5MjAxMi0wNy0yOSAwODo0MTo1My4zMzk5MTI'
-  end
+#  app.testflight do
+#    app.codesign_certificate = 'iPhone Distribution: Good To Hear Ltd'
+#    app.provisioning_profile = 'profiles/Testing.mobileprovision'
+#
+#    app.entitlements['get-task-allow'] = false
+#    app.testflight.api_token = ENV['TESTFLIGHT_API_TOKEN'] || abort("You need to set your Testflight API Token environment variable.")
+#    app.testflight.team_token = '359d8287044267ba5584957afcb44f57_MTE1NDM5MjAxMi0wNy0yOSAwODo0MTo1My4zMzk5MTI'
+#  end
   app.release do
     app.entitlements['get-task-allow'] = false
     app.codesign_certificate = 'iPhone Distribution: Good To Hear Ltd'

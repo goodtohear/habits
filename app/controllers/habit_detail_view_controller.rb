@@ -25,6 +25,7 @@ class HabitDetailViewController < UIViewController
   end
   
   def build
+    view.backgroundColor = UIColor.whiteColor
     self.navigationItem.title = ""
 
     view.autoresizesSubviews = false

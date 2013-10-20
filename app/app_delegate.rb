@@ -1,7 +1,7 @@
 # Author: Michael Forrest | Good To Hear | http://goodtohear.co.uk | License terms: credit me.
 class AppDelegate
   def application(application, didFinishLaunchingWithOptions:launchOptions)
-    TestFlight.takeOff('690465ac-985d-4c16-ace3-ce09a282d29a')
+    # TestFlight.takeOff('690465ac-985d-4c16-ace3-ce09a282d29a')
     Appearance.apply()
     @window = UIWindow.alloc.initWithFrame UIScreen.mainScreen.bounds
     
