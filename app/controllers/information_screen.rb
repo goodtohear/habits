@@ -16,7 +16,7 @@ class InformationScreen < UIViewController
     # @info = UIImageView.alloc.initWithImage UIImage.imageNamed "information"
     # view.addSubview @info
     
-    @gallery = SwipeView.alloc.initWithFrame [[0,0],view.frame.size]
+    @gallery = SwipeView.alloc.initWithFrame [[0,LayoutHelper.top],[320,view.frame.size.height - LayoutHelper.top]]
     @gallery.dataSource = self
     @gallery.delegate = self
     
@@ -36,7 +36,7 @@ class InformationScreen < UIViewController
     view.addSubview @paging
     
     w = 100
-    @done = Button.create [[320-w,7],[w,30]], title: "Close ╳", color: UIColor.blackColor
+    @done = Button.create [[320-w,LayoutHelper.top + 7],[w,30]], title: "Close ╳", color: UIColor.blackColor
     @done.when(UIControlEventTouchUpInside) do
       App::Persistence['guide_page'] = @paging.currentPage
       dismissViewControllerAnimated true, completion: ->(){}

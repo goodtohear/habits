@@ -1,5 +1,5 @@
 class HomeViewController < UIViewController
-  attr_reader :list
+  attr_reader :list, :top
   def init
     if super
       build
@@ -9,10 +9,14 @@ class HomeViewController < UIViewController
   def build
     
     @list = HabitListViewController.alloc.init
-    @list.view.frame = [[0, 44],[self.view.bounds.size.width, self.view.bounds.size.height - 44]]
+
+    @top = 20
+
+    @list.view.frame = [[0, top],[self.view.bounds.size.width, self.view.bounds.size.height - top ]]
     view.addSubview(@list.view)
     
     @navbar = UIImageView.alloc.initWithImage UIImage.imageNamed("nav")
+    @navbar.frame = [[0, top], @navbar.frame.size]
     self.view.addSubview(@navbar)
 
     add_title
@@ -21,10 +25,10 @@ class HomeViewController < UIViewController
     @info_button.when(UIControlEventTouchUpInside) do
       self.showInfo
     end
-    @info_button.frame = [[0,0], [44,44]]
+    @info_button.frame = [[0,top], [44,44]]
     self.view.addSubview @info_button
     
-    @info_count_badge = InfoCountBadge.alloc.initWithFrame [[28,8],[16,16]]
+    @info_count_badge = InfoCountBadge.alloc.initWithFrame [[28,top + 8],[16,16]]
     self.view.addSubview @info_count_badge
 
     @add_button = BarImageButton.normalButtonWithImageNamed('add')
@@ -33,7 +37,7 @@ class HomeViewController < UIViewController
       self.addItem
     end
     # navigationItem.rightBarButtonItem = UIBarButtonItem.alloc.initWithCustomView @add_button
-    @add_button.frame = [[self.view.frame.size.width - 44, 0], [44,44]]
+    @add_button.frame = [[self.view.frame.size.width - 44, top], [44,44]]
     self.view.addSubview @add_button
     
     if Habit.all.count == 0 and !@get_started_button
@@ -43,7 +47,7 @@ class HomeViewController < UIViewController
 
   end
   def add_title
-    @title_label = Labels.navbarLabelWithFrame [[0,0],[320,44]]
+    @title_label = Labels.navbarLabelWithFrame [[0,top],[320,44]]
     @title_label.text = "GOOD HABITS"
     view.addSubview @title_label
   end
@@ -63,6 +67,7 @@ class HomeViewController < UIViewController
   end
   def viewWillAppear animated
     super
+    self.edgesForExtendedLayout = UIRectEdgeNone
     refresh()
   end
   def refresh

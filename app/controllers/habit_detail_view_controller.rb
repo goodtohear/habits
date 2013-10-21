@@ -17,7 +17,7 @@ class HabitDetailViewController < UIViewController
   end
   
   def addTitle text, y
-    label = UILabel.alloc.initWithFrame [[13,y], [270, 12]]
+    label = UILabel.alloc.initWithFrame [[13,y + LayoutHelper.top], [270, 12]]
     label.font = UIFont.fontWithName "HelveticaNeue-Bold", size: 10
     label.textColor = "#999999".to_color
     label.text = text
@@ -25,17 +25,23 @@ class HabitDetailViewController < UIViewController
   end
   
   def build
+    statusBarBackground = UIView.alloc.initWithFrame [[0,0], [320,20]]
+    statusBarBackground.backgroundColor = UIColor.blackColor
+    view.addSubview statusBarBackground
+
     view.backgroundColor = UIColor.whiteColor
     self.navigationItem.title = ""
 
     view.autoresizesSubviews = false
 
-    @scroller = UIScrollView.alloc.initWithFrame [[0, 44],[320, self.view.bounds.size.height - 44]]
+    @scroller = UIScrollView.alloc.initWithFrame [[0, 44 + LayoutHelper.top],[320, self.view.bounds.size.height - 44 - LayoutHelper.top]]
     @scroller.showsVerticalScrollIndicator = false
     view.addSubview @scroller
 
     @navbar = UIImageView.alloc.initWithImage UIImage.imageNamed("nav")
+    @navbar.frame = [[0, LayoutHelper.top], @navbar.frame.size]
     self.view.addSubview(@navbar)
+    
 
     addTitleTextfield
     addBarButtons
@@ -76,7 +82,7 @@ class HabitDetailViewController < UIViewController
     @calendar.showChainsForHabit @habit
   end
   def addTitleTextfield
-    @titleTextField = UITextField.alloc.initWithFrame( [[PADDING + TITLE_BUTTONS_WIDTH,0],[320 - (PADDING + TITLE_BUTTONS_WIDTH) * 2,44]])
+    @titleTextField = UITextField.alloc.initWithFrame( [[PADDING + TITLE_BUTTONS_WIDTH,LayoutHelper.top],[320 - (PADDING + TITLE_BUTTONS_WIDTH) * 2,44]])
     @titleTextField.delegate = self
     @titleTextField.font = UIFont.fontWithName("HelveticaNeue-Bold", size:20)
     @titleTextField.textColor = UIColor.whiteColor
@@ -132,10 +138,10 @@ class HabitDetailViewController < UIViewController
     @active.when(UIControlEventTouchUpInside) do
       self.toggleActive
     end
-    @active.frame = [[self.view.frame.size.width - TITLE_BUTTONS_WIDTH - PADDING, 0], [TITLE_BUTTONS_WIDTH,44]]
+    @active.frame = [[self.view.frame.size.width - TITLE_BUTTONS_WIDTH - PADDING, LayoutHelper.top], [TITLE_BUTTONS_WIDTH,44]]
     self.view.addSubview @active
     
-    @back = UIButton.alloc.initWithFrame [[PADDING,0],[TITLE_BUTTONS_WIDTH,44]]
+    @back = UIButton.alloc.initWithFrame [[PADDING,LayoutHelper.top],[TITLE_BUTTONS_WIDTH,44]]
     @back.setBackgroundImage UIImage.imageNamed('back'), forState:UIControlStateNormal
     @back.setTitleColor Colors::COBALT, forState:UIControlStateNormal
     @back.setTitle "BACK", forState: UIControlStateNormal

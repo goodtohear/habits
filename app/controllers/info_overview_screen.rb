@@ -10,17 +10,18 @@ class InfoOverviewScreen < UITableViewController
   def build
     view.backgroundColor = UIColor.whiteColor
     self.tableView.showsVerticalScrollIndicator = false
-    # @how_to_use = Button.create [[30,30],[260,40]], title: "How to use", color: UIColor.blackColor
-    # @how_to_use.when(UIControlEventTouchUpInside) do
-    #   presentViewController InformationScreen.alloc.init, animated: true, completion: ->(){}
-    # end
-    # view.addSubview @how_to_use
+    
+    top = LayoutHelper.top
+    self.tableView.contentInset = [top,0,0,0]
+
+    self.tableView.bounces = false # because otherwise it underlaps the status bar in iOS 7
 
   # ow, pasted. could avoid with some different inheritance pattern.
   @easter_egg = ScrollEasterEggView.alloc.initWithFrame [[0,-200],[320,200]]
     self.view.addSubview @easter_egg
 
   end
+
   def scrollViewDidScroll scrollView
     return if !@easter_egg 
     offset = -scrollView.contentOffset.y
@@ -111,6 +112,7 @@ class InfoOverviewScreen < UITableViewController
   def build_navbar
     navbar = UIImageView.alloc.initWithImage UIImage.imageNamed("info_nav")
     navbar.setUserInteractionEnabled(true)
+
     titleLabel = Labels.navbarLabelWithFrame([[0,0],[320,44]])
 
     titleLabel.text = "GOOD TO HEAR"
