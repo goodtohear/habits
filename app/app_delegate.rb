@@ -12,6 +12,7 @@ class AppDelegate
 
     @main = HomeViewController.alloc.init
     @nav = NavController.alloc.initWithRootViewController @main
+    @nav.restorationIdentifier = "Nav"
     @main.list.nav = @nav # (not happy about this)
     @nav.setNavigationBarHidden true, animated: false
 
