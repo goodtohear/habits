@@ -7,6 +7,7 @@ class HomeViewController < UIViewController
     self
   end
   def build
+    self.restorationIdentifier = "Home"
     
     @list = HabitListViewController.alloc.init
 

@@ -41,4 +41,14 @@ class AppDelegate
   def applicationDidBecomeActive application
     @main.reload
   end
+
+  # state restoration:
+  def application application, shouldSaveApplicationState: coder
+    true
+  end
+
+  def application application, shouldRestoreApplicationState: coder
+    true
+  end
+
 end

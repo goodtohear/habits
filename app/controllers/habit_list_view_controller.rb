@@ -14,6 +14,7 @@ class HabitListViewController < ATSDragToReorderTableViewController
   end
   
   def build
+    self.restorationIdentifier = "List"
     @reload_queue = Dispatch::Queue.concurrent(:default)
     
     loadGroups
