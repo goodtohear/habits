@@ -27,6 +27,7 @@ Motion::Project::App.setup do |app|
   app.pods do
     pod 'SwipeView'
     pod 'PonyDebugger'
+    pod 'SVProgressHUD'
     # pod 'TestFlightSDK', '~> 2.0'
   end
   

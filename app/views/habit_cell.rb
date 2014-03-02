@@ -48,7 +48,6 @@ class HabitCell < CellWithCheckBox
     @count.is_happy = current_chain_length > 0 && current_chain_length == longest_chain
     @count.highlighted = false
     # @backgroundColorView.backgroundColor = @habit.color
-    NSLog "inactive? #{@inactive} color #{textColor}"
   end
 
 

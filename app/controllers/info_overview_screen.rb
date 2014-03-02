@@ -34,6 +34,9 @@ class InfoOverviewScreen < UITableViewController
   end
   def links
     @links ||= [
+      {text: "Export your data", action: ->(){
+         DataExport.run(self)
+      }},
       {text: "Log an issue", url: "https://github.com/goodtohear/habits/issues" },
       {text: "Contact us", url: "http://goodtohear.co.uk/contact"}
     ]
@@ -103,10 +106,14 @@ class InfoOverviewScreen < UITableViewController
       tableView.cellForRowAtIndexPath(indexPath).mark_read
     else
       things = indexPath.section == 1 ? links : credits
-      App.open_url things[indexPath.row][:url]
+      thing = things[indexPath.row]
+      url = thing[:url]
+      if url
+        App.open_url url
+      else
+        thing[:action].call()
+      end
     end
-    
-
   end
 
   def build_navbar
