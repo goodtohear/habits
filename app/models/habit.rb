@@ -10,7 +10,7 @@ class Habit < NSObject
     Colors::BROWN
     ]
   # :first_in_chain, :last_in_chain, :mid_chain, :missed, :future, :before_start
-  attr_accessor :title, :color_index, :created_at, :days_checked, :time_to_do, :active, :order, :days_required
+  attr_accessor :title, :color_index, :created_at, :days_checked, :time_to_do,:minute_to_do, :active, :order, :days_required
   attr_reader :notifications
   def serialize
     {
@@ -19,6 +19,7 @@ class Habit < NSObject
       created_at: @created_at,
       days_checked: @days_checked,
       time_to_do: @time_to_do || "",
+      minute_to_do: @minute_to_do || 0,
       active: @active || false,
       order: @order,
       days_required: @days_required,
@@ -44,6 +45,7 @@ class Habit < NSObject
     end  
     @created_at = options[:created_at] || Time.now
     @time_to_do = options[:time_to_do]
+    @minute_to_do = options[:minute_to_do] || 0
     @interval = 1 # day
     @days_required = options[:days_required] || Calendar::DAYS.map{|d| true }
     @order = options[:order] || Habit.nextOrder
@@ -103,7 +105,9 @@ class Habit < NSObject
   def self.active_but_not_today
     self.active.select{|h| !h.days_required[Time.now.wday] }
   end
-  
+  def self.overdue
+    (all.select {|h| !h.days_required[Time.now.wday] && h.currentChainLength == 0 })
+  end
   def self.inactive
     (all.select { |h| !h.active }).sort { |a, b| b.order <=> a.order }
   end
@@ -154,6 +158,7 @@ class Habit < NSObject
         count += 1
       end
       if !continuesActivityBefore(last_day)
+        # TODO: Make a negative count possible
         return count unless shouldFindLongest
         result = [result,count].max
         count = 0
@@ -220,7 +225,7 @@ class Habit < NSObject
       day = TimeHelper.addDays dayOffset + n, toDate: now
       if days_required[day.wday]
         notification = UILocalNotification.alloc.init
-        notification.fireDate = Time.local day.year, day.month, day.day, time_to_do, 0
+        notification.fireDate = Time.local day.year, day.month, day.day, time_to_do, minute_to_do
         notification.alertBody = title
         notification.repeatInterval = NSWeekCalendarUnit
         @notifications << notification

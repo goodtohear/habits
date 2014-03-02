@@ -10,17 +10,18 @@ class InfoOverviewScreen < UITableViewController
   def build
     view.backgroundColor = UIColor.whiteColor
     self.tableView.showsVerticalScrollIndicator = false
-    # @how_to_use = Button.create [[30,30],[260,40]], title: "How to use", color: UIColor.blackColor
-    # @how_to_use.when(UIControlEventTouchUpInside) do
-    #   presentViewController InformationScreen.alloc.init, animated: true, completion: ->(){}
-    # end
-    # view.addSubview @how_to_use
+    
+    self.tableView.contentInset = [0,0,0,0]
+
+    self.navigationItem.rightBarButtonItem = UIBarButtonItem.alloc.initWithBarButtonSystemItem UIBarButtonSystemItemDone, target: self, action: 'dismiss'
+    self.navigationItem.title = "GOOD TO HEAR"
 
   # ow, pasted. could avoid with some different inheritance pattern.
   @easter_egg = ScrollEasterEggView.alloc.initWithFrame [[0,-200],[320,200]]
     self.view.addSubview @easter_egg
 
   end
+
   def scrollViewDidScroll scrollView
     return if !@easter_egg 
     offset = -scrollView.contentOffset.y
@@ -71,7 +72,7 @@ class InfoOverviewScreen < UITableViewController
   end
 
   def tableView(tableView, heightForHeaderInSection:section)
-    return 100 if section == 0
+    return 30 if section == 0
     return 20
   end
 
@@ -109,27 +110,19 @@ class InfoOverviewScreen < UITableViewController
   end
 
   def build_navbar
-    navbar = UIImageView.alloc.initWithImage UIImage.imageNamed("info_nav")
+    navbar = UIView.alloc.initWithFrame [[0,0],[320,30]]
+    navbar.backgroundColor = Colors::INFO_YELLOW
     navbar.setUserInteractionEnabled(true)
-    titleLabel = Labels.navbarLabelWithFrame([[0,0],[320,44]])
-
-    titleLabel.text = "GOOD TO HEAR"
-    navbar.addSubview(titleLabel)
     
-    subheading = Labels.subheadingLabelWithFrame [[10,55],[300,30]]
+    subheading = Labels.subheadingLabelWithFrame [[10,0],[300,30]]
     subheading.numberOfLines = 2
     subheading.font = subheading.font.fontWithSize(15)
     subheading.textColor = Colors::DARK
     subheading.text = "Hello! We hope you'd like to:"
     navbar.addSubview subheading
-
-    done = UIButton.alloc.initWithFrame [[320 - 60,1],[60,44]]
-    done.setTitle("DONE", forState:UIControlStateNormal)
-    done.titleLabel.font = UIFont.fontWithName "HelveticaNeue-Bold", size: 16
-    done.when(UIControlEventTouchUpInside) do
-      dismissViewControllerAnimated true, completion: ->(){}
-    end
-    navbar.addSubview done
     navbar
+  end
+  def dismiss
+    dismissViewControllerAnimated true, completion: ->(){}
   end
 end

@@ -12,10 +12,11 @@ class ReminderRangePicker < UIView
   TIME_TO_DO_COMPONENT_INDEX = 0
   
   def createPicker
-    result = UIPickerView.alloc.initWithFrame [[0,BAR_HEIGHT],[320,self.frame.size.height - BAR_HEIGHT]]
-    result.dataSource = self
+    result = UIDatePicker.alloc.initWithFrame [[0,BAR_HEIGHT],[320,self.frame.size.height - BAR_HEIGHT]]
+    result.datePickerMode = UIDatePickerModeTime
+    result.minuteInterval = 5
+    result.backgroundColor = UIColor.whiteColor
     result.delegate = self
-    result.showsSelectionIndicator = true
     addSubview(result)
     result
   end
@@ -25,11 +26,11 @@ class ReminderRangePicker < UIView
 
     @toolbar = UIToolbar.alloc.initWithFrame [[0,0],[320,44]]
     @toolbar.items = [
-      BarButton.button("Clear", style: UIBarButtonItemStyleBordered, target: self, action:'clear'),
+      BarButton.button("CANCEL", style: UIBarButtonItemStyleBordered, target: self, action:'cancel'),
       BarButton.spacer,
-      BarButton.button("Reminders", style: UIBarButtonItemStylePlain, target: nil, action:nil),
+      BarButton.button("CLEAR", style: UIBarButtonItemStylePlain, target: nil, action:'clear'),
       BarButton.spacer,
-      BarButton.button("Set", style: UIBarButtonItemStyleDone, target: self, action:'save')
+      BarButton.button("SAVE", style: UIBarButtonItemStyleDone, target: self, action:'save')
     ]
     addSubview(@toolbar)
 
@@ -40,10 +41,15 @@ class ReminderRangePicker < UIView
   def setHabit habit
   	@habit = habit
   	unless @habit.no_reminders?
-	  @picker.selectRow TimeHelper.indexOfHour(@habit.time_to_do), inComponent:TIME_TO_DO_COMPONENT_INDEX, animated:false
-	end
+      date = TimeHelper.time(@habit.time_to_do, @habit.minute_to_do)
+      NSLog "Set picker date  #{date} for #{@habit.time_to_do}:#{@habit.minute_to_do}"
+      @picker.setDate date, animated: false
+    end
   end
 
+  def cancel
+    delegate.dismissRangePickerAnimated true
+  end
   def clear
     @habit.time_to_do = ''
     Habit.save!
@@ -51,25 +57,12 @@ class ReminderRangePicker < UIView
   end
 
   def save
-  	@habit.time_to_do = TimeHelper.hourForIndex( @picker.selectedRowInComponent(TIME_TO_DO_COMPONENT_INDEX) )
-  	Habit.save!
+    date = @picker.date
+  	@habit.time_to_do = date.hour
+    @habit.minute_to_do = date.min
+    NSLog "Saving reminder time #{date.hour}:#{date.min} (picker date #{date})"
+    Habit.save!
     delegate.dismissRangePickerAnimated true
   end
 
-  def numberOfComponentsInPickerView pickerView
-    1
-  end
-  def pickerView pickerView, numberOfRowsInComponent: component
-    @options.count
-  end
-  def pickerView pickerView, titleForRow: row, forComponent: component
-    time = @options[row]
-    "Remind at #{time}"
-  end
-
-  def pickerView pickerView, viewForRow: row, forComponent: component, reusingView: view
-    view = PickerRowView.alloc.initWithFrame [[0,0],[230,14]] if view.nil?
-    view.titleLabel.text = pickerView pickerView, titleForRow: row, forComponent: component
-    view
-  end
 end

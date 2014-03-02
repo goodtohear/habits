@@ -17,7 +17,7 @@ class HabitDetailViewController < UIViewController
   end
   
   def addTitle text, y
-    label = UILabel.alloc.initWithFrame [[13,y], [270, 12]]
+    label = UILabel.alloc.initWithFrame [[13,y ], [270, 12]]
     label.font = UIFont.fontWithName "HelveticaNeue-Bold", size: 10
     label.textColor = "#999999".to_color
     label.text = text
@@ -30,16 +30,12 @@ class HabitDetailViewController < UIViewController
 
     view.autoresizesSubviews = false
 
-    @scroller = UIScrollView.alloc.initWithFrame [[0, 44],[320, self.view.bounds.size.height - 44]]
+    @scroller = UIScrollView.alloc.initWithFrame [[0, 0],[320, self.view.bounds.size.height]]
     @scroller.showsVerticalScrollIndicator = false
     view.addSubview @scroller
 
-    @navbar = UIImageView.alloc.initWithImage UIImage.imageNamed("nav")
-    self.view.addSubview(@navbar)
-
     addTitleTextfield
     addBarButtons
-
     
 
     addTitle 'Reminder time', 15
@@ -76,7 +72,7 @@ class HabitDetailViewController < UIViewController
     @calendar.showChainsForHabit @habit
   end
   def addTitleTextfield
-    @titleTextField = UITextField.alloc.initWithFrame( [[PADDING + TITLE_BUTTONS_WIDTH,0],[320 - (PADDING + TITLE_BUTTONS_WIDTH) * 2,44]])
+    @titleTextField = UITextField.alloc.initWithFrame( [[PADDING + TITLE_BUTTONS_WIDTH,LayoutHelper.top],[320 - (PADDING + TITLE_BUTTONS_WIDTH) * 2,44]])
     @titleTextField.delegate = self
     @titleTextField.font = UIFont.fontWithName("HelveticaNeue-Bold", size:20)
     @titleTextField.textColor = UIColor.whiteColor
@@ -84,7 +80,7 @@ class HabitDetailViewController < UIViewController
     @titleTextField.textAlignment = UITextAlignmentCenter 
     @titleTextField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter
     @titleTextField.text = @habit.title
-    view.addSubview(@titleTextField)
+    navigationItem.titleView = @titleTextField
   end
   def addDateRangePicker y
     @reminders_button = Button.create [[PADDING,y], [320 - 2 * PADDING,44]], color: Colors::COBALT
@@ -128,24 +124,11 @@ class HabitDetailViewController < UIViewController
   
   def addBarButtons
     # navigationItem.leftBarButtonItem.titleLabel.textColor = UIColor.blackColor
-    @active = BarImageButton.normalButtonWithImageNamed('pause')
-    @active.when(UIControlEventTouchUpInside) do
+    @active = BW::UIBarButtonItem.styled :plain, UIImage.imageNamed('pause') do
       self.toggleActive
     end
-    @active.frame = [[self.view.frame.size.width - TITLE_BUTTONS_WIDTH - PADDING, 0], [TITLE_BUTTONS_WIDTH,44]]
-    self.view.addSubview @active
+    navigationItem.rightBarButtonItem = @active
     
-    @back = UIButton.alloc.initWithFrame [[PADDING,0],[TITLE_BUTTONS_WIDTH,44]]
-    @back.setBackgroundImage UIImage.imageNamed('back'), forState:UIControlStateNormal
-    @back.setTitleColor Colors::COBALT, forState:UIControlStateNormal
-    @back.setTitle "BACK", forState: UIControlStateNormal
-    @back.setTitleColor(UIColor.whiteColor, forState:UIControlStateHighlighted)
-    @back.font = UIFont.fontWithName "HelveticaNeue-Bold", size: 12
-    @back.titleEdgeInsets = [2, 13, 0, 4 ] # top left bottom right
-    view.addSubview @back
-    @back.when(UIControlEventTouchUpInside) do
-      self.navigationController.popViewControllerAnimated(true)
-    end
   end
   
   def updateActiveState animated=true
@@ -165,9 +148,9 @@ class HabitDetailViewController < UIViewController
   
   def remindersButtonTitle
     unless (@habit.no_reminders?) 
-      return "Remind at #{TimeHelper.hours[@habit.time_to_do]}"
+      return "Remind at #{TimeHelper.formattedTime @habit.time_to_do, @habit.minute_to_do}"
     end
-    "Set reminder..."
+    "No reminder"
   end
   def updateRemindersButtonTitle 
     
@@ -177,7 +160,7 @@ class HabitDetailViewController < UIViewController
     t = (animated ? 0.3 : 0)
     @remindersPicker.hidden = false
     UIView.animateWithDuration t, animations: ->{
-      @remindersPicker.frame = [[0,200], @remindersPicker.frame.size]
+      @remindersPicker.frame = [[0,self.view.frame.size.height - @remindersPicker.frame.size.height], @remindersPicker.frame.size]
     },completion: ->(complete){
        @calendar.view.hidden = true
        UIAccessibilityPostNotification UIAccessibilityLayoutChangedNotification, nil
