@@ -1,6 +1,6 @@
 # Author: Michael Forrest | Good To Hear | http://goodtohear.co.uk | License terms: credit me.
 class HabitListViewController < ATSDragToReorderTableViewController
-  SECTIONS = [:active, :not_today, :inactive]
+  SECTIONS = [:active,:carried_over,  :not_today, :inactive]
   attr_accessor :nav
   def init
     if super
@@ -11,8 +11,8 @@ class HabitListViewController < ATSDragToReorderTableViewController
 
   def loadGroups
     @groups = [
-      #Habit.overdue.sort, 
-      Habit.active_today.sort, Habit.active_but_not_today.sort, Habit.inactive.sort]
+      Habit.active_today.sort, Habit.carried_over.sort, 
+      Habit.active_but_not_today.sort, Habit.inactive.sort]
   end
   
   def build
@@ -82,10 +82,19 @@ class HabitListViewController < ATSDragToReorderTableViewController
     cell.now = @now
     habit = @groups[indexPath.section][indexPath.row]
     cell.habit = habit
+    cell.inactive = false
     unless habit.nil? 
-      cell.set_color habit.active && habit.days_required[Time.new.wday] ? habit.color : Colors::COBALT
-    #else
-    #  TFLog "Weird thing where the cell had no associated habit. Returning, and hoping this fixes the .active bug"
+      habit_is_required_today = habit.active && habit.days_required[Time.new.wday]
+      if habit_is_required_today
+        cell.set_color habit.color
+      else 
+        cell.set_color Colors::COBALT
+        cell.inactive = true
+      end
+      if indexPath.section == SECTIONS.index(:carried_over)
+        cell.inactive = false
+        cell.set_color habit.color
+      end
     end
     cell
   end
@@ -110,6 +119,12 @@ class HabitListViewController < ATSDragToReorderTableViewController
   end
   
   def tableView tableView, viewForHeaderInSection: section
+    if section == SECTIONS.index(:carried_over)
+      unless @carried_over
+        @carried_over = InactiveHabitsHeader.alloc.initWithTitle("Carried over from yesterday")
+      end
+      return @carried_over
+    end
     if section == SECTIONS.index(:active)
       @day_navigation ||= DayNavigation.alloc.init
       @day_navigation.date = @now

@@ -1,11 +1,10 @@
 # Author: Michael Forrest | Good To Hear | http://goodtohear.co.uk | License terms: credit me.
 class HabitCell < CellWithCheckBox
-  attr_accessor :habit, :now
-
+  attr_accessor :habit, :now, :inactive
   
   def build
-    super
-                                            # y = 8 because the check box starts at 10. yes. not ideal.
+    super 
+    # y = 8 because the check box starts at 10. yes. not ideal.
     @count = CountView.alloc.initWithFrame [[240,8],[70, 28]]
     @count.text = ""
     addSubview @count
@@ -31,18 +30,13 @@ class HabitCell < CellWithCheckBox
     @count.highlighted = selected
   end
   
-  # def touchesBegan touches, withEvent: event
-  #   @label.textColor = UIColor.whiteColor
-  # end
-  # def touchesEnded touches, withEvent: event
-  #   @label.textColor = UIColor.blackColor
-  # end
   def textColor
-    (@habit.due?(Time.now) and !@habit.done?(Time.now)) ? Colors::RED : UIColor.blackColor
+    ((@habit.due?(Time.now) and !@habit.done?(Time.now)) || (!@inactive && @habit.currentChainLength == 0)) ? Colors::RED : UIColor.blackColor
   end
+
   def habit= value
     @habit = value
-    @label.alpha = @habit.active && habit.days_required[Time.new.wday] ? 1.0 : 0.5
+    @label.alpha = @inactive ? 0.5 : 1.0
     @checkbox.set_checked @habit.done? @now
     @checkbox.label = @habit.title
   
@@ -54,6 +48,7 @@ class HabitCell < CellWithCheckBox
     @count.is_happy = current_chain_length > 0 && current_chain_length == longest_chain
     @count.highlighted = false
     # @backgroundColorView.backgroundColor = @habit.color
+    NSLog "inactive? #{@inactive} color #{textColor}"
   end
 
 

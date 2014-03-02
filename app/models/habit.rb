@@ -103,10 +103,10 @@ class Habit < NSObject
     self.active.select{|h| h.days_required[Time.now.wday] }
   end
   def self.active_but_not_today
-    self.active.select{|h| !h.days_required[Time.now.wday] }
+    self.active.select{|h| !h.days_required[Time.now.wday] && h.currentChainLength != 0}
   end
-  def self.overdue
-    (all.select {|h| !h.days_required[Time.now.wday] && h.currentChainLength == 0 })
+  def self.carried_over
+    (self.active.select {|h| !h.days_required[Time.now.wday] && h.currentChainLength == 0 })
   end
   def self.inactive
     (all.select { |h| !h.active }).sort { |a, b| b.order <=> a.order }
