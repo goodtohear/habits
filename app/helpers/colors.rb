@@ -5,6 +5,8 @@ class Colors
   GREEN = '#77A247'.to_color
   GREY = '#b3b3b3'.to_color
   RED = '#C1272D'.to_color
+
+  INFO_YELLOW = "#fbae17".to_color
   
   PURPLE = '#875495'.to_color
   ORANGE = '#E2804F'.to_color

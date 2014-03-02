@@ -13,8 +13,6 @@ class InformationScreen < UIViewController
   def build
     self.view.backgroundColor = UIColor.blackColor
     navigationItem.title = "INFO"
-    # @info = UIImageView.alloc.initWithImage UIImage.imageNamed "information"
-    # view.addSubview @info
     
     @gallery = SwipeView.alloc.initWithFrame [[0,LayoutHelper.top],[320,view.frame.size.height - LayoutHelper.top]]
     @gallery.dataSource = self

@@ -12,7 +12,23 @@ class TimeHelper
   def self.rotatedHours
   	@rotatedHours ||= hours.rotate(FIRST_OPTION_OFFSET)
   end
+  def self.time hour, minute
+    components = NSDateComponents.new 
+    components.year = 2012 # arbitrary
+    components.hour = hour.to_i
+    components.minute = minute.to_i
+    NSLog "Creating date from components #{components}"
+    NSCalendar.currentCalendar.dateFromComponents components
+  end
   
+  def self.formattedTime hour, minute
+    time = self.time hour, minute
+    formatter = NSDateFormatter.new
+    formatter.dateStyle = NSDateFormatterNoStyle
+    formatter.timeStyle = NSDateFormatterShortStyle
+    formatter.stringFromDate time
+  end
+
   def self.indexOfHour hour
   	return 0 if hour.nil?
   	hour -= FIRST_OPTION_OFFSET 

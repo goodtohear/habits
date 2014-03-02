@@ -10,13 +10,17 @@ class HabitListViewController < ATSDragToReorderTableViewController
   end
 
   def loadGroups
-    @groups = [Habit.active_today.sort, Habit.active_but_not_today.sort, Habit.inactive.sort]
+    @groups = [
+      #Habit.overdue.sort, 
+      Habit.active_today.sort, Habit.active_but_not_today.sort, Habit.inactive.sort]
   end
   
   def build
     self.restorationIdentifier = "List"
     @reload_queue = Dispatch::Queue.concurrent(:default)
     
+    tableView.separatorInset = [0,40,0,0] # [0,0,0,0]
+
     loadGroups
     
     @now = Time.now

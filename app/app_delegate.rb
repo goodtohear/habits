@@ -4,6 +4,7 @@ class AppDelegate
     # TestFlight.takeOff('690465ac-985d-4c16-ace3-ce09a282d29a')
     Appearance.apply()
     @window = UIWindow.alloc.initWithFrame UIScreen.mainScreen.bounds
+    @window.tintColor = UIColor.whiteColor
 
     unless App::Persistence['installed_date']
       App::Persistence['installed_date'] = Habit.all.count > 0 ? Habit.all.map(&:earliest_date).min : Time.now
@@ -12,13 +13,12 @@ class AppDelegate
 
     @main = HomeViewController.alloc.init
     @nav = NavController.alloc.initWithRootViewController @main
-    @nav.restorationIdentifier = "Nav"
+    
     @main.list.nav = @nav # (not happy about this)
-    @nav.setNavigationBarHidden true, animated: false
 
 
     @window.rootViewController =  @nav
-    @window.backgroundColor = UIColor.blackColor
+    #@window.backgroundColor = Colors::DARK
 
     @window.makeKeyAndVisible
     Habit.recalculate_all_notifications

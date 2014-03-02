@@ -11,49 +11,41 @@ class HomeViewController < UIViewController
     
     @list = HabitListViewController.alloc.init
 
-    @top = 20
+    @top = 0
 
     @list.view.frame = [[0, top],[self.view.bounds.size.width, self.view.bounds.size.height - top ]]
     view.addSubview(@list.view)
     
-    @navbar = UIImageView.alloc.initWithImage UIImage.imageNamed("nav")
-    @navbar.frame = [[0, top], @navbar.frame.size]
-    self.view.addSubview(@navbar)
+    navigationItem.title = "GOOD HABITS"
 
-    add_title
-    @info_button = BarImageButton.normalButtonWithImageNamed('info')
-    @info_button.accessibilityLabel = "Information"
-    @info_button.when(UIControlEventTouchUpInside) do
+    infoImageView = UIImageView.alloc.initWithImage UIImage.imageNamed('info')
+    @infoButtonView = UIView.alloc.initWithFrame infoImageView.frame
+    @infoButtonView.addSubview infoImageView
+    @info_button = BW::UIBarButtonItem.custom @infoButtonView  do 
       self.showInfo
     end
-    @info_button.frame = [[0,top], [44,44]]
-    self.view.addSubview @info_button
+    @info_button.accessibilityLabel = "Information"
     
-    @info_count_badge = InfoCountBadge.alloc.initWithFrame [[28,top + 8],[16,16]]
-    self.view.addSubview @info_count_badge
+    navigationItem.leftBarButtonItem = @info_button
+    
+    @info_count_badge = InfoCountBadge.alloc.initWithFrame [[8,-8],[16,16]]
+    @infoButtonView.addSubview @info_count_badge
 
-    @add_button = BarImageButton.normalButtonWithImageNamed('add')
-    @add_button.accessibilityLabel = "Add new habit"
-    @add_button.when(UIControlEventTouchUpInside) do
+    @add_button = BW::UIBarButtonItem.styled :plain, UIImage.imageNamed('add') do
       self.addItem
     end
-    # navigationItem.rightBarButtonItem = UIBarButtonItem.alloc.initWithCustomView @add_button
-    @add_button.frame = [[self.view.frame.size.width - 44, top], [44,44]]
-    self.view.addSubview @add_button
+    @add_button.accessibilityLabel = "Add new habit"
+    navigationItem.rightBarButtonItem = @add_button
     
     if Habit.all.count == 0 and !@get_started_button
-      @get_started_button = TooltipView.alloc.initWithText "TAP HERE TO GET STARTED", fromRect: @add_button.frame
+      @get_started_button = TooltipView.alloc.initWithText "TAP HERE TO GET STARTED", fromRect: CGRectMake(270,-32,50,44)
       view.addSubview @get_started_button
     end
 
   end
-  def add_title
-    @title_label = Labels.navbarLabelWithFrame [[0,top],[320,44]]
-    @title_label.text = "GOOD HABITS"
-    view.addSubview @title_label
-  end
   def showInfo
-    presentViewController InfoOverviewScreen.alloc.init, animated: true, completion: ->(){}
+    infoContainer = NavController.alloc.initWithRootViewController InfoOverviewScreen.alloc.init
+    presentViewController infoContainer, animated: true, completion: ->(){}
   end
   def addItem
     @list.addItem

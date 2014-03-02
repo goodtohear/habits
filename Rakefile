@@ -25,7 +25,8 @@ Motion::Project::App.setup do |app|
   app.info_plist['UIViewControllerBasedStatusBarAppearance'] = false
 
   app.pods do
-    pod 'SwipeView', '~> 1.2.10'
+    pod 'SwipeView'
+    pod 'PonyDebugger'
     # pod 'TestFlightSDK', '~> 2.0'
   end
   

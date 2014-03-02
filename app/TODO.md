@@ -8,4 +8,6 @@ Since change to native navigation bar:
 
 #### Additions
 - [x] State restoration
+- [ ] Make negative counts for overdue tasks
+- [ ] Create a new section for overdue tasks that can still be checked
 
