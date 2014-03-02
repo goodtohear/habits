@@ -20,6 +20,7 @@ class HabitListViewController < ATSDragToReorderTableViewController
     @reload_queue = Dispatch::Queue.concurrent(:default)
     
     tableView.separatorInset = [0,40,0,0] # [0,0,0,0]
+    tableView.showsVerticalScrollIndicator = false
 
     loadGroups
     
@@ -81,8 +82,8 @@ class HabitListViewController < ATSDragToReorderTableViewController
   def configureCell cell, forIndexPath: indexPath
     cell.now = @now
     habit = @groups[indexPath.section][indexPath.row]
-    cell.habit = habit
     cell.inactive = false
+    cell.habit = habit
     unless habit.nil? 
       habit_is_required_today = habit.active && habit.days_required[Time.new.wday]
       if habit_is_required_today
@@ -90,10 +91,12 @@ class HabitListViewController < ATSDragToReorderTableViewController
       else 
         cell.set_color Colors::COBALT
         cell.inactive = true
+        cell.habit = habit
       end
       if indexPath.section == SECTIONS.index(:carried_over)
         cell.inactive = false
         cell.set_color habit.color
+        cell.habit = habit
       end
     end
     cell
