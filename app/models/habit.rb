@@ -1,6 +1,6 @@
 # Author: Michael Forrest | Good To Hear | http://goodtohear.co.uk | License terms: credit me.
 class Habit < NSObject
-  COLORS = Colors::TASK_COLORS  
+  COLORS = Colors::TASK_COLORS
   # :first_in_chain, :last_in_chain, :mid_chain, :missed, :future, :before_start
   attr_accessor :title, :color_index, :created_at, :days_checked, :time_to_do,:minute_to_do, :active, :order, :days_required
   attr_reader :notifications
@@ -17,12 +17,12 @@ class Habit < NSObject
       days_required: @days_required,
       longest_chain: @longest_chain
     }
-  end  
+  end
   @@count = 0
   def self.nextOrder
     @@count + 1 #self.all.count + 1
   end
-  
+
   def initialize(options={title: "New Habit", active: true, days_checked: {}})
     @title = options[:title]
     @active = options[:active] || false
@@ -34,7 +34,7 @@ class Habit < NSObject
       @days_checked = migrate_array_to_hash options[:days_checked]
     else
       @days_checked = options[:days_checked] || {}
-    end  
+    end
     @created_at = options[:created_at] || Time.now
     @time_to_do = options[:time_to_do]
     @minute_to_do = options[:minute_to_do] || 0
@@ -42,8 +42,26 @@ class Habit < NSObject
     @days_required = options[:days_required] || Calendar::DAYS.map{|d| true }
     @order = options[:order] || Habit.nextOrder
     @longest_chain = options[:longest_chain] || recalculate_longest_chain
-    
+
     @@count += 1
+  end
+  def self.replace_all_with habits
+    @all = habits
+  end
+  def self.from_json json
+    result = Habit.new
+    result.title = json['title']
+    result.created_at = Time.at NSDate.dateWithString(json['created_at'])
+    result.time_to_do, result.minute_to_do = *json['time_to_do'].to_s.split(':').map(&:to_i)
+    result.days_required = Calendar::DAYS.map{|d| json['days_required'].include? d}
+    result.active = json['active']
+    result.color_index = Colors::HEX.values.index json['color']
+    result.days_checked = {}
+    for day in json['days_checked']
+      result.days_checked[day] = true
+    end
+    result.recalculate_longest_chain
+    return result
   end
 
   def migrate_array_to_hash days_checked_array
@@ -54,16 +72,16 @@ class Habit < NSObject
     end
     return result
   end
-  
+
   def is_new?
     @title == "New Habit"
   end
-  
+
   def color
     COLORS[@color_index]
   end
   def hex_color
-    Colors::HEX.values[@color_index] 
+    Colors::HEX.values[@color_index]
   end
   def no_reminders?
     time_to_do.nil? or time_to_do == ""
@@ -78,7 +96,7 @@ class Habit < NSObject
 
     end
   end
-  
+
   def self.load
     data = App::Persistence['habits']
     return nil unless data
@@ -86,11 +104,11 @@ class Habit < NSObject
       Habit.new item
     end
   end
-   
+
   def self.all
     @all ||= load || []
   end
-  
+
   def self.active
     (all.select { |h| h.active }).sort { |a, b| b.order <=> a.order }
   end
@@ -106,7 +124,7 @@ class Habit < NSObject
   def self.inactive
     (all.select { |h| !h.active }).sort { |a, b| b.order <=> a.order }
   end
-  
+
   def <=> other
     self.order <=> other.order
   end
@@ -120,13 +138,13 @@ class Habit < NSObject
     low_count = counts.map{|c| c.values.first}.min
     counts.find{|c| c.values.first == low_count }.keys.first.to_i
   end
-  
+
   def self.delete habit
     all.delete habit
     save!
     App.notification_center.post :deleted_habit
   end
-  
+
   def self.days_ago(days)
     days.map{ |days_ago| Time.now - days_ago.days  }
   end
@@ -143,7 +161,7 @@ class Habit < NSObject
   end
   def calculateChainLengthFindLongest shouldFindLongest
     result = 0
-    
+
     count = 0
     now = Time.now
     last_day = Time.local now.year, now.month, now.day
@@ -161,12 +179,12 @@ class Habit < NSObject
 
       last_day = TimeHelper.addDays -1, toDate: last_day
     end
-    [result, count].max  
+    [result, count].max
   end
   def currentChainLength
     calculateChainLengthFindLongest false
   end
-  
+
   def check_days days
     for day in days
       key = key(day)
@@ -174,7 +192,7 @@ class Habit < NSObject
     end
     clearDaysCache()
   end
-  
+
   def uncheck_days days
     for day in days
       key = key(day)
@@ -193,14 +211,14 @@ class Habit < NSObject
     @earliest_date = nil
     recalculate_longest_chain()
   end
-  
+
   def totalDays
     @days_checked.count
   end
   def blank?
     @days_checked.count == 0
   end
-  
+
   def self.recalculate_all_notifications
     active.each(&:recalculate_notification)
   end
@@ -250,13 +268,13 @@ class Habit < NSObject
     @days_checked[key(date)]
   end
   def continuesActivityFromDate date, overRange: range
-    # iterate back up to 6 days 
+    # iterate back up to 6 days
     range.each do |n|
       possible_date = TimeHelper.addDays n, toDate: date
       return true if self.includesDate possible_date
       return false if days_required[possible_date.wday]
     end
-    false  
+    false
   end
 
   def continuesActivityBefore date
@@ -282,8 +300,8 @@ class Habit < NSObject
     return false unless @active
     return false unless days_required[time.wday]
     return false if time_to_do.nil? or time_to_do == ''
-    return time.hour >= time_to_do 
-    
+    return time.hour >= time_to_do
+
   end
 
 end

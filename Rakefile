@@ -10,9 +10,8 @@ Bundler.require
 
 Motion::Project::App.setup do |app|
   app.deployment_target = "7.0"
-  app.sdk_version = "7.0"
+  app.sdk_version = "7.1"
   app.identifier = 'goodtohear.habits'
-  
   app.version = app.info_plist['CFBundleShortVersionString'] = "1.1.4"
 
   app.name = 'Habits'
@@ -22,7 +21,11 @@ Motion::Project::App.setup do |app|
   app.interface_orientations = [:portrait]
   app.info_plist['UIStatusBarStyle'] = 'UIStatusBarStyleBlackOpaque'
   # app.info_plist['UIStatusBarHidden'] = false
-  
+  app.info_plist['CFBundleURLTypes'] = [
+    { 'CFBundleURLName' => 'goodtohear.habits',
+      'CFBundleURLSchemes' => ['goodhabits'] }
+  ]
+
   app.info_plist['UIViewControllerBasedStatusBarAppearance'] = false
 
   app.pods do
@@ -31,11 +34,11 @@ Motion::Project::App.setup do |app|
     pod 'SVProgressHUD'
     # pod 'TestFlightSDK', '~> 2.0'
   end
-  
+
   app.vendor_project('vendor/ReorderingTableViewController', :static, :headers_dir => '.', :cflags => '-fobjc-arc')
 
 
-  app.development do 
+  app.development do
     app.codesign_certificate = 'iPhone Developer: Michael Forrest (2Y46T85LFL)'
     app.provisioning_profile = 'profiles/Testing.mobileprovision'
   end
@@ -64,13 +67,13 @@ task :symbolicate do
   lines = File.read(path).to_a
   Dir.chdir 'build/iPhoneOS-5.0-Release' do
     addresses = []
-    lines.each do |line| 
+    lines.each do |line|
       line_number, app_name, address = line.split
       if app_name == "Habits"
         addresses << address
-        
+
       end
     end
-    puts system "atos -o Habits.app/Habits -l #{base_address} #{addresses.join(' ')}"    
+    puts system "atos -o Habits.app/Habits -l #{base_address} #{addresses.join(' ')}"
   end
 end

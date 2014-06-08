@@ -13,7 +13,7 @@ class AppDelegate
 
     @main = HomeViewController.alloc.init
     @nav = NavController.alloc.initWithRootViewController @main
-    
+
     @main.list.nav = @nav # (not happy about this)
 
 
@@ -50,6 +50,30 @@ class AppDelegate
 
   def application application, shouldRestoreApplicationState: coder
     true
+  end
+
+  # custom urls
+  def application(application, openURL:url, sourceApplication:sourceApp, annotation:annotation)
+    prefix, hash = * url.absoluteString.split('goodhabits://import?json=')
+    if hash
+      BW::UIAlertView.new({
+        title: 'Restore data?',
+        message: 'Restore your data? This action will delete your current data. Proceed with caution.',
+        buttons: ['Cancel', 'Restore Data'],
+        cancel_button_index: 0
+      }) do |alert|
+        unless alert.clicked_button.cancel?
+          json_string = hash.unpack('m')[0]
+
+          json = BW::JSON.parse json_string
+          habits = json.map{|json| Habit.from_json json}
+          Habit.replace_all_with habits
+          @main.refresh
+        end
+      end.show
+
+    end
+
   end
 
 end
