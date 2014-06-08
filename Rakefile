@@ -12,10 +12,11 @@ Motion::Project::App.setup do |app|
   app.deployment_target = "7.0"
   app.sdk_version = "7.0"
   app.identifier = 'goodtohear.habits'
-  app.version = app.info_plist['CFBundleShortVersionString'] = "1.1.3"
   
+  app.version = app.info_plist['CFBundleShortVersionString'] = "1.1.4"
+
   app.name = 'Habits'
-  app.icons += ['icon_57','icon_114.png']
+  app.icons += ['icon_57','icon_114.png','icon_120.png']
   app.prerendered_icon = true
   app.frameworks += ["QuartzCore"]
   app.interface_orientations = [:portrait]

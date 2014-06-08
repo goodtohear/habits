@@ -19,6 +19,8 @@ class HomeViewController < UIViewController
     navigationItem.title = "GOOD HABITS"
 
     infoImageView = UIImageView.alloc.initWithImage UIImage.imageNamed('info')
+    infoImageView.contentMode = UIViewContentModeLeft
+    infoImageView.frame = [[0,0],[44,44]]
     @infoButtonView = UIView.alloc.initWithFrame infoImageView.frame
     @infoButtonView.addSubview infoImageView
     @info_button = BW::UIBarButtonItem.custom @infoButtonView  do 
@@ -28,7 +30,7 @@ class HomeViewController < UIViewController
     
     navigationItem.leftBarButtonItem = @info_button
     
-    @info_count_badge = InfoCountBadge.alloc.initWithFrame [[8,-8],[16,16]]
+    @info_count_badge = InfoCountBadge.alloc.initWithFrame [[7,2],[16,16]]
     @infoButtonView.addSubview @info_count_badge
 
     @add_button = BW::UIBarButtonItem.styled :plain, UIImage.imageNamed('add') do
