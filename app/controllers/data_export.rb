@@ -18,13 +18,14 @@ class DataExport
     json = BW::JSON.generate habits
     NSLog " JSON: #{json}"
     
+    hash = [json].pack('m')
     #SVProgressHUD.dismiss # placeholder in case I make this asynchronous
 
     BW::MailWithAttachment.compose({
       delegate: controller,
       html: true,
       subject: "Habits data",
-      message: 'Data exported from Habits by <a href="http://goodtohear.co.uk">Good To Hear</a>.',
+      message: "Attached is a JSON file of data exported from Habits by <a href='http://goodtohear.co.uk'>Good To Hear</a>.  To restore this data to the app, tap this <a href='goodhabits://import?json=#{hash}'>RESTORE LINK</a>.",
       attachments: [
         {data: json.dataUsingEncoding(NSUTF8StringEncoding), mimeType: 'application/json', fileName: 'habits_data.json'}
       ]

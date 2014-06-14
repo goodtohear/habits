@@ -12,7 +12,7 @@ Motion::Project::App.setup do |app|
   app.deployment_target = "7.0"
   app.sdk_version = "7.1"
   app.identifier = 'goodtohear.habits'
-  app.version = app.info_plist['CFBundleShortVersionString'] = "1.1.4"
+  app.version = app.info_plist['CFBundleShortVersionString'] = "1.1.5"
 
   app.name = 'Habits'
   app.icons += ['icon_57','icon_114.png','icon_120.png']
@@ -41,6 +41,7 @@ Motion::Project::App.setup do |app|
   app.development do
     app.codesign_certificate = 'iPhone Developer: Michael Forrest (2Y46T85LFL)'
     app.provisioning_profile = 'profiles/Testing.mobileprovision'
+    app.entitlements['get-task-allow'] = true
   end
 #  app.testflight do
 #    app.codesign_certificate = 'iPhone Distribution: Good To Hear Ltd'
@@ -76,4 +77,15 @@ task :symbolicate do
     end
     puts system "atos -o Habits.app/Habits -l #{base_address} #{addresses.join(' ')}"
   end
+end
+
+desc "convert json to import link"
+task :json_to_link do
+  json_path = "/Users/mf/Downloads/habits_data.json"
+  json = File.read json_path
+  hash = [json].pack('m')
+  link = "<a href='goodhabits://import?json=#{hash}'>RESTORE LINK</a>"
+  puts "link: #{link}"
+  system "echo \"#{link}\" | textutil -stdin -format html -convert rtf -stdout | pbcopy"
+  puts "Link has been copied to the clipboard (sort of)."
 end
